@@ -1,0 +1,12 @@
+{
+    "appSecret": "f7a58cc7c6fd2deef9deb5fb2176a681",
+    "pageAccessToken": "EAAEajzOnTK8BAEZCXe7Vu4zUmZBVjZAcOsUiRR8Kg0SJIyJGW3OZBhY2HU9gOoTzp2IZAQZB5Me8QFsNdFPSL32ZAOdWppAwcZAyzwhnlTvewiUoAw4FPtPhSFms3rETG7trpJT630BnpvQNudrMaAB6cgJT5ZAshuZBaRfDIflHhp3QZDZD",
+    "validationToken": "AlfaBankCardBotValidationToken2016",
+    "serverURL": "https://alfa-card-bot.herokuapp.com",
+
+    /* Content and assets */
+    "creditCard-icon-path": "/assets/credit-card-icon.png",
+    "location-icon-path":   "/assets/location-icon.png",
+    "piggi-icon-path":      "/assets/piggy-icon.png",
+    "person-icon-path":     "/assets/person-icon.png"
+}

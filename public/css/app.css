@@ -1,0 +1,17 @@
+html { 
+  background: url(../assets/alfabank-background.png) no-repeat center center fixed; 
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+}
+
+.facebook-plugin-container {
+	padding-top: 10px;
+	padding-bottom: 10px;
+}
+
+.facebook-container {
+	margin-top: 50px;
+	margin-left: 50px;
+}
