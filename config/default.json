@@ -4,7 +4,6 @@
     "validationToken": "AlfaBankBotValidationToken2016",
     "serverURL": "https://alfa-bot.herokuapp.com",
 
-
     /* Content and assets */
     "creditCard-icon-path": "/assets/credit-card-icon.png",
     "location-icon-path":   "/assets/location-icon.png",
