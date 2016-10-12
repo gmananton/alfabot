@@ -12,11 +12,11 @@
 
 const
     bodyParser = require('body-parser'),
-    config = require('config'),
-    crypto = require('crypto'),
-    express = require('express'),
-    https = require('https'),
-    request = require('request');
+    config     = require('config'),
+    crypto     = require('crypto'),
+    express    = require('express'),
+    https      = require('https'),
+    request    = require('request');
 
 var app = express();
 app.set('port', process.env.PORT || 5000);
@@ -52,10 +52,11 @@ const SERVER_URL = (process.env.SERVER_URL) ?
     config.get('serverURL');
 
 
-const CREDIT_CARD_ICON_PATH = config.get('creditCard-icon-path');
-const LOCATION_ICON_PATH = config.get('location-icon-path');
-const PIGGI_ICON_PATH = config.get('piggi-icon-path');
-const PERSON_ICON_PATH = config.get('person-icon-path');
+const CREDIT_CARDS_ICON_PATH       = config.get('creditCards-icon-path');
+const CREDIT_CARD_SINGLE_ICON_PATH = config.get('creditCardSingle-icon-path');
+const LOCATION_ICON_PATH           = config.get('location-icon-path');
+const PIGGI_ICON_PATH              = config.get('piggi-icon-path');
+const PERSON_ICON_PATH             = config.get('person-icon-path');
 
 
 if (!(APP_SECRET && VALIDATION_TOKEN && PAGE_ACCESS_TOKEN && SERVER_URL)) {
@@ -524,7 +525,7 @@ function sendStartOptionsMessage(recipientId) {
                             title: "Банковские карты",
                             subtitle: "Узнать статус готовности заказанной карты",
                             //item_url: "http://alfabank.ru/",
-                            image_url: SERVER_URL + CREDIT_CARD_ICON_PATH,
+                            image_url: SERVER_URL + CREDIT_CARDS_ICON_PATH,
                             buttons: [{
                                 type: "postback",
                                 title: "Узнать статус",
@@ -559,9 +560,9 @@ function sendStartOptionsMessage(recipientId) {
                             //item_url: "http://alfabank.ru/",
                             image_url: SERVER_URL + PERSON_ICON_PATH,
                             buttons: [{
-                                type: "postback",
+                                type: "phone_number",
                                 title: "Связаться с поддержкой",
-                                payload: "supportPayload"
+                                payload: "+74957888878"
                             }]
                         }
                     ]
@@ -625,10 +626,10 @@ function sendCardStatusMessage(recipientId) {
                     elements: {
                         element: {
                             title: "Ваша карта готова!",
-                            image_url: SERVER_URL + "/assets/credit-card.png",
+                            image_url: SERVER_URL + CREDIT_CARD_SINGLE_ICON_PATH,
                             buttons: [{
                                 type: "postback",
-                                title: "Где я могу её забрать?",
+                                title: "Где забрать?",
                                 payload: "cardLocationPayload",
                             }]
                         }

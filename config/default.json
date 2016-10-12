@@ -5,8 +5,9 @@
     "serverURL": "https://alfa-bot.herokuapp.com",
 
     /* Content and assets */
-    "creditCard-icon-path": "/assets/credit-card-icon.png",
-    "location-icon-path":   "/assets/location-icon.png",
-    "piggi-icon-path":      "/assets/piggy-icon.png",
-    "person-icon-path":     "/assets/person-icon.png"
+    "creditCards-icon-path":       "/assets/credit-card-icon.png",
+    "creditCardSingle-icon-path": "/assets/credit-card-single-icon.png",
+    "location-icon-path":         "/assets/location-icon.png",
+    "piggi-icon-path":            "/assets/piggy-icon.png",
+    "person-icon-path":           "/assets/person-icon.png"
 }
