@@ -581,7 +581,7 @@ function sendATMLocationMessage(recipientId) {
                     template_type: "generic",
                     elements: {
                         element: {
-                            title: "Каланчевская ул., 27, Москва, Московская обл, 107078",
+                            title: "ул. Каланчевская, 27, ЦО Зона ВЦ-5",
                             subtitle: "Открыто с 9:00 до 21:00",
                             "image_url": "https:\/\/maps.googleapis.com\/maps\/api\/staticmap?size=764x400&center="
                             + lattitude + "," + longtitude +
