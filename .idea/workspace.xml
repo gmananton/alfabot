@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="5044bc73-ec74-4111-b253-547dd19cdbfa" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app.js" afterPath="$PROJECT_DIR$/app.js" />
-    </list>
+    <list default="true" id="5044bc73-ec74-4111-b253-547dd19cdbfa" name="Default" comment="" />
     <ignored path="AlfaBot.iws" />
     <ignored path=".idea/workspace.xml" />
     <ignored path=".idea/dataSources.local.xml" />
@@ -655,12 +653,12 @@
       <option name="presentableId" value="Default" />
       <updated>1476224268528</updated>
       <workItem from="1476224270165" duration="5129000" />
-      <workItem from="1476256521341" duration="401000" />
+      <workItem from="1476256521341" duration="412000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="5530000" />
+    <option name="totallyTimeSpent" value="5541000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="23" width="1280" height="773" extended-state="6" />
