@@ -672,7 +672,7 @@ function sendGreetingMessage(recipientId) {
                             image_url: SERVER_URL + CREDIT_CARD_ICON_PATH,
                             buttons: [{
                                 type: "postback",
-                                title: "Card Status",
+                                title: "Узнать статус",
                                 payload: "cardStatus"
                             }]
                         },
@@ -683,7 +683,7 @@ function sendGreetingMessage(recipientId) {
                             image_url: SERVER_URL + LOCATION_ICON_PATH,
                             buttons: [{
                                 type: "postback",
-                                title: "ATM",
+                                title: "Посмотреть ближайший банкомат",
                                 payload: "atm"
                             }]
                         },
@@ -694,7 +694,7 @@ function sendGreetingMessage(recipientId) {
                             image_url: SERVER_URL + PIGGI_ICON_PATH,
                             buttons: [{
                                 type: "postback",
-                                title: "Accounts",
+                                title: "Посмотреть состояние счетов",
                                 payload: "accounts"
                             }]
                         },
@@ -705,7 +705,7 @@ function sendGreetingMessage(recipientId) {
                             image_url: SERVER_URL + PERSON_ICON_PATH,
                             buttons: [{
                                 type: "postback",
-                                title: "Support",
+                                title: "Связаться с поддержкой",
                                 payload: "support"
                             }]
                         }
