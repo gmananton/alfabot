@@ -2,15 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="5044bc73-ec74-4111-b253-547dd19cdbfa" name="Default" comment="">
-      <change type="DELETED" beforePath="$PROJECT_DIR$/public/assets2/alfabank-background.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/public/assets2/bot.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/public/assets2/credit-card-icon.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/public/assets2/credit-card-icon2.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/public/assets2/favicon.ico" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/public/assets2/person-icon.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/public/assets2/piggy-icon.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/public/assets2/rift.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/public/assets2/rift2.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/public/assets/rift.png" afterPath="" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app.js" afterPath="$PROJECT_DIR$/app.js" />
     </list>
     <ignored path="AlfaBot.iws" />
@@ -36,7 +28,7 @@
         <entry file="file://$PROJECT_DIR$/app.js">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="358">
-              <caret line="670" column="65" selection-start-line="670" selection-start-column="65" selection-end-line="670" selection-end-column="65" />
+              <caret line="670" column="62" selection-start-line="670" selection-start-column="62" selection-end-line="670" selection-end-column="62" />
               <folding>
                 <element signature="n#!!doc" expanded="true" />
               </folding>
@@ -643,12 +635,12 @@
       <option name="presentableId" value="Default" />
       <updated>1476224268528</updated>
       <workItem from="1476224270165" duration="5129000" />
-      <workItem from="1476256521341" duration="1612000" />
+      <workItem from="1476256521341" duration="1820000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="6741000" />
+    <option name="totallyTimeSpent" value="6949000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="23" width="1280" height="773" extended-state="6" />
@@ -798,7 +790,7 @@
     <entry file="file://$PROJECT_DIR$/app.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="358">
-          <caret line="670" column="65" selection-start-line="670" selection-start-column="65" selection-end-line="670" selection-end-column="65" />
+          <caret line="670" column="62" selection-start-line="670" selection-start-column="62" selection-end-line="670" selection-end-column="62" />
           <folding>
             <element signature="n#!!doc" expanded="true" />
           </folding>
