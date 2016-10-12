@@ -612,7 +612,7 @@ function sendQuickReplyTutorialChoice(recipientId) {
             id: recipientId
         },
         message: {
-            text: "Хочешь, я немного расскажу о себе?",
+            text: "Привет! Хочешь, я немного расскажу о себе?",
             metadata: "quickReplyTutorialChoice-meta",
             quick_replies: [
                 {
