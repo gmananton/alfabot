@@ -580,6 +580,7 @@ function sendAccountsInfoMessage(recipientId) {
  *
  */
 function sendQuickReplyTutorialChoice(recipientId) {
+    console.log("--- sendQuickReplyTutorialChoice --- ");
     var messageData = {
         recipient: {
             id: recipientId
