@@ -256,8 +256,14 @@ function receivedMessage(event) {
         var quickReplyPayload = quickReply.payload;
         console.log("Quick reply for message %s with payload %s",
             messageId, quickReplyPayload);
-        sendTextMessage(senderID, "Quick reply tapped");
-        return;
+        //sendTextMessage(senderID, "Quick reply tapped");
+        if (quickReplyPayload ==='quickReplyTutorialYes') {
+            sendTextMessage(senderID, "Чуть позже тут появится обучение");
+            return;
+        } else if (quickReplyPayload ==='quickReplyTutorialNo') {
+            sendStartOptionsMessage(senderID);
+            return;
+        }
     }
 
     if (messageText) {
@@ -344,11 +350,6 @@ function receivedPostback(event) {
             case 'tutorialPayload':
                 sendTutorialMessage(senderID);
                 break;
-            case 'quickReplyTutorialYes':
-                sendTextMessage(senderID, "Чуть позже тут появится обучение");
-                break;
-            case 'quickReplyTutorialNo':
-                sendStartOptionsMessage(senderID);
             case 'cardStatusPayload':
                 sendCardStatusMessage(senderID);
                 break;
