@@ -655,6 +655,7 @@ function sendGenericMessage(recipientId) {
 }
 
 function sendGreetingMessage(recipientId) {
+
     var messageData = {
         recipient: {
             id: recipientId
