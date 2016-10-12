@@ -9,5 +9,9 @@
     "creditCardSingle-icon-path": "/assets/credit-card-single-icon.png",
     "location-icon-path":         "/assets/location-icon.png",
     "piggi-icon-path":            "/assets/piggy-icon.png",
-    "person-icon-path":           "/assets/person-icon.png"
+    "person-icon-path":           "/assets/person-icon.png",
+    "arrow-icon-path":            "/assets/arrow.png",
+
+    "tutorial-animation-path":    "/assets/tutorial-animation.gif",
+    "tutorial-video-path":        "/assets/tutorial_video.webm"
 }
