@@ -673,7 +673,12 @@ function sendGreetingMessage(recipientId) {
                             type: "postback",
                             title: "Узнать статус готовности карты",
                             payload: "cardStatus",
-                        }],
+                        },
+                            {
+                                type: "postback",
+                                title: "Узнать статус готовности карты2",
+                                payload: "cardStatus2",
+                            }],
                     }]
                 }
             }
