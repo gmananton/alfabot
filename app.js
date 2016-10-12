@@ -458,7 +458,7 @@ function receivedAccountLink(event) {
 }
 
 
-/
+
 
 /*
  * Send a text message using the Send API.
