@@ -279,7 +279,7 @@ function receivedMessage(event) {
                 if (messageText.endsWith('?')) {
                     replyMessage += "Я вижу, вы что-то хотите спросить, но к сожалению, я еще не достаточно умен... ";
                 } else {
-                    replyMessage += "Я, к сожалению, пока не слишком умный бот и не знаю, как реагировать на вашу просьбу... ";
+                    replyMessage += "Я, к сожалению, пока не знаю, как реагировать на вашу просьбу... ";
                 }
                 replyMessage += "Воспользуйтесь пока лучше меню с кнопками в левом нижнем углу";
                 sendTextMessage(senderID, replyMessage);
@@ -568,6 +568,33 @@ function sendCardStatusMessage(recipientId) {
 
 function sendATMLocationMessage(recipientId) {
     sendTextMessage(recipientId, "Чуть позже здесь появится информация о банкоматах");
+    var lattitude = 55.774822;
+    var longtitude = 37.649813;
+    var messageData = {
+        recipient: {
+            id: recipientId
+        },
+        message: {
+            attachment: {
+                type: "template",
+                payload: {
+                    template_type: "generic",
+                    elements: {
+                        element: {
+                            title: "Каланчевская ул., 27, Москва, Московская обл, 107078",
+                            subtitle: "Открыто с 9:00 до 21:00",
+                            "image_url": "https:\/\/maps.googleapis.com\/maps\/api\/staticmap?size=764x400&center="
+                            + lattitude + "," + longtitude +
+                            "&zoom=25&markers=" + lattitude + "," + longtitude,
+                            "item_url": "http:\/\/maps.apple.com\/maps?q=" + lattitude + "," + longtitude + "&z=16"
+                        }
+                    }
+                }
+            }
+        }
+    };
+
+    callSendAPI(messageData);
 }
 
 function sendAccountsInfoMessage(recipientId) {
