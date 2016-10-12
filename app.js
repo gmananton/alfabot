@@ -664,17 +664,52 @@ function sendGreetingMessage(recipientId) {
                 type: "template",
                 payload: {
                     template_type: "generic",
-                    elements: [{
-                        title: "Alfa Card Bot",
-                        subtitle: "Вас приветствует бот Альфа-Банка!",
-                        item_url: "http://alfabank.ru/",
-                        image_url: SERVER_URL + LOCATION_ICON_PATH,
-                        buttons: [{
-                            type: "postback",
-                            title: "Узнать статус готовности карты",
-                            payload: "cardStatus",
-                        }],
-                    }]
+                    elements: [
+                        {
+                            title: "Банковские карты",
+                            subtitle: "Узнать статус готовности заказанной карты",
+                            //item_url: "http://alfabank.ru/",
+                            image_url: SERVER_URL + CREDIT_CARD_ICON_PATH,
+                            buttons: [{
+                                type: "postback",
+                                title: "Card Status",
+                                payload: "cardStatus"
+                            }]
+                        },
+                        {
+                            title: "Ближайший банкомат",
+                            subtitle: "Посмотреть адрес ближайшего банкомата",
+                            //item_url: "http://alfabank.ru/",
+                            image_url: SERVER_URL + LOCATION_ICON_PATH,
+                            buttons: [{
+                                type: "postback",
+                                title: "ATM",
+                                payload: "atm"
+                            }]
+                        },
+                        {
+                            title: "Счета",
+                            subtitle: "Посмотреть текущее состояние счетов",
+                            //item_url: "http://alfabank.ru/",
+                            image_url: SERVER_URL + PIGGI_ICON_PATH,
+                            buttons: [{
+                                type: "postback",
+                                title: "Accounts",
+                                payload: "accounts"
+                            }]
+                        },
+                        {
+                            title: "Сотрудник",
+                            subtitle: "Связаться с поддержкой банка",
+                            //item_url: "http://alfabank.ru/",
+                            image_url: SERVER_URL + PERSON_ICON_PATH,
+                            buttons: [{
+                                type: "postback",
+                                title: "Support",
+                                payload: "support"
+                            }]
+                        }
+                    ]
                 }
             }
         }
