@@ -51,9 +51,12 @@ const SERVER_URL = (process.env.SERVER_URL) ?
     (process.env.SERVER_URL) :
     config.get('serverURL');
 
-const locationIconPath = (process.env.location-icon-path) ?
-    (process.env.location-icon-path) :
-    config.get('location-icon-path');
+
+const CREDIT_CARD_ICON_PATH = config.get('creditCard-icon-path');
+const LOCATION_ICON_PATH = config.get('location-icon-path');
+const PIGGI_ICON_PATH = config.get('piggi-icon-path');
+const PERSON_ICON_PATH = config.get('person-icon-path');
+
 
 if (!(APP_SECRET && VALIDATION_TOKEN && PAGE_ACCESS_TOKEN && SERVER_URL)) {
     console.error("Missing config values");
@@ -665,7 +668,7 @@ function sendGreetingMessage(recipientId) {
                         title: "Alfa Card Bot",
                         subtitle: "Вас приветствует бот Альфа-Банка!",
                         item_url: "http://alfabank.ru/",
-                        image_url: SERVER_URL + locationIconPath,
+                        image_url: SERVER_URL + LOCATION_ICON_PATH,
                         buttons: [{
                             type: "postback",
                             title: "Узнать статус готовности карты",
