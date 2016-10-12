@@ -90,7 +90,6 @@ app.get('/webhook', function (req, res) {
  *
  */
 app.post('/webhook', function (req, res) {
-    console.log("=== webhook post ===");
     var data = req.body;
 
     // Make sure this is a page subscription
@@ -161,7 +160,6 @@ app.get('/authorize', function (req, res) {
  *
  */
 function verifyRequestSignature(req, res, buf) {
-    console.log("=== verifyRequestSignature === ");
     var signature = req.headers["x-hub-signature"];
 
     if (!signature) {
@@ -276,11 +274,11 @@ function receivedMessage(event) {
                 } else {
                     replyMessage += "Я, к сожалению, пока не слишком умный бот и не знаю, как реагировать на вашу просьбу... ";
                 }
-                replyMessage += "Воспользуйтесь пока луше меню с кнопками в левом нижнем углу";
+                replyMessage += "Воспользуйтесь пока лучше меню с кнопками в левом нижнем углу";
                 sendTextMessage(senderID, replyMessage);
         }
     } else if (messageAttachments) {
-        sendTextMessage(senderID, "Message with attachment received");
+        sendTextMessage(senderID, "Ух ты какой интересный файл =) Надо будет ознакомиться");
     }
 }
 
@@ -332,7 +330,6 @@ function receivedPostback(event) {
 
     // When a postback is called, we'll send a message back to the sender to
     // let them know it was successful
-    console.log("--- INFO --- sender:")
     console.log(JSON.stringify(event.sender));
 
     if (payload) {
@@ -863,7 +860,6 @@ function callSendAPI(messageData) {
         if (!error && response.statusCode == 200) {
             var recipientId = body.recipient_id;
             var messageId = body.message_id;
-            console.log("--- INFO --- recipient_id = " + recipientId);
             if (messageId) {
                 console.log("Successfully sent message with id %s to recipient %s",
                     messageId, recipientId);
