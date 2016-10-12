@@ -245,6 +245,7 @@ function receivedMessage(event) {
     var messageText = message.text;
     var messageAttachments = message.attachments;
     var quickReply = message.quick_reply;
+    console.log("---quick reply: --- " + quickReply);
 
     if (isEcho) {
         // Just logging message echoes to console
