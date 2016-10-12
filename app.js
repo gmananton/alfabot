@@ -668,17 +668,12 @@ function sendGreetingMessage(recipientId) {
                         title: "Alfa Card Bot",
                         subtitle: "Вас приветствует бот Альфа-Банка!",
                         item_url: "http://alfabank.ru/",
-                        image_url: SERVER_URL + "/assets/rift3.png",
+                        image_url: SERVER_URL + LOCATION_ICON_PATH,
                         buttons: [{
                             type: "postback",
                             title: "Узнать статус готовности карты",
                             payload: "cardStatus",
-                        },
-                            {
-                                type: "postback",
-                                title: "Узнать статус готовности карты2",
-                                payload: "cardStatus2",
-                            }],
+                        }],
                     }]
                 }
             }
