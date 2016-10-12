@@ -363,7 +363,7 @@ function receivedPostback(event) {
                 sendCardLocationMessage(senderID);
                 break;
             default:
-                sendTextMessage(senderID, "Прошу прощения, я не вас не совсем понял...");
+                sendTextMessage(senderID, "Прошу прощения, я Вас не совсем понял...");
                 break;
         }
 
