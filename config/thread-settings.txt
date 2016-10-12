@@ -1,0 +1,51 @@
+
+/* Добавить CTA - кнопка "начать" */
+curl -X POST -H "Content-Type: application/json" -d '{
+  "setting_type":"call_to_actions",
+  "thread_state":"new_thread",
+  "call_to_actions":[
+    {
+      "payload":"startConversationPayload"
+    }
+  ]
+}' "https://graph.facebook.com/v2.6/me/thread_settings?access_token=EAAEajzOnTK8BAPtuAKWJ767fZBPj1hclknhxCpaZApkKSi5cO7H5JZCciiVXv3BvobknwPRBIbKvRxveOU2A4m8Xqtc4ZAZA89d2U7Gn88NOoMqXjXrWzZByLplIaDyoCIGrXyhdBKMQS4r7aYo5klQnOP4yeWiFZB3rZCZAZBw6DUuAZDZD"
+
+
+/* Удалить все CTA */
+curl -X DELETE -H "Content-Type: application/json" -d '{
+  "setting_type":"call_to_actions",
+  "thread_state":"new_thread"
+}' "https://graph.facebook.com/v2.6/me/thread_settings?access_token=EAAEajzOnTK8BAPtuAKWJ767fZBPj1hclknhxCpaZApkKSi5cO7H5JZCciiVXv3BvobknwPRBIbKvRxveOU2A4m8Xqtc4ZAZA89d2U7Gn88NOoMqXjXrWzZByLplIaDyoCIGrXyhdBKMQS4r7aYo5klQnOP4yeWiFZB3rZCZAZBw6DUuAZDZD"
+
+/*-----------------------------------------------------------------------------------------------------------------*/
+
+/* Постоянное меню - добавить */
+curl -X POST -H "Content-Type: application/json" -d '{
+  "setting_type" : "call_to_actions",
+  "thread_state" : "existing_thread",
+  "call_to_actions":[
+    {
+      "type":"postback",
+      "title":"Help",
+      "payload":"DEVELOPER_DEFINED_PAYLOAD_FOR_HELP"
+    },
+    {
+      "type":"postback",
+      "title":"Start a New Order",
+      "payload":"DEVELOPER_DEFINED_PAYLOAD_FOR_START_ORDER"
+    },
+    {
+      "type":"web_url",
+      "title":"View Website",
+      "url":"http://petersapparel.parseapp.com/"
+    }
+  ]
+}' "https://graph.facebook.com/v2.6/me/thread_settings?access_token=EAAEajzOnTK8BAPtuAKWJ767fZBPj1hclknhxCpaZApkKSi5cO7H5JZCciiVXv3BvobknwPRBIbKvRxveOU2A4m8Xqtc4ZAZA89d2U7Gn88NOoMqXjXrWzZByLplIaDyoCIGrXyhdBKMQS4r7aYo5klQnOP4yeWiFZB3rZCZAZBw6DUuAZDZD"
+
+/* Постоянное меню - удалить */
+curl -X DELETE -H "Content-Type: application/json" -d '{
+"setting_type":"call_to_actions",
+"thread_state":"existing_thread"
+}' "https://graph.facebook.com/v2.6/me/thread_settings?access_token=EAAEajzOnTK8BAPtuAKWJ767fZBPj1hclknhxCpaZApkKSi5cO7H5JZCciiVXv3BvobknwPRBIbKvRxveOU2A4m8Xqtc4ZAZA89d2U7Gn88NOoMqXjXrWzZByLplIaDyoCIGrXyhdBKMQS4r7aYo5klQnOP4yeWiFZB3rZCZAZBw6DUuAZDZD"
+
+/*----------------------------------------------------------------------------------------------------------------*/

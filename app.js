@@ -12,11 +12,11 @@
 
 const
     bodyParser = require('body-parser'),
-    config     = require('config'),
-    crypto     = require('crypto'),
-    express    = require('express'),
-    https      = require('https'),
-    request    = require('request');
+    config = require('config'),
+    crypto = require('crypto'),
+    express = require('express'),
+    https = require('https'),
+    request = require('request');
 
 var app = express();
 app.set('port', process.env.PORT || 5000);
@@ -267,7 +267,7 @@ function receivedMessage(event) {
         // the text we received.
         switch (messageText) {
             case 'start':
-                sendGreetingMessage(senderID);
+                sendStartOptionsMessage(senderID);
                 break;
 
             case 'image':
@@ -388,14 +388,35 @@ function receivedPostback(event) {
     // let them know it was successful
     console.log("--- INFO --- sender:")
     console.log(JSON.stringify(event.sender));
-    //sendTextMessage(senderID, "Postback called");
 
-    if (payload === 'cardLocation') {
-        sendCardLocationMessage(senderID);
-    } else if (payload === 'cardStatus') {
-        sendCardReadyMessage(senderID);
+    if (payload) {
+        switch (payload) {
+            case 'startConversationPayload':
+                sendStartOptionsMessage(senderID);
+                break;
+            case 'cardStatusPayload':
+                sendCardStatusMessage(senderID);
+                break;
+            case 'atmPayload':
+                sendATMLocationMessage(senderID);
+                break;
+            case 'accountsPayload':
+                sendAccountsInfoMessage(senderID);
+                break;
+            case 'supportPayload':
+                sendSupportInfoMessage(senderID);
+                break;
+            case 'cardLocationPayload':
+                sendCardLocationMessage(senderID);
+                break;
+            default:
+                sendTextMessage(senderID, "Прошу прощения, я не вас не совсем понял...");
+                break;
+        }
+
     }
 }
+
 
 
 /*
@@ -436,117 +457,8 @@ function receivedAccountLink(event) {
         "and auth code %s ", senderID, status, authCode);
 }
 
-/*
- * Send an image using the Send API.
- *
- */
-function sendImageMessage(recipientId) {
-    var messageData = {
-        recipient: {
-            id: recipientId
-        },
-        message: {
-            attachment: {
-                type: "image",
-                payload: {
-                    url: SERVER_URL + "/assets/rift.png"
-                }
-            }
-        }
-    };
 
-    callSendAPI(messageData);
-}
-
-
-/*
- * Send a Gif using the Send API.
- *
- */
-function sendGifMessage(recipientId) {
-    var messageData = {
-        recipient: {
-            id: recipientId
-        },
-        message: {
-            attachment: {
-                type: "image",
-                payload: {
-                    url: SERVER_URL + "/assets/instagram_logo.gif"
-                }
-            }
-        }
-    };
-
-    callSendAPI(messageData);
-}
-
-
-/*
- * Send audio using the Send API.
- *
- */
-function sendAudioMessage(recipientId) {
-    var messageData = {
-        recipient: {
-            id: recipientId
-        },
-        message: {
-            attachment: {
-                type: "audio",
-                payload: {
-                    url: SERVER_URL + "/assets/sample.mp3"
-                }
-            }
-        }
-    };
-
-    callSendAPI(messageData);
-}
-
-/*
- * Send a video using the Send API.
- *
- */
-function sendVideoMessage(recipientId) {
-    var messageData = {
-        recipient: {
-            id: recipientId
-        },
-        message: {
-            attachment: {
-                type: "video",
-                payload: {
-                    url: SERVER_URL + "/assets/allofus480.mov"
-                }
-            }
-        }
-    };
-
-    callSendAPI(messageData);
-}
-
-/*
- * Send a video using the Send API.
- *
- */
-function sendFileMessage(recipientId) {
-    var messageData = {
-        recipient: {
-            id: recipientId
-        },
-        message: {
-            attachment: {
-                type: "file",
-                payload: {
-                    url: SERVER_URL + "/assets/test.txt"
-                }
-            }
-        }
-    };
-
-    callSendAPI(messageData);
-}
+/
 
 /*
  * Send a text message using the Send API.
@@ -654,7 +566,7 @@ function sendGenericMessage(recipientId) {
     callSendAPI(messageData);
 }
 
-function sendGreetingMessage(recipientId) {
+function sendStartOptionsMessage(recipientId) {
     var messageData = {
         recipient: {
             id: recipientId
@@ -673,7 +585,7 @@ function sendGreetingMessage(recipientId) {
                             buttons: [{
                                 type: "postback",
                                 title: "Узнать статус",
-                                payload: "cardStatus"
+                                payload: "cardStatusPayload"
                             }]
                         },
                         {
@@ -684,7 +596,7 @@ function sendGreetingMessage(recipientId) {
                             buttons: [{
                                 type: "postback",
                                 title: "Посмотреть ближайший банкомат",
-                                payload: "atm"
+                                payload: "atmPayload"
                             }]
                         },
                         {
@@ -695,7 +607,7 @@ function sendGreetingMessage(recipientId) {
                             buttons: [{
                                 type: "postback",
                                 title: "Посмотреть состояние счетов",
-                                payload: "accounts"
+                                payload: "accountsPayload"
                             }]
                         },
                         {
@@ -706,7 +618,7 @@ function sendGreetingMessage(recipientId) {
                             buttons: [{
                                 type: "postback",
                                 title: "Связаться с поддержкой",
-                                payload: "support"
+                                payload: "supportPayload"
                             }]
                         }
                     ]
@@ -718,35 +630,7 @@ function sendGreetingMessage(recipientId) {
     callSendAPI(messageData);
 }
 
-function sendLocationMessage(recipientId) {
-    console.log("--- FUNCTION SEND LOCATION ---");
-    var lattitude = -8.284505;
-    var longtitude = 115.134516;
-    var messageData = {
-        recipient: {
-            id: recipientId
-        },
-        message: {
-            "attachment": {
-                "type": "template",
-                "payload": {
-                    "template_type": "generic",
-                    "elements": {
-                        "element": {
-                            "title": "Your current location",
-                            "image_url": "https:\/\/maps.googleapis.com\/maps\/api\/staticmap?size=764x400&center="
-                            + lattitude + "," + longtitude +
-                            "&zoom=25&markers=" + lattitude + "," + longtitude,
-                            "item_url": "http:\/\/maps.apple.com\/maps?q=" + lattitude + "," + longtitude + "&z=16"
-                        }
-                    }
-                }
-            }
-        }
-    };
 
-    callSendAPI(messageData);
-}
 
 function sendCardLocationMessage(recipientId) {
     var lattitude = 55.98267;
@@ -764,7 +648,7 @@ function sendCardLocationMessage(recipientId) {
                         element: {
                             title: "Вы сможете забрать Вашу карту в данном отделении",
                             subtitle: "ДО Зеленоградский Адрес: Зеленоград, микрорайон 18, Корпус 1824, +7(495)788-88-78, Понедельник-пятница 9:00-21:00",
-                            buttons:[
+                            buttons: [
                                 {
                                     type: "phone_number",
                                     title: "Позвонить",
@@ -785,7 +669,7 @@ function sendCardLocationMessage(recipientId) {
     callSendAPI(messageData);
 }
 
-function sendCardReadyMessage(recipientId) {
+function sendCardStatusMessage(recipientId) {
     var messageData = {
         recipient: {
             id: recipientId
@@ -801,16 +685,28 @@ function sendCardReadyMessage(recipientId) {
                             image_url: SERVER_URL + "/assets/credit-card.png",
                             buttons: [{
                                 type: "postback",
-                                title: "Где я могу \nеё забрать?",
-                                payload: "cardLocation",
+                                title: "Где я могу её забрать?",
+                                payload: "cardLocationPayload",
                             }]
                         }
                     }
                 }
             }
         }
-    }
+    };
+
+
     callSendAPI(messageData);
+}
+
+function sendATMLocationMessage(recipientId) {
+
+}
+function sendAccountsInfoMessage(recipientId) {
+
+}
+function sendSupportInfoMessage(recipientId) {
+
 }
 
 /*
