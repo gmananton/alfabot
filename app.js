@@ -231,6 +231,7 @@ function receivedMessage(event) {
     var recipientID = event.recipient.id;
     var timeOfMessage = event.timestamp;
     var message = event.message;
+    var replyMessage = "";
 
     console.log("Received message for user %d and page %d at %d with message:",
         senderID, recipientID, timeOfMessage);
@@ -269,69 +270,14 @@ function receivedMessage(event) {
             case 'start':
                 sendStartOptionsMessage(senderID);
                 break;
-
-            case 'image':
-                sendImageMessage(senderID);
-                break;
-
-            case 'gif':
-                sendGifMessage(senderID);
-                break;
-
-            case 'audio':
-                sendAudioMessage(senderID);
-                break;
-
-            case 'video':
-                sendVideoMessage(senderID);
-                break;
-
-            case 'file':
-                sendFileMessage(senderID);
-                break;
-
-            case 'button':
-                sendButtonMessage(senderID);
-                break;
-
-            case 'generic':
-                sendGenericMessage(senderID);
-                break;
-
-            case 'receipt':
-                sendReceiptMessage(senderID);
-                break;
-
-            case 'quick reply':
-                sendQuickReply(senderID);
-                break;
-
-            case 'read receipt':
-                sendReadReceipt(senderID);
-                break;
-
-            case 'typing on':
-                sendTypingOn(senderID);
-                break;
-
-            case 'typing off':
-                sendTypingOff(senderID);
-                break;
-
-            case 'account linking':
-                sendAccountLinking(senderID);
-                break;
-
-            case 'location':
-                sendLocationMessage(senderID);
-                break;
-
-            case 'phone':
-                sendMessageToNumber();
-                break;
-
             default:
-                sendTextMessage(senderID, messageText);
+                if (messageText.endsWith('?')) {
+                    replyMessage += "Я вижу, вы что-то хотите спросить, но к сожалению, я еще не достаточно умен... ";
+                } else {
+                    replyMessage += "Я, к сожалению, пока не слишком умный бот и не знаю, как реагировать на вашу просьбу... ";
+                }
+                replyMessage += "Воспользуйтесь пока луше меню с кнопками в левом нижнем углу";
+                sendTextMessage(senderID, replyMessage);
         }
     } else if (messageAttachments) {
         sendTextMessage(senderID, "Message with attachment received");
