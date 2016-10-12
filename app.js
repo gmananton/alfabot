@@ -57,6 +57,9 @@ const CREDIT_CARD_SINGLE_ICON_PATH = config.get('creditCardSingle-icon-path');
 const LOCATION_ICON_PATH           = config.get('location-icon-path');
 const PIGGI_ICON_PATH              = config.get('piggi-icon-path');
 const PERSON_ICON_PATH             = config.get('person-icon-path');
+const ARROW_ICON_PATH              = config.get('arrow-icon-path');
+const TUTORIAL_ANIMATION_PATH      = config.get('tutorial-animation-path');
+const TUTORIAL_VIDEO_PATH          = config.get('tutorial-video-path');
 
 
 if (!(APP_SECRET && VALIDATION_TOKEN && PAGE_ACCESS_TOKEN && SERVER_URL)) {
@@ -258,7 +261,9 @@ function receivedMessage(event) {
             messageId, quickReplyPayload);
         //sendTextMessage(senderID, "Quick reply tapped");
         if (quickReplyPayload ==='quickReplyTutorialYes') {
-            sendTextMessage(senderID, "Чуть позже тут появится обучение");
+            sendTextMessage(senderID, "Загрузка обучения...");
+            //sendImageMessage(senderID, TUTORIAL_ANIMATION_PATH);
+            sendVideoMessage(senderID, TUTORIAL_VIDEO_PATH);
             return;
         } else if (quickReplyPayload ==='quickReplyTutorialNo') {
             sendStartOptionsMessage(senderID);
@@ -428,6 +433,42 @@ function sendTextMessage(recipientId, messageText) {
         }
     };
 
+    callSendAPI(messageData);
+}
+
+
+function sendImageMessage(recipientId, imageURL) {
+    var messageData = {
+        recipient: {
+            id: recipientId
+        },
+        message: {
+            attachment: {
+                type: "image",
+                payload: {
+                    url: SERVER_URL + imageURL
+                }
+            }
+        }
+    }
+    callSendAPI(messageData);
+}
+
+function sendVideoMessage(recipientId, videoURL) {
+    console.log("sendVideoMessage started");
+    var messageData = {
+        recipient: {
+            id: recipientId
+        },
+        message: {
+            attachment: {
+                type: "video",
+                payload: {
+                    url: SERVER_URL + videoURL
+                }
+            }
+        }
+    }
     callSendAPI(messageData);
 }
 
