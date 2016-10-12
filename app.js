@@ -591,12 +591,12 @@ function sendQuickReplyTutorialChoice(recipientId) {
             quick_replies: [
                 {
                     "content_type": "text",
-                    "title": "Да, расскажи, что ты умеешь",
+                    "title": "Да",
                     "payload": "quickReplyTutorialYes"
                 },
                 {
                     "content_type": "text",
-                    "title": "Нет, я всё знаю",
+                    "title": "Нет",
                     "payload": "quickReplyTutorialNo"
                 }
             ]
