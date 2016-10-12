@@ -347,9 +347,6 @@ function receivedPostback(event) {
             case 'accountsPayload':
                 sendAccountsInfoMessage(senderID);
                 break;
-            case 'supportPayload':
-                sendSupportInfoMessage(senderID);
-                break;
             case 'cardLocationPayload':
                 sendCardLocationMessage(senderID);
                 break;
@@ -524,7 +521,6 @@ function sendStartOptionsMessage(recipientId) {
                         {
                             title: "Банковские карты",
                             subtitle: "Узнать статус готовности заказанной карты",
-                            //item_url: "http://alfabank.ru/",
                             image_url: SERVER_URL + CREDIT_CARDS_ICON_PATH,
                             buttons: [{
                                 type: "postback",
@@ -535,7 +531,6 @@ function sendStartOptionsMessage(recipientId) {
                         {
                             title: "Ближайший банкомат",
                             subtitle: "Посмотреть адрес ближайшего банкомата",
-                            //item_url: "http://alfabank.ru/",
                             image_url: SERVER_URL + LOCATION_ICON_PATH,
                             buttons: [{
                                 type: "postback",
@@ -546,7 +541,6 @@ function sendStartOptionsMessage(recipientId) {
                         {
                             title: "Счета",
                             subtitle: "Посмотреть текущее состояние счетов",
-                            //item_url: "http://alfabank.ru/",
                             image_url: SERVER_URL + PIGGI_ICON_PATH,
                             buttons: [{
                                 type: "postback",
@@ -557,7 +551,6 @@ function sendStartOptionsMessage(recipientId) {
                         {
                             title: "Сотрудник",
                             subtitle: "Связаться с поддержкой банка",
-                            //item_url: "http://alfabank.ru/",
                             image_url: SERVER_URL + PERSON_ICON_PATH,
                             buttons: [{
                                 type: "phone_number",
@@ -644,14 +637,13 @@ function sendCardStatusMessage(recipientId) {
 }
 
 function sendATMLocationMessage(recipientId) {
-
+    sendTextMessage(recipientId, "Чуть позже здесь появится информация о банкоматах");
 }
+
 function sendAccountsInfoMessage(recipientId) {
-
+    sendTextMessage(recipientId, "Чуть позже здесь появится информация о счетах");
 }
-function sendSupportInfoMessage(recipientId) {
 
-}
 
 /*
  * Send a receipt message using the Send API.
