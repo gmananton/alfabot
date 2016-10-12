@@ -567,7 +567,6 @@ function sendCardStatusMessage(recipientId) {
 }
 
 function sendATMLocationMessage(recipientId) {
-    sendTextMessage(recipientId, "Чуть позже здесь появится информация о банкоматах");
     var lattitude = 55.774822;
     var longtitude = 37.649813;
     var messageData = {
@@ -581,11 +580,10 @@ function sendATMLocationMessage(recipientId) {
                     template_type: "generic",
                     elements: {
                         element: {
-                            title: "ул. Каланчевская, 27, ЦО Зона ВЦ-5",
+                            title: "ул. Каланчевская, 27",
                             subtitle: "Открыто с 9:00 до 21:00",
                             "image_url": "https:\/\/maps.googleapis.com\/maps\/api\/staticmap?size=764x400&center="
-                            + lattitude + "," + longtitude +
-                            "&zoom=25&markers=" + lattitude + "," + longtitude,
+                            + lattitude + "," + longtitude + "&zoom=25&markers=" + lattitude + "," + longtitude,
                             "item_url": "http:\/\/maps.apple.com\/maps?q=" + lattitude + "," + longtitude + "&z=16"
                         }
                     }
