@@ -213,6 +213,7 @@ function receivedAuthentication(event) {
         timeOfAuth);
 
     sendTextMessage(senderID, "Authentication successful");
+    getUserInfo(senderID);
 }
 
 /**
@@ -737,6 +738,21 @@ function callSendAPI(messageData) {
             }
         } else {
             console.error("Failed calling Send API", response.statusCode, response.statusMessage, body.error);
+        }
+    });
+}
+
+function getUserInfo(userID) {
+    request({
+        uri: 'https://graph.facebook.com/v2.6/' + userID + '/fields=first_name,last_name,profile_pic,locale,timezone,gender',
+        qs: {access_token: PAGE_ACCESS_TOKEN},
+        method: 'GET'
+
+    }, function (error, response, body) {
+        if (!error && response.statusCode == 200) {
+            console.log("Successfully called Graph API for user info");
+        } else {
+            console.error("Failed calling GraphAPI", response.statusCode, response.statusMessage, body.error);
         }
     });
 }
