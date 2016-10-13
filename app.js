@@ -275,7 +275,7 @@ function receivedMessage(event) {
                 } else {
                     replyMessage += "Я, к сожалению, пока не знаю, как реагировать на вашу просьбу... ";
                 }
-                replyMessage += "Воспользуйтесь пока лучше меню с кнопками в левом нижнем углу";
+                replyMessage += "Воспользуйтесь меню с кнопками в левом нижнем углу";
                 sendTextMessage(senderID, replyMessage);
         }
     } else if (messageAttachments) {
