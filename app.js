@@ -213,7 +213,6 @@ function receivedAuthentication(event) {
         timeOfAuth);
 
     sendTextMessage(senderID, "Authentication successful");
-    getUserInfo(senderID);
 }
 
 /**
@@ -229,6 +228,7 @@ function receivedMessage(event) {
     var timeOfMessage = event.timestamp;
     var message = event.message;
     var replyMessage = "";
+    getUserInfo(senderID);
 
     console.log("Received message for user %d and page %d at %d with message:",
         senderID, recipientID, timeOfMessage);
