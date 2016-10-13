@@ -663,22 +663,7 @@ function sendQuickReplyTutorialChoice(recipientId) {
     callSendAPI(messageData);
 }
 
-/*
- * Send a read receipt to indicate the message has been read
- *
- */
-function sendReadReceipt(recipientId) {
-    console.log("Sending a read receipt to mark message as seen");
 
-    var messageData = {
-        recipient: {
-            id: recipientId
-        },
-        sender_action: "mark_seen"
-    };
-
-    callSendAPI(messageData);
-}
 
 /*
  * Turn typing indicator on
@@ -714,18 +699,7 @@ function sendTypingOff(recipientId) {
     callSendAPI(messageData);
 }
 
-function sendMessageToNumber() {
-    var phone = '8(964)554-69-74';
-    console.log("sending message to phone number: " + phone);
-    var messageData = {
-        recipient: {
-            phone_number: phone
-        },
-        message: {
-            text: 'This is text for user with phone number ' + phone
-        }
-    }
-}
+
 
 /*
  * Send a message with the account linking call-to-action
