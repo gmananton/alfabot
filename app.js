@@ -261,7 +261,7 @@ function receivedMessage(event) {
         if (quickReplyPayload ==='quickReplyTutorialYes') {
             sendTextMessage(senderID, "Загрузка обучения...");
             //sendVideoMessage(senderID, TUTORIAL_VIDEO_PATH);
-            sendImageMessage(senderID, TUTORIAL_ANIMATION_PATH);
+            sendImageMessage(senderID, TUTORIAL_VIDEO_PATH);
             return;
         } else if (quickReplyPayload ==='quickReplyTutorialNo') {
             sendStartOptionsMessage(senderID);
