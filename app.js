@@ -248,7 +248,6 @@ function receivedMessage(event) {
     var messageText = message.text;
     var messageAttachments = message.attachments;
     var quickReply = message.quick_reply;
-    console.log("--- quick reply: --- " + quickReply);
 
     if (isEcho) {
         // Just logging message echoes to console
@@ -259,10 +258,8 @@ function receivedMessage(event) {
         var quickReplyPayload = quickReply.payload;
         console.log("Quick reply for message %s with payload %s",
             messageId, quickReplyPayload);
-        //sendTextMessage(senderID, "Quick reply tapped");
         if (quickReplyPayload ==='quickReplyTutorialYes') {
             sendTextMessage(senderID, "Загрузка обучения...");
-            //sendImageMessage(senderID, TUTORIAL_ANIMATION_PATH);
             sendVideoMessage(senderID, TUTORIAL_VIDEO_PATH);
             return;
         } else if (quickReplyPayload ==='quickReplyTutorialNo') {
@@ -353,7 +350,7 @@ function receivedPostback(event) {
                 sendStartOptionsMessage(senderID);
                 break;
             case 'tutorialPayload':
-                sendTutorialMessage(senderID);
+                sendQuickReplyTutorialChoice(senderID);
                 break;
             case 'cardStatusPayload':
                 sendCardStatusMessage(senderID);
@@ -468,15 +465,10 @@ function sendVideoMessage(recipientId, videoURL) {
                 }
             }
         }
-    }
+    };
     callSendAPI(messageData);
 }
 
-
-
-function sendTutorialMessage(recipientId) {
-    sendQuickReplyTutorialChoice(recipientId);
-}
 
 function sendStartOptionsMessage(recipientId) {
     var messageData = {
@@ -647,7 +639,6 @@ function sendAccountsInfoMessage(recipientId) {
  *
  */
 function sendQuickReplyTutorialChoice(recipientId) {
-    console.log("--- sendQuickReplyTutorialChoice --- ");
     var messageData = {
         recipient: {
             id: recipientId
@@ -669,7 +660,6 @@ function sendQuickReplyTutorialChoice(recipientId) {
             ]
         }
     };
-    console.log("--- sendQuickReplyTutorialChoice2 ---");
     callSendAPI(messageData);
 }
 
