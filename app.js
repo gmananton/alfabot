@@ -1,4 +1,4 @@
-/*
+/**
  * Alfa-Bank 2016
  */
 
@@ -19,11 +19,9 @@ app.set('view engine', 'ejs');
 app.use(bodyParser.json({verify: verifyRequestSignature}));
 app.use(express.static('public'));
 
-/*
- * Настройка приложения из файла конфигурации в /config
- */
+/** Настройка приложения из файла конфигурации в /config */
 
-/*
+/**
     App Secret можно получить в Дашборде приложения. Используется для верификации каждого запроса:
     на стороне Facebook App генерируется хеш SHA1, пересылается с запросом и сверяется со сгенеренным
     значением здесь, на стороне сервера
@@ -32,7 +30,7 @@ const APP_SECRET = (process.env.MESSENGER_APP_SECRET) ?
     process.env.MESSENGER_APP_SECRET :
     config.get('appSecret');
 
-/*
+/**
     Validation Token генерируется в дашборде приложения при подписке данного приложения на события указанной страницы.
     Используется для верификации: приложение должно сделать GET-запрос серверу на адрес /webhook, а сервер при
     совпадении этого кода  должен вернуть hub.challenge, который был в запросе, обратно
@@ -41,7 +39,7 @@ const VALIDATION_TOKEN = (process.env.MESSENGER_VALIDATION_TOKEN) ?
     (process.env.MESSENGER_VALIDATION_TOKEN) :
     config.get('validationToken');
 
-/*
+/**
     Page Access Token генерируется в дашборде приложения (Facebook App). Он привязывает данное приложение
     к событиям конкретной страницы и используется для валидации вызовов webhook-ов,
     ответственных за обработку событий данной страницы
@@ -50,13 +48,13 @@ const PAGE_ACCESS_TOKEN = (process.env.MESSENGER_PAGE_ACCESS_TOKEN) ?
     (process.env.MESSENGER_PAGE_ACCESS_TOKEN) :
     config.get('pageAccessToken');
 
-/* URL-адрес нашего сервера. Должен быть доступен извне, обязательно по https и быть виден для facebook */
+/** URL-адрес нашего сервера. Должен быть доступен извне, обязательно по https и быть виден для facebook */
 const SERVER_URL = (process.env.SERVER_URL) ?
     (process.env.SERVER_URL) :
     config.get('serverURL');
 
 
-/* Конфигурация ассетов - картинок, видео и т.п. */
+/** Конфигурация ассетов - картинок, видео и т.п. */
 const CREDIT_CARDS_ICON_PATH       = config.get('creditCards-icon-path');
 const CREDIT_CARD_SINGLE_ICON_PATH = config.get('creditCardSingle-icon-path');
 const LOCATION_ICON_PATH           = config.get('location-icon-path');
@@ -72,7 +70,7 @@ if (!(APP_SECRET && VALIDATION_TOKEN && PAGE_ACCESS_TOKEN && SERVER_URL)) {
     process.exit(1);
 }
 
-/*
+/**
  * Не забывать, что токен, указанный в настройках Webhooks в дашборде приложения
  * Должен совпадать с токеном в конфигурации. По-умолчанию срок действия токена не ограничен
  *
@@ -89,7 +87,7 @@ app.get('/webhook', function (req, res) {
 });
 
 
-/*
+/**
  * Все callback-функции, отрабатывающие при получении приложением того или иного события от страницы
  * Все присылаются на один адрес webhook-а для одной страницы.
  * Подписка приложения на события страницы:
