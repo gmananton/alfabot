@@ -1,10 +1,5 @@
 /*
- * Copyright 2016-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- *
+ * Alfa-Bank 2016
  */
 
 /* jshint node: true, devel: true */
@@ -25,33 +20,43 @@ app.use(bodyParser.json({verify: verifyRequestSignature}));
 app.use(express.static('public'));
 
 /*
- * Be sure to setup your config values before running this code. You can 
- * set them using environment variables or modifying the config file in /config.
- *
+ * Настройка приложения из файла конфигурации в /config
  */
 
-// App Secret can be retrieved from the App Dashboard
+/*
+    App Secret можно получить в Дашборде приложения. Используется для верификации каждого запроса:
+    на стороне Facebook App генерируется хеш SHA1, пересылается с запросом и сверяется со сгенеренным
+    значением здесь, на стороне сервера
+*/
 const APP_SECRET = (process.env.MESSENGER_APP_SECRET) ?
     process.env.MESSENGER_APP_SECRET :
     config.get('appSecret');
 
-// Arbitrary value used to validate a webhook
+/*
+    Validation Token генерируется в дашборде приложения при подписке данного приложения на события указанной страницы.
+    Используется для верификации: приложение должно сделать GET-запрос серверу на адрес /webhook, а сервер при
+    совпадении этого кода  должен вернуть hub.challenge, который был в запросе, обратно
+*/
 const VALIDATION_TOKEN = (process.env.MESSENGER_VALIDATION_TOKEN) ?
     (process.env.MESSENGER_VALIDATION_TOKEN) :
     config.get('validationToken');
 
-// Generate a page access token for your page from the App Dashboard
+/*
+    Page Access Token генерируется в дашборде приложения (Facebook App). Он привязывает данное приложение
+    к событиям конкретной страницы и используется для валидации вызовов webhook-ов,
+    ответственных за обработку событий данной страницы
+*/
 const PAGE_ACCESS_TOKEN = (process.env.MESSENGER_PAGE_ACCESS_TOKEN) ?
     (process.env.MESSENGER_PAGE_ACCESS_TOKEN) :
     config.get('pageAccessToken');
 
-// URL where the app is running (include protocol). Used to point to scripts and 
-// assets located at this address. 
+/* URL-адрес нашего сервера. Должен быть доступен извне, обязательно по https и быть виден для facebook */
 const SERVER_URL = (process.env.SERVER_URL) ?
     (process.env.SERVER_URL) :
     config.get('serverURL');
 
 
+/* Конфигурация ассетов - картинок, видео и т.п. */
 const CREDIT_CARDS_ICON_PATH       = config.get('creditCards-icon-path');
 const CREDIT_CARD_SINGLE_ICON_PATH = config.get('creditCardSingle-icon-path');
 const LOCATION_ICON_PATH           = config.get('location-icon-path');
@@ -68,15 +73,13 @@ if (!(APP_SECRET && VALIDATION_TOKEN && PAGE_ACCESS_TOKEN && SERVER_URL)) {
 }
 
 /*
- * Use your own validation token. Check that the token used in the Webhook 
- * setup is the same token used here.
+ * Не забывать, что токен, указанный в настройках Webhooks в дашборде приложения
+ * Должен совпадать с токеном в конфигурации. По-умолчанию срок действия токена не ограничен
  *
  */
 app.get('/webhook', function (req, res) {
     if (req.query['hub.mode'] === 'subscribe' &&
         req.query['hub.verify_token'] === VALIDATION_TOKEN) {
-        // console.log("request: " + JSON.stringify(req));
-        // console.log("response: " + JSON.stringify(res));
         console.log("Validating webhook");
         res.status(200).send(req.query['hub.challenge']);
     } else {
@@ -87,9 +90,9 @@ app.get('/webhook', function (req, res) {
 
 
 /*
- * All callbacks for Messenger are POST-ed. They will be sent to the same
- * webhook. Be sure to subscribe your app to your page to receive callbacks
- * for your page. 
+ * Все callback-функции, отрабатывающие при получении приложением того или иного события от страницы
+ * Все присылаются на один адрес webhook-а для одной страницы.
+ * Подписка приложения на события страницы:
  * https://developers.facebook.com/docs/messenger-platform/product-overview/setup#subscribe_app
  *
  */
@@ -124,10 +127,9 @@ app.post('/webhook', function (req, res) {
             });
         });
 
-        // Assume all went well.
-        //
-        // You must send back a 200, within 20 seconds, to let us know you've
-        // successfully received the callback. Otherwise, the request will time out.
+        // Обязательная отправка статуса 200 в случае удачи в течение 20 секунд. Иначе наступит тайм-аут запроса
+        // При непрерывном накоплении таймаутов приложение может подумать, что сервер не отвечает и даже отписаться
+        // от событий страницы
         res.sendStatus(200);
     }
 });
