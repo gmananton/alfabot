@@ -743,6 +743,7 @@ function callSendAPI(messageData) {
 }
 
 function getUserInfo(userID) {
+    console.log("Getting user info");
     request({
         uri: 'https://graph.facebook.com/v2.6/' + userID + '/fields=first_name,last_name,profile_pic,locale,timezone,gender',
         qs: {access_token: PAGE_ACCESS_TOKEN},
