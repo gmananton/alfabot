@@ -22,28 +22,28 @@ app.use(express.static('public'));
 /** Настройка приложения из файла конфигурации в /config */
 
 /**
-    App Secret можно получить в Дашборде приложения. Используется для верификации каждого запроса:
-    на стороне Facebook App генерируется хеш SHA1, пересылается с запросом и сверяется со сгенеренным
-    значением здесь, на стороне сервера
-*/
+ App Secret можно получить в Дашборде приложения. Используется для верификации каждого запроса:
+ на стороне Facebook App генерируется хеш SHA1, пересылается с запросом и сверяется со сгенеренным
+ значением здесь, на стороне сервера
+ */
 const APP_SECRET = (process.env.MESSENGER_APP_SECRET) ?
     process.env.MESSENGER_APP_SECRET :
     config.get('appSecret');
 
 /**
-    Validation Token генерируется в дашборде приложения при подписке данного приложения на события указанной страницы.
-    Используется для верификации: приложение должно сделать GET-запрос серверу на адрес /webhook, а сервер при
-    совпадении этого кода  должен вернуть hub.challenge, который был в запросе, обратно
-*/
+ Validation Token генерируется в дашборде приложения при подписке данного приложения на события указанной страницы.
+ Используется для верификации: приложение должно сделать GET-запрос серверу на адрес /webhook, а сервер при
+ совпадении этого кода  должен вернуть hub.challenge, который был в запросе, обратно
+ */
 const VALIDATION_TOKEN = (process.env.MESSENGER_VALIDATION_TOKEN) ?
     (process.env.MESSENGER_VALIDATION_TOKEN) :
     config.get('validationToken');
 
 /**
-    Page Access Token генерируется в дашборде приложения (Facebook App). Он привязывает данное приложение
-    к событиям конкретной страницы и используется для валидации вызовов webhook-ов,
-    ответственных за обработку событий данной страницы
-*/
+ Page Access Token генерируется в дашборде приложения (Facebook App). Он привязывает данное приложение
+ к событиям конкретной страницы и используется для валидации вызовов webhook-ов,
+ ответственных за обработку событий данной страницы
+ */
 const PAGE_ACCESS_TOKEN = (process.env.MESSENGER_PAGE_ACCESS_TOKEN) ?
     (process.env.MESSENGER_PAGE_ACCESS_TOKEN) :
     config.get('pageAccessToken');
@@ -89,7 +89,7 @@ app.get('/webhook', function (req, res) {
 
 /**
  * Все callback-функции, отрабатывающие при получении приложением того или иного события от страницы
- * Все присылаются на один адрес webhook-а для одной страницы.
+ * Все присылаются на один адрес webhook-а для одной страницы POST-методом
  * Подписка приложения на события страницы:
  * https://developers.facebook.com/docs/messenger-platform/product-overview/setup#subscribe_app
  *
@@ -97,15 +97,13 @@ app.get('/webhook', function (req, res) {
 app.post('/webhook', function (req, res) {
     var data = req.body;
 
-    // Make sure this is a page subscription
     if (data.object == 'page') {
-        // Iterate over each entry
-        // There may be multiple if batched
+        // Необходимо пройтись по всем записям в запросе, т.к. их может быть несколько в случае пакетного запроса
         data.entry.forEach(function (pageEntry) {
             var pageID = pageEntry.id;
             var timeOfEvent = pageEntry.time;
 
-            // Iterate over each messaging event
+            // Пройтись по всем возможным типам сообщений в событии
             pageEntry.messaging.forEach(function (messagingEvent) {
                 if (messagingEvent.optin) {
                     receivedAuthentication(messagingEvent);
@@ -134,8 +132,8 @@ app.post('/webhook', function (req, res) {
 
 /*
  * This path is used for account linking. The account linking call-to-action
- * (sendAccountLinking) is pointed to this URL. 
- * 
+ * (sendAccountLinking) is pointed to this URL.
+ *
  */
 app.get('/authorize', function (req, res) {
     var accountLinkingToken = req.query.account_linking_token;
@@ -155,11 +153,11 @@ app.get('/authorize', function (req, res) {
     });
 });
 
-/*
- * Verify that the callback came from Facebook. Using the App Secret from 
- * the App Dashboard, we can verify the signature that is sent with each 
- * callback in the x-hub-signature field, located in the header.
- *
+/**
+ * Проверка подписи запроса, чтобы убедиться, что он пришел от Facebook
+ * На стороне приложения в дашборде генерируется App Secret, - он же хранится в конфиге на стороне сервера
+ * На стороне приложения из AppSecret делается SHA1-хеш и присылается в хедере x-hub-signature
+ * Затем здась, на стороне сервера делается также генерация хеша и происходит верификация
  * https://developers.facebook.com/docs/graph-api/webhooks#setup
  *
  */
@@ -167,8 +165,7 @@ function verifyRequestSignature(req, res, buf) {
     var signature = req.headers["x-hub-signature"];
 
     if (!signature) {
-        // For testing, let's log an error. In production, you should throw an
-        // error.
+        // Логирование ошибки для тестирования. На production надо кидать ошибку
         console.error("Couldn't validate the signature.");
     } else {
         var elements = signature.split('=');
@@ -185,11 +182,17 @@ function verifyRequestSignature(req, res, buf) {
     }
 }
 
-/*
+
+
+/**
+ * ============================================================================================
+ *                                     Обработка событий
+ * ============================================================================================
+ */
+
+/**
  * Authorization Event
- *
- * The value for 'optin.ref' is defined in the entry point. For the "Send to 
- * Messenger" plugin, it is the 'data-ref' field. Read more at 
+ * Событие авторизации. В дашборде указано как 'optin.ref'. Для плагина "Send to Messenger" это поле 'data-ref'
  * https://developers.facebook.com/docs/messenger-platform/webhook-reference/authentication
  *
  */
@@ -209,24 +212,15 @@ function receivedAuthentication(event) {
         "through param '%s' at %d", senderID, recipientID, passThroughParam,
         timeOfAuth);
 
-    // When an authentication is received, we'll send a message back to the sender
-    // to let them know it was successful.
     sendTextMessage(senderID, "Authentication successful");
 }
 
-/*
+/**
  * Message Event
- *
- * This event is called when a message is sent to your page. The 'message' 
- * object format can vary depending on the kind of message that was received.
+ * Событие "Сообщение". Вызывается, когда сообщение посылвается вашей странице.
+ * Формат объекта 'message' и его поля варьируются в зависимости от типа сообщения
  * Read more at https://developers.facebook.com/docs/messenger-platform/webhook-reference/message-received
  *
- * For this example, we're going to echo any text that we get. If we get some 
- * special keywords ('button', 'generic', 'receipt'), then we'll send back
- * examples of those bubbles to illustrate the special message bubbles we've 
- * created. If we receive a message with an attachment (image, video, audio), 
- * then we'll simply confirm that we've received the attachment.
- * 
  */
 function receivedMessage(event) {
     var senderID = event.sender.id;
@@ -244,13 +238,12 @@ function receivedMessage(event) {
     var appId = message.app_id;
     var metadata = message.metadata;
 
-    // You may get a text or attachment but not both
+    // text и attachment - взаимоисключающие
     var messageText = message.text;
     var messageAttachments = message.attachments;
     var quickReply = message.quick_reply;
 
     if (isEcho) {
-        // Just logging message echoes to console
         console.log("Received echo for message %s and app %d with metadata %s",
             messageId, appId, metadata);
         return;
@@ -269,10 +262,8 @@ function receivedMessage(event) {
     }
 
     if (messageText) {
-
-        // If we receive a text message, check to see if it matches any special
-        // keywords and send back the corresponding example. Otherwise, just echo
-        // the text we received.
+        // Пока наш бот ничего не умеет, так что одинаково реагируем на текстовые сообщения
+        // и предлагаем воспользоваться кнопками меню
         switch (messageText) {
             case 'start':
                 sendStartOptionsMessage(senderID);
@@ -292,10 +283,9 @@ function receivedMessage(event) {
 }
 
 
-/*
+/**
  * Delivery Confirmation Event
- *
- * This event is sent to confirm the delivery of a message. Read more about 
+ * Событие подтвержлдения доставки сообщения пользователю
  * these fields at https://developers.facebook.com/docs/messenger-platform/webhook-reference/message-delivered
  *
  */
@@ -318,27 +308,23 @@ function receivedDeliveryConfirmation(event) {
 }
 
 
-/*
+/**
  * Postback Event
  *
- * This event is called when a postback is tapped on a Structured Message. 
+ * Вызывается при нажатии на какую-либо postback-кнопку generic-сообщения
  * https://developers.facebook.com/docs/messenger-platform/webhook-reference/postback-received
- * 
+ *
  */
 function receivedPostback(event) {
     var senderID = event.sender.id;
     var recipientID = event.recipient.id;
     var timeOfPostback = event.timestamp;
 
-    // The 'payload' param is a developer-defined field which is set in a postback
-    // button for Structured Messages.
     var payload = event.postback.payload;
 
     console.log("Received postback for user %d and page %d with payload '%s' " +
         "at %d", senderID, recipientID, payload, timeOfPostback);
 
-    // When a postback is called, we'll send a message back to the sender to
-    // let them know it was successful
     console.log(JSON.stringify(event.sender));
 
     if (payload) {
@@ -368,24 +354,23 @@ function receivedPostback(event) {
                 sendTextMessage(senderID, "Прошу прощения, я Вас не совсем понял...");
                 break;
         }
-
     }
 }
 
 
 
-/*
+/**
  * Message Read Event
  *
- * This event is called when a previously-sent message has been read.
+ * Вызывается когда предыдущее отправленное сообщение было прочитано пользоователем
  * https://developers.facebook.com/docs/messenger-platform/webhook-reference/message-read
- * 
+ *
  */
 function receivedMessageRead(event) {
     var senderID = event.sender.id;
     var recipientID = event.recipient.id;
 
-    // All messages before watermark (a timestamp) or sequence have been seen.
+    // Были прочитаны все сообщения до временной метки watermark или последовательности sequence
     var watermark = event.read.watermark;
     var sequenceNumber = event.read.seq;
 
@@ -393,13 +378,12 @@ function receivedMessageRead(event) {
         "number %d", watermark, sequenceNumber);
 }
 
-/*
+/**
  * Account Link Event
  *
- * This event is called when the Link Account or UnLink Account action has been
- * tapped.
+ * Событие вызыавется когда наживается "Привязать аккаунт" или "отвязать аккаунт"
  * https://developers.facebook.com/docs/messenger-platform/webhook-reference/account-linking
- * 
+ *
  */
 function receivedAccountLink(event) {
     var senderID = event.sender.id;
@@ -413,12 +397,13 @@ function receivedAccountLink(event) {
 }
 
 
-
-
-/*
- * Send a text message using the Send API.
- *
+/**
+ * ============================================================================================
+ *                      Отправка сообщений пользователю с использованием Send API
+ * ============================================================================================
  */
+
+/** Простое текстовое сообщение */
 function sendTextMessage(recipientId, messageText) {
     var messageData = {
         recipient: {
@@ -434,6 +419,7 @@ function sendTextMessage(recipientId, messageText) {
 }
 
 
+/** Сообщение с картинкой */
 function sendImageMessage(recipientId, imageURL) {
     var messageData = {
         recipient: {
@@ -451,6 +437,7 @@ function sendImageMessage(recipientId, imageURL) {
     callSendAPI(messageData);
 }
 
+/** Сообщение с видео */
 function sendVideoMessage(recipientId, videoURL) {
     console.log("sendVideoMessage started");
     var messageData = {
@@ -470,6 +457,7 @@ function sendVideoMessage(recipientId, videoURL) {
 }
 
 
+/** Главное меню с выбором действий (generic template) */
 function sendStartOptionsMessage(recipientId) {
     var messageData = {
         recipient: {
@@ -532,6 +520,7 @@ function sendStartOptionsMessage(recipientId) {
 
 
 
+/** Геолокация с местнахождением карты (generic template) */
 function sendCardLocationMessage(recipientId) {
     var lattitude = 55.98267;
     var longtitude = 37.1735586;
@@ -569,6 +558,7 @@ function sendCardLocationMessage(recipientId) {
     callSendAPI(messageData);
 }
 
+/** Статус готовности карты (generic template) */
 function sendCardStatusMessage(recipientId) {
     var messageData = {
         recipient: {
@@ -595,10 +585,11 @@ function sendCardStatusMessage(recipientId) {
         }
     };
 
-
     callSendAPI(messageData);
 }
 
+
+/** Геолокация с местнахождением ближайшего банкомата (generic template) */
 function sendATMLocationMessage(recipientId) {
     var lattitude = 55.774822;
     var longtitude = 37.649813;
@@ -628,15 +619,16 @@ function sendATMLocationMessage(recipientId) {
     callSendAPI(messageData);
 }
 
+/** TODO STUB Информация по счетам */
 function sendAccountsInfoMessage(recipientId) {
     sendTextMessage(recipientId, "Чуть позже здесь появится информация о счетах");
 }
 
 
 
-/*
- * Send a message with Quick Reply buttons.
- *
+/**
+ * Выбор ответа "Провести ли обучение? Да/Нет"
+ * Тип сообщения - кнопки Quick Reply
  */
 function sendQuickReplyTutorialChoice(recipientId) {
     var messageData = {
@@ -665,10 +657,7 @@ function sendQuickReplyTutorialChoice(recipientId) {
 
 
 
-/*
- * Turn typing indicator on
- *
- */
+/** Индикатор "бот набирает сообщение" */
 function sendTypingOn(recipientId) {
     console.log("Turning typing indicator on");
 
@@ -682,10 +671,7 @@ function sendTypingOn(recipientId) {
     callSendAPI(messageData);
 }
 
-/*
- * Turn typing indicator off
- *
- */
+/** Выключить индикатор "бот набирает сообщение" */
 function sendTypingOff(recipientId) {
     console.log("Turning typing indicator off");
 
@@ -701,7 +687,7 @@ function sendTypingOff(recipientId) {
 
 
 
-/*
+/**
  * Send a message with the account linking call-to-action
  *
  */
@@ -728,10 +714,8 @@ function sendAccountLinking(recipientId) {
     callSendAPI(messageData);
 }
 
-/*
- * Call the Send API. The message data goes in the body. If successful, we'll 
- * get the message id in a response 
- *
+/**
+ * Вызов Send API с передачей тела сообщения
  */
 function callSendAPI(messageData) {
     request({
