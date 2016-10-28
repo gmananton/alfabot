@@ -605,7 +605,7 @@ function sendATMLocationMessage(recipientId) {
                     template_type: "generic",
                     elements: {
                         element: {
-                            title: "ул. Каланчевская, 27",
+                            title: "ул. Каланчевская, 27 (test)",
                             subtitle: "Открыто с 9:00 до 21:00",
                             "image_url": "https:\/\/maps.googleapis.com\/maps\/api\/staticmap?size=764x400&center="
                             + lattitude + "," + longtitude + "&zoom=25&markers=" + lattitude + "," + longtitude,
@@ -766,4 +766,5 @@ app.listen(app.get('port'), function () {
 });
 
 module.exports = app;
+//
 
