@@ -98,8 +98,8 @@ app.post('/webhook', function (req, res) {
     var data = req.body;
 
     //test tyapkin
-    console.log("tyapkin!")
-    console.log(JSON.stringify(req));
+    //console.log("tyapkin!")
+    //console.log(JSON.stringify(req));
 
     if (data.object == 'page') {
         // Необходимо пройтись по всем записям в запросе, т.к. их может быть несколько в случае пакетного запроса
