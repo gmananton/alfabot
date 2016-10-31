@@ -178,7 +178,7 @@ function verifyRequestSignature(req, res, buf) {
             .update(buf)
             .digest('hex');
 
-        ////consloe.log("tyapkin: hashIncome=%s  hashShouldBe=%s", signatureHash, expectedHash)
+        /////consloe.log("tyapkin: hashIncome=%s  hashShouldBe=%s", signatureHash, expectedHash)
 
         if (signatureHash != expectedHash) {
             throw new Error("Couldn't validate the request signature.");
