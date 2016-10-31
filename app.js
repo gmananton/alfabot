@@ -97,6 +97,10 @@ app.get('/webhook', function (req, res) {
 app.post('/webhook', function (req, res) {
     var data = req.body;
 
+    //test tyapkin
+    console.log("tyapkin!")
+    console.log(JSON.stringify(req));
+
     if (data.object == 'page') {
         // Необходимо пройтись по всем записям в запросе, т.к. их может быть несколько в случае пакетного запроса
         data.entry.forEach(function (pageEntry) {
@@ -163,7 +167,10 @@ app.get('/authorize', function (req, res) {
  */
 function verifyRequestSignature(req, res, buf) {
     var signature = req.headers["x-hub-signature"];
-    console.log("tyapkin!!")
+    console.log("tyapkin1")
+    console.log(JSON.stringify(req));
+    console.log("tyapkin2")
+
     //consloe.log("tyapkin: APP_SECRET=%s", APP_SECRET)
 
     if (!signature) {
