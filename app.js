@@ -768,3 +768,11 @@ app.listen(app.get('port'), function () {
 module.exports = app;
 //
 
+
+////////////////ТЕСТ
+app.get('/test', function (req, res) {
+
+        res.status(200).send("test ok!!");
+
+});
+//////////////
