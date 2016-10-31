@@ -168,7 +168,7 @@ app.get('/authorize', function (req, res) {
 function verifyRequestSignature(req, res, buf) {
     var signature = req.headers["x-hub-signature"];
     console.log("tyapkin1")
-    console.log(JSON.stringify(req));
+    console.log(JSON.stringify(req.body));
     console.log("tyapkin2")
 
     //consloe.log("tyapkin: APP_SECRET=%s", APP_SECRET)
