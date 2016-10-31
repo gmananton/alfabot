@@ -164,6 +164,8 @@ app.get('/authorize', function (req, res) {
 function verifyRequestSignature(req, res, buf) {
     var signature = req.headers["x-hub-signature"];
 
+    consloe.log("tyapkin: APP_SECRET=%s", APP_SECRET)
+
     if (!signature) {
         // Логирование ошибки для тестирования. На production надо кидать ошибку
         console.error("Couldn't validate the signature.");
@@ -175,6 +177,8 @@ function verifyRequestSignature(req, res, buf) {
         var expectedHash = crypto.createHmac('sha1', APP_SECRET)
             .update(buf)
             .digest('hex');
+
+        consloe.log("tyapkin: hashIncome=%s  hashShouldBe=%s", signatureHash, expectedHash)
 
         if (signatureHash != expectedHash) {
             throw new Error("Couldn't validate the request signature.");
