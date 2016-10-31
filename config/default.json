@@ -1,10 +1,10 @@
 {
-//  "appSecret": "f7a58cc7c6fd2deef9deb5fb2176a681",
-//  "pageAccessToken": "EAAEajzOnTK8BAPtuAKWJ767fZBPj1hclknhxCpaZApkKSi5cO7H5JZCciiVXv3BvobknwPRBIbKvRxveOU2A4m8Xqtc4ZAZA89d2U7Gn88NOoMqXjXrWzZByLplIaDyoCIGrXyhdBKMQS4r7aYo5klQnOP4yeWiFZB3rZCZAZBw6DUuAZDZD",
+  "appSecret": "f7a58cc7c6fd2deef9deb5fb2176a681",
+  "pageAccessToken": "EAAEajzOnTK8BAPtuAKWJ767fZBPj1hclknhxCpaZApkKSi5cO7H5JZCciiVXv3BvobknwPRBIbKvRxveOU2A4m8Xqtc4ZAZA89d2U7Gn88NOoMqXjXrWzZByLplIaDyoCIGrXyhdBKMQS4r7aYo5klQnOP4yeWiFZB3rZCZAZBw6DUuAZDZD",
 
   //данные для приложения bo2510
-    "appSecret": "c57e913b988702cea1c45321f6292999",
-    "pageAccessToken": "EAAQsBloQSawBAIBPCNZBDfdCAM2ZB72FoSDPAI2PhtejN8nZBQiV1RFMoDljCbMZCQEVyp6gcRkZCN43ptG18zWJTJHwkZCUTsqVhN4KrEicH6XKjEF0fBfYVIPZCqxHhFw6PpNBjCP2PXI6QWtwD6gzr7Xe9qYKHXouExMbXf55AZDZD",
+//    "appSecret": "c57e913b988702cea1c45321f6292999",
+//    "pageAccessToken": "EAAQsBloQSawBAIBPCNZBDfdCAM2ZB72FoSDPAI2PhtejN8nZBQiV1RFMoDljCbMZCQEVyp6gcRkZCN43ptG18zWJTJHwkZCUTsqVhN4KrEicH6XKjEF0fBfYVIPZCqxHhFw6PpNBjCP2PXI6QWtwD6gzr7Xe9qYKHXouExMbXf55AZDZD",
 
 
   "validationToken": "AlfaBankBotValidationToken2016",
