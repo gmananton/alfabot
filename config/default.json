@@ -5,7 +5,7 @@
   //данные для приложения bo2510
 //    "appSecret": "c57e913b988702cea1c45321f6292999",
 //    "pageAccessToken": "EAAQsBloQSawBAIBPCNZBDfdCAM2ZB72FoSDPAI2PhtejN8nZBQiV1RFMoDljCbMZCQEVyp6gcRkZCN43ptG18zWJTJHwkZCUTsqVhN4KrEicH6XKjEF0fBfYVIPZCqxHhFw6PpNBjCP2PXI6QWtwD6gzr7Xe9qYKHXouExMbXf55AZDZD",
-
+ 
 
   "validationToken": "AlfaBankBotValidationToken2016",
   "serverURL": "https://alfa-bot.herokuapp.com",
