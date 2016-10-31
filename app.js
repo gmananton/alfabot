@@ -163,7 +163,7 @@ app.get('/authorize', function (req, res) {
  */
 function verifyRequestSignature(req, res, buf) {
     var signature = req.headers["x-hub-signature"];
-    //consloe.log("tyapkin!!")
+    console.log("tyapkin!!")
     //consloe.log("tyapkin: APP_SECRET=%s", APP_SECRET)
 
     if (!signature) {
