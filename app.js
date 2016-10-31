@@ -417,6 +417,9 @@ function receivedAccountLink(event) {
 
 /** Простое текстовое сообщение */
 function sendTextMessage(recipientId, messageText) {
+
+    console.log("tyapkin sendTextMessage recipientId: " + recipientId)
+
     var messageData = {
         recipient: {
             id: recipientId
@@ -785,5 +788,48 @@ app.get('/test', function (req, res) {
 
         res.status(200).send("test ok!!");
 
+
+    var messageData = {
+        recipient: {
+            id: 1139718956116260 //tyapkin
+        },
+        message: {
+            text: "message tyapkin test",
+            metadata: "DEVELOPER_DEFINED_METADATA"
+        }
+    };
+
+    callSendAPI_test(messageData);
+
 });
+
+/**
+ * Вызов Send API с передачей тела сообщения
+ */
+function callSendAPI_test(messageData) {
+    request({
+        uri: 'https://graph.facebook.com/v2.6/me/messages',
+       // qs: {access_token: PAGE_ACCESS_TOKEN},
+        //qs: {access_token: "EAAQsBloQSawBAIBPCNZBDfdCAM2ZB72FoSDPAI2PhtejN8nZBQiV1RFMoDljCbMZCQEVyp6gcRkZCN43ptG18zWJTJHwkZCUTsqVhN4KrEicH6XKjEF0fBfYVIPZCqxHhFw6PpNBjCP2PXI6QWtwD6gzr7Xe9qYKHXouExMbXf55AZDZD"},
+        qs: {access_token: "EAAEajzOnTK8BAPtuAKWJ767fZBPj1hclknhxCpaZApkKSi5cO7H5JZCciiVXv3BvobknwPRBIbKvRxveOU2A4m8Xqtc4ZAZA89d2U7Gn88NOoMqXjXrWzZByLplIaDyoCIGrXyhdBKMQS4r7aYo5klQnOP4yeWiFZB3rZCZAZBw6DUuAZDZD"},
+
+        method: 'POST',
+        json: messageData
+
+    }, function (error, response, body) {
+        if (!error && response.statusCode == 200) {
+            var recipientId = body.recipient_id;
+            var messageId = body.message_id;
+            if (messageId) {
+                console.log("tyapkin: Successfully sent message with id %s to recipient %s",
+                    messageId, recipientId);
+            } else {
+                console.log("tyapkin: Successfully called Send API for recipient %s",
+                    recipientId);
+            }
+        } else {
+            console.error("Failed calling Send API", response.statusCode, response.statusMessage, body.error);
+        }
+    });
+}
 //////////////
