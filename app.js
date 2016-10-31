@@ -810,8 +810,16 @@ function callSendAPI_test(messageData) {
     request({
         uri: 'https://graph.facebook.com/v2.6/me/messages',
        // qs: {access_token: PAGE_ACCESS_TOKEN},
+
+        //bo2510
        // qs: {access_token: "EAAQsBloQSawBAPYjfCCWYi2G2XqcdCZAi30xPP6GowrREl8sfHSJZBwD8ILI10r0Bq4PIHZCZA6ewZCjqV8ZAB3LKH2OaUD2y53uTutVUmlKMeYhNwF8sdZA5AgEe0uS4LUCfMnk9JY7X2EWOFnS7FVTJyMgtAyP7E0h0YvudwJJgZDZD"},
-        qs: {access_token: "EAAEajzOnTK8BAPtuAKWJ767fZBPj1hclknhxCpaZApkKSi5cO7H5JZCciiVXv3BvobknwPRBIbKvRxveOU2A4m8Xqtc4ZAZA89d2U7Gn88NOoMqXjXrWzZByLplIaDyoCIGrXyhdBKMQS4r7aYo5klQnOP4yeWiFZB3rZCZAZBw6DUuAZDZD"},
+
+        //work
+        //qs: {access_token: "EAAEajzOnTK8BAPtuAKWJ767fZBPj1hclknhxCpaZApkKSi5cO7H5JZCciiVXv3BvobknwPRBIbKvRxveOU2A4m8Xqtc4ZAZA89d2U7Gn88NOoMqXjXrWzZByLplIaDyoCIGrXyhdBKMQS4r7aYo5klQnOP4yeWiFZB3rZCZAZBw6DUuAZDZD"},
+
+        //bo2511
+        qs: {access_token: "EAAN7C6QkMpoBAPF7LiyGSDGvDW6vgaEga1Sa0upSpvpy5X7LQVWjONMzhfnd5P188E6eWfJZBEphGX9EXcLRxwa8WAhBvtdtdLKpEAtjIYo5YoW4OVhnwDra3C7QnipEiNJcJli0Kf28XXpmw4ZBCDn4wLZBgWy12KWsYBd7AZDZD"},
+
 
         method: 'POST',
         json: messageData
