@@ -97,9 +97,6 @@ app.get('/webhook', function (req, res) {
 app.post('/webhook', function (req, res) {
     var data = req.body;
 
-    //test tyapkin
-    //console.log("tyapkin!")
-    //console.log(JSON.stringify(req));
 
     if (data.object == 'page') {
         // Необходимо пройтись по всем записям в запросе, т.к. их может быть несколько в случае пакетного запроса
@@ -167,11 +164,7 @@ app.get('/authorize', function (req, res) {
  */
 function verifyRequestSignature(req, res, buf) {
     var signature = req.headers["x-hub-signature"];
-    console.log("tyapkin1")
-    console.log(JSON.stringify(req.body));
-    console.log("tyapkin2")
 
-    //consloe.log("tyapkin: APP_SECRET=%s", APP_SECRET)
 
     if (!signature) {
         // Логирование ошибки для тестирования. На production надо кидать ошибку
@@ -184,8 +177,6 @@ function verifyRequestSignature(req, res, buf) {
         var expectedHash = crypto.createHmac('sha1', APP_SECRET)
             .update(buf)
             .digest('hex');
-
-        //////consloe.log("tyapkin: hashIncome=%s  hashShouldBe=%s", signatureHash, expectedHash)
 
         if (signatureHash != expectedHash) {
             throw new Error("Couldn't validate the request signature.");
@@ -417,9 +408,7 @@ function receivedAccountLink(event) {
 
 /** Простое текстовое сообщение */
 function sendTextMessage(recipientId, messageText) {
-
-    console.log("tyapkin sendTextMessage recipientId: " + recipientId)
-
+   
     var messageData = {
         recipient: {
             id: recipientId
