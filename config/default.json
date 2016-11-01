@@ -21,8 +21,8 @@
 //}
 
 {
-  "appSecret": "1",
-  "pageAccessToken": "1",
+  "appSecret": "962f7154bb3a29b0e59509b9a22ca888",
+  "pageAccessToken": "EAAJFmPS0dxsBAMhCM3ZBGqE6SOgBh8SLHrVxIMj29ZCtRYPpD7oBZCvSFvshbZAitAtdZAbutjjnNcBwGYYAHi09XYQtpZCZB91tRS780uBteWZCQ4EIvk79qNFmlluTOW0FQQAGYFqWGfS8licgljskJxkKVIZCRb8l6CSz1eoSNzgZDZD",
   "validationToken": "testAppValidationToken",
   "serverURL": "https://alfa-bot.herokuapp.com"
 }
