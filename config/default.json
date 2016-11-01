@@ -20,9 +20,25 @@
 //  "tutorial-video-path": "/assets/tutorial-video.webm"
 //}
 
+//{
+//  "appSecret": "962f7154bb3a29b0e59509b9a22ca888",
+//  "pageAccessToken": "EAAJFmPS0dxsBAMhCM3ZBGqE6SOgBh8SLHrVxIMj29ZCtRYPpD7oBZCvSFvshbZAitAtdZAbutjjnNcBwGYYAHi09XYQtpZCZB91tRS780uBteWZCQ4EIvk79qNFmlluTOW0FQQAGYFqWGfS8licgljskJxkKVIZCRb8l6CSz1eoSNzgZDZD",
+//  "validationToken": "testAppValidationToken",
+//  "serverURL": "https://alfa-bot.herokuapp.com"
+//}
+
 {
   "appSecret": "962f7154bb3a29b0e59509b9a22ca888",
   "pageAccessToken": "EAAJFmPS0dxsBAMhCM3ZBGqE6SOgBh8SLHrVxIMj29ZCtRYPpD7oBZCvSFvshbZAitAtdZAbutjjnNcBwGYYAHi09XYQtpZCZB91tRS780uBteWZCQ4EIvk79qNFmlluTOW0FQQAGYFqWGfS8licgljskJxkKVIZCRb8l6CSz1eoSNzgZDZD",
   "validationToken": "testAppValidationToken",
-  "serverURL": "https://alfa-bot.herokuapp.com"
+  "serverURL": "https://alfa-bot.herokuapp.com",
+
+  "creditCards-icon-path": "/assets/credit-card-icon.png",
+  "creditCardSingle-icon-path": "/assets/credit-card-single-icon.png",
+  "location-icon-path": "/assets/location-icon.png",
+  "piggi-icon-path": "/assets/piggy-icon.png",
+  "person-icon-path": "/assets/person-icon.png",
+  "arrow-icon-path": "/assets/arrow.png",
+  "tutorial-animation-path": "/assets/tutorial-animation.gif",
+  "tutorial-video-path": "/assets/tutorial-video.webm"
 }
