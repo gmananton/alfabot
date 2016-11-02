@@ -13,6 +13,12 @@ const
     https      = require('https'),
     request    = require('request');
 
+const fs=require('fs');
+
+//const setup=require('setup');
+
+
+
 var app = express();
 app.set('port', process.env.PORT || 5000);
 app.set('view engine', 'ejs');
@@ -64,6 +70,7 @@ const ARROW_ICON_PATH              = config.get('arrow-icon-path');
 const TUTORIAL_ANIMATION_PATH      = config.get('tutorial-animation-path');
 const TUTORIAL_VIDEO_PATH          = config.get('tutorial-video-path');
 
+var logger;
 
 if (!(APP_SECRET && VALIDATION_TOKEN && PAGE_ACCESS_TOKEN && SERVER_URL)) {
     console.error("Missing config values");
@@ -765,6 +772,10 @@ function getUserInfo(userID) {
 // Webhooks must be available via SSL with a certificate signed by a valid
 // certificate authority.
 app.listen(app.get('port'), function () {
+
+    //Первичные насторйки - логгер, бд, WS_Client, еще что-нибудь
+    setup();
+
     console.log('Node app is running on port', app.get('port'));
 });
 
@@ -775,60 +786,36 @@ module.exports = app;
 ////////////////ТЕСТ
 app.get('/test', function (req, res) {
 
+    console.log("testlog1");
+
+    logger.log("testlog");
+
+    //logger.time('100-elements');
+
         res.status(200).send("test ok!!");
 
+    //logger.timeEnd('100-elements');
 
-    var messageData = {
-        recipient: {
-            id: 1139718956116260 //tyapkin
-        },
-        message: {
-            text: "message tyapkin test",
-            metadata: "DEVELOPER_DEFINED_METADATA"
-        }
-    };
+    //logger.trace();
 
-    callSendAPI_test(messageData);
+
+
 
 });
 
-/**
- * Вызов Send API с передачей тела сообщения
- */
-function callSendAPI_test(messageData) {
-    request({
-        uri: 'https://graph.facebook.com/v2.6/me/messages',
-       // qs: {access_token: PAGE_ACCESS_TOKEN},
+function setup()
+{
+    var setup = require('./setup');
 
-        //bo2510
-       // qs: {access_token: "EAAQsBloQSawBAPYjfCCWYi2G2XqcdCZAi30xPP6GowrREl8sfHSJZBwD8ILI10r0Bq4PIHZCZA6ewZCjqV8ZAB3LKH2OaUD2y53uTutVUmlKMeYhNwF8sdZA5AgEe0uS4LUCfMnk9JY7X2EWOFnS7FVTJyMgtAyP7E0h0YvudwJJgZDZD"},
+    setup.setup();
+    logger=setup.getLogger();
 
-        //work
-        qs: {access_token: "EAAEajzOnTK8BAPtuAKWJ767fZBPj1hclknhxCpaZApkKSi5cO7H5JZCciiVXv3BvobknwPRBIbKvRxveOU2A4m8Xqtc4ZAZA89d2U7Gn88NOoMqXjXrWzZByLplIaDyoCIGrXyhdBKMQS4r7aYo5klQnOP4yeWiFZB3rZCZAZBw6DUuAZDZD"},
-
-        //bo2511
-        //qs: {access_token: "EAAJFmPS0dxsBAMhCM3ZBGqE6SOgBh8SLHrVxIMj29ZCtRYPpD7oBZCvSFvshbZAitAtdZAbutjjnNcBwGYYAHi09XYQtpZCZB91tRS780uBteWZCQ4EIvk79qNFmlluTOW0FQQAGYFqWGfS8licgljskJxkKVIZCRb8l6CSz1eoSNzgZDZD"},
+    logger.log("Logger started")
 
 
-        method: 'POST',
-        json: messageData
 
-    }, function (error, response, body) {
-        if (!error && response.statusCode == 200) {
-            var recipientId = body.recipient_id;
-            var messageId = body.message_id;
-            if (messageId) {
-                console.log("tyapkin: Successfully sent message with id %s to recipient %s",
-                    messageId, recipientId);
-            } else {
-                console.log("tyapkin: Successfully called Send API for recipient %s",
-                    recipientId);
-            }
-        } else {
-            console.error("Failed calling Send API", response.statusCode, response.statusMessage, body.error);
-        }
-    });
 }
+
 //////////////
 
 
