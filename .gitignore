@@ -43,5 +43,8 @@ fabric.properties
 .idea/
 .DS_Store
 
-#Не чекиним логи
+#Don't checkin logs
 *.log
+
+#Don't checkin modules (package.json)
+node_modules
