@@ -790,6 +790,8 @@ app.get('/test', function (req, res) {
 
     logger.log("testlog");
 
+   
+
     //logger.time('100-elements');
 
         res.status(200).send("test ok!!");
