@@ -9,6 +9,11 @@ function setup()
 {
     setupLogger();
 
+    var foo = {bar: 'foobar'};
+    console.log('Hello %s, this is my object: %j', 'World', foo);
+
+    console.log(__dirname);
+
 }
 
 /*Делаем логгер, который будет писать в текстовые файлы на основе console.log() */
@@ -29,7 +34,8 @@ function setupLogger() {
 }
 
 
-module.exports.setup = setup;
+//module.exports.setup = setup;
+exports.setup = setup;
 
 exports.getLogger = function() {
     return logger;

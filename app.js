@@ -23,7 +23,7 @@ var app = express();
 app.set('port', process.env.PORT || 5000);
 app.set('view engine', 'ejs');
 app.use(bodyParser.json({verify: verifyRequestSignature}));
-app.use(express.static('public'));
+app.use(express.static('public')); //папка со статическим содержимым
 
 /** Настройка приложения из файла конфигурации в /config */
 
@@ -790,11 +790,12 @@ app.get('/test', function (req, res) {
 
     logger.log("testlog");
 
-   
+
 
     //logger.time('100-elements');
 
         res.status(200).send("test ok!!");
+  
 
     //logger.timeEnd('100-elements');
 
@@ -803,6 +804,79 @@ app.get('/test', function (req, res) {
 
 
 
+});
+
+app.get('/c', function (req, res) {
+
+    var ejs = require("ejs");
+    var a = ejs.render("<div><%=a%></div>", {a: 5});
+
+    res.render('authorize', { redirectURI: 'Hey', redirectURISuccess: 'Hello there!', accountLinkingToken:"token"});
+    //res.render('authorize', { redirectURI: 'Hey', redirectURISuccess: 'Hello there!'});
+});
+
+
+app.get('/user/:id', function (req, res, next) {
+    // if the user ID is 0, skip to the next route
+    if (req.params.id == 0) next('route');
+    // otherwise pass the control to the next middleware function in this stack
+    else next(); //
+}
+    , function (req, res, next) {
+        console.log('fn2')
+        next();
+    }
+    , function (req, res, next) {
+    // render a regular page
+    res.send('regular');
+});
+
+// handler for the /user/:id path, which renders a special page
+app.get('/user/:id', function (req, res, next) {
+    res.send('special');
+});
+
+
+
+
+
+var birds = require('./birds');
+
+app.use('/birds', birds);
+
+app.all('/ab?cd', function(req, res) {
+    res.send('ab?cd');
+});
+
+var myLogger = function (req, res, next) {
+    console.log('LOGGED');
+    next();
+};
+
+app.use(myLogger);
+app.use('/a1/', function (req, res, next) {
+    console.log('Request Type:', req.method);
+    next();
+});
+
+app.get('/a/', function(req, res) {
+    //res.send('/a/');
+    var o = new Object();
+    o.name="tt";
+    o.age=15;
+    res.json(o);
+    //res.redirect("http://mail.ru")
+});
+
+app.get('/users/:userId/:bookId', function(req, res) {
+    res.send(req.params);
+});
+
+app.get('/ex/b', function (req, res, next) {
+    console.log('the response will be sent by the next function ...');
+    next();
+}, function (req, res) {
+    res.send('Hello from B!');
 });
 
 function setup()
