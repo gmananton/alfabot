@@ -22,8 +22,8 @@
   "serverURL": "https://alfa-bot.herokuapp.com",
 
   "allowDebugQueries": true, //можно ли запрашивать nodeJS через дебажные URL (иначе - только FB может запрашивать через "/webhook")
-  "javaServiceUrl": "", //если оставить пустым - будет работать заглушка nodeJS
-  //"javaServiceUrl": "aaa",
+  //"javaServiceUrl": "", //если оставить пустым - будет работать заглушка nodeJS
+  "javaServiceUrl": "aaa",
 
 //  "javaServiceBaseRequest":{
 //    "host": "localhost",

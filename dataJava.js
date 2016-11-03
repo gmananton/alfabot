@@ -4,12 +4,31 @@
 
 var express = require('express');
 var clone = require('clone');
+var rest = require('./getJSON');
+
+const JAVA_SERVICE_BASE_REQUEST = {
+    host: 'localhost',
+    port:8080 ,
+    path: '/open/api/eq/',
+    method: 'GET'
+};
 
 var dataRetreiver = new Object();
 
-dataRetreiver.getBalance = function()
+dataRetreiver.getBalance = function(representativeToken, callback)
 {
-    return 8;
+    var options = clone(JAVA_SERVICE_BASE_REQUEST);
+    options.path+="getBalance?representativeToken=" + representativeToken;
+    
+    rest.getJSON(options,
+        function(statusCode, result)
+        {
+            // I could work with the result html/json here.  I could also just return it
+            console.log("Java onResult: (" + statusCode + ")" + JSON.stringify(result));
+            //res.statusCode = statusCode;
+            
+            callback(result);
+        });
 }
 
 module.exports = dataRetreiver;

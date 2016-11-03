@@ -6,9 +6,10 @@ var clone = require('clone');
 
 var dataRetreiver = new Object();
 
-dataRetreiver.getBalance = function()
+dataRetreiver.getBalance = function(representativeToken, callback)
 {
-    return 5;
+    var res={"data":[{"accountLastDigits":"test" + representativeToken,"amount":200050,"enCurrency":"EUR"}]}
+    callback(res);
 }
 
 module.exports = dataRetreiver;
