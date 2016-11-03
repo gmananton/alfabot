@@ -784,6 +784,9 @@ module.exports = app;
 
 
 ////////////////ТЕСТ
+
+
+
 app.get('/test', function (req, res) {
 
     console.log("testlog1");
@@ -806,14 +809,83 @@ app.get('/test', function (req, res) {
 
 });
 
+//app.use(testError)
+//app.use(logErrors)
+
+// function testError(req, res, next) {
+//     console.log("!!111")
+//     var ejs = require("ejs");
+//     //var a = ejs.render("<div><%=ab%></div>", {a: 5});
+//
+//     console.log("!!222")
+//
+//     next("sss");
+// }
+
+// function logErrors(err, req, res, next) {
+//     console.log("!!!!!!!!!!!!!!!!!!!!")
+//     console.error(err.stack);
+//
+//     res.send("error occured");
+//    // next(err);
+// }
+
+
 app.get('/c', function (req, res) {
 
-    var ejs = require("ejs");
-    var a = ejs.render("<div><%=a%></div>", {a: 5});
 
-    res.render('authorize', { redirectURI: 'Hey', redirectURISuccess: 'Hello there!', accountLinkingToken:"token"});
+
+
+
+    const http = require('http');
+
+        var options = {
+            host: 'localhost',
+            port: 8080,
+            path: '/open/api/eq/getBalance?representativeToken=aa',
+            method: 'GET'
+        };
+
+        var rest = require('./getJSON');
+        rest.getJSON(options,
+            function(statusCode, result)
+            {
+                // I could work with the result html/json here.  I could also just return it
+                console.log("onResult: (" + statusCode + ")" + JSON.stringify(result));
+                res.statusCode = statusCode;
+                res.send(result);
+            });
+
+
+        // http.request(options, function(res) {
+        //
+        //     var str='';
+        //
+        //     console.log('STATUS: ' + res.statusCode);
+        //     console.log('HEADERS: ' + JSON.stringify(res.headers));
+        //     res.setEncoding('utf8');
+        //
+        //     res.on('data', function (chunk) {
+        //         console.log('CHUNK BODY: ' + chunk);
+        //         str+=chunk;
+        //     });
+        //     res.on('end', function () {
+        //         console.log('ENTIRE BODY: ' + str);
+        //         res.send(str);
+        //
+        //     });
+        // }).end();
+
+
+    //var ejs = require("ejs");
+    //var a = ejs.render("<div><%=a%></div>", {a: 5});
+
+
+  //  res.send('ok');
+    //res.render('testTyapkin', { });
     //res.render('authorize', { redirectURI: 'Hey', redirectURISuccess: 'Hello there!'});
-});
+}
+);
 
 
 app.get('/user/:id', function (req, res, next) {
