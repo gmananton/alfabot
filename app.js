@@ -791,7 +791,7 @@ app.get('/test', function (req, res) {
 
     console.log("testlog1");
 
-    logger.log("testlog");
+    //logger.log("testlog");
 
 
 
@@ -832,9 +832,6 @@ app.get('/test', function (req, res) {
 
 
 app.get('/c', function (req, res) {
-
-
-
 
 
     const http = require('http');
@@ -887,84 +884,88 @@ app.get('/c', function (req, res) {
 }
 );
 
-
-app.get('/user/:id', function (req, res, next) {
-    // if the user ID is 0, skip to the next route
-    if (req.params.id == 0) next('route');
-    // otherwise pass the control to the next middleware function in this stack
-    else next(); //
-}
-    , function (req, res, next) {
-        console.log('fn2')
-        next();
-    }
-    , function (req, res, next) {
-    // render a regular page
-    res.send('regular');
-});
-
-// handler for the /user/:id path, which renders a special page
-app.get('/user/:id', function (req, res, next) {
-    res.send('special');
-});
-
-
+//
+// app.get('/user/:id', function (req, res, next) {
+//     // if the user ID is 0, skip to the next route
+//     if (req.params.id == 0) next('route');
+//     // otherwise pass the control to the next middleware function in this stack
+//     else next(); //
+// }
+//     , function (req, res, next) {
+//         console.log('fn2')
+//         next();
+//     }
+//     , function (req, res, next) {
+//     // render a regular page
+//     res.send('regular');
+// });
+//
+// // handler for the /user/:id path, which renders a special page
+// app.get('/user/:id', function (req, res, next) {
+//     res.send('special');
+// });
 
 
 
-var birds = require('./birds');
-
-app.use('/birds', birds);
-
-app.all('/ab?cd', function(req, res) {
-    res.send('ab?cd');
-});
-
-var myLogger = function (req, res, next) {
-    console.log('LOGGED');
-    next();
-};
-
-app.use(myLogger);
-app.use('/a1/', function (req, res, next) {
-    console.log('Request Type:', req.method);
-    next();
-});
-
-app.get('/a/', function(req, res) {
-    //res.send('/a/');
-    var o = new Object();
-    o.name="tt";
-    o.age=15;
-    res.json(o);
-    //res.redirect("http://mail.ru")
-});
-
-app.get('/users/:userId/:bookId', function(req, res) {
-    res.send(req.params);
-});
-
-app.get('/ex/b', function (req, res, next) {
-    console.log('the response will be sent by the next function ...');
-    next();
-}, function (req, res) {
-    res.send('Hello from B!');
-});
+//
+//
+// var birds = require('./birds');
+//
+// app.use('/birds', birds);
+//
+// app.all('/ab?cd', function(req, res) {
+//     res.send('ab?cd');
+// });
+//
+// var myLogger = function (req, res, next) {
+//     console.log('LOGGED');
+//     next();
+// };
+//
+// app.use(myLogger);
+// app.use('/a1/', function (req, res, next) {
+//     console.log('Request Type:', req.method);
+//     next();
+// });
+//
+// app.get('/a/', function(req, res) {
+//     //res.send('/a/');
+//     var o = new Object();
+//     o.name="tt";
+//     o.age=15;
+//     res.json(o);
+//     //res.redirect("http://mail.ru")
+// });
+//
+// app.get('/users/:userId/:bookId', function(req, res) {
+//     res.send(req.params);
+// });
+//
+// app.get('/ex/b', function (req, res, next) {
+//     console.log('the response will be sent by the next function ...');
+//     next();
+// }, function (req, res) {
+//     res.send('Hello from B!');
+// });
 
 function setup()
 {
-    var setup = require('./setup');
+   // var setup = require('./setup');
 
-    setup.setup();
-    logger=setup.getLogger();
+   // setup.setup();
+   // logger=setup.getLogger();
 
-    logger.log("Logger started")
+   // logger.log("Logger started")
 
 
 
 }
 
 //////////////
+
+var debugRouter = require('./debugRouter');
+
+app.use('/debug', debugRouter);
 
 
 

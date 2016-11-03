@@ -21,6 +21,21 @@
   "validationToken": "testAppValidationToken",
   "serverURL": "https://alfa-bot.herokuapp.com",
 
+  "allowDebugQueries": true, //можно ли запрашивать nodeJS через дебажные URL (иначе - только FB может запрашивать через "/webhook")
+  "javaServiceUrl": "", //если оставить пустым - будет работать заглушка nodeJS
+  //"javaServiceUrl": "aaa",
+
+//  "javaServiceBaseRequest":{
+//    "host": "localhost",
+//    "port" :8080 ,
+//    "path": "open/api/eq/getBalance?representativeToken=aa",
+//    "method": "GET"
+//  },
+
+//  localhost',
+//  port: 8080,
+//  path: '/open/api/eq/
+
   "creditCards-icon-path": "/assets/credit-card-icon.png",
   "creditCardSingle-icon-path": "/assets/credit-card-single-icon.png",
   "location-icon-path": "/assets/location-icon.png",
