@@ -104,6 +104,7 @@ app.get('/webhook', function (req, res) {
 app.post('/webhook', function (req, res) {
     var data = req.body;
 
+    console.log("facebook posts from ip=" + req.ip);
 
     if (data.object == 'page') {
         // Необходимо пройтись по всем записям в запросе, т.к. их может быть несколько в случае пакетного запроса
