@@ -104,7 +104,16 @@ app.get('/webhook', function (req, res) {
 app.post('/webhook', function (req, res) {
     var data = req.body;
 
-    console.log("facebook posts from ip=" + req.ip);
+    console.log("facebook posts from ip1=" + req.ip);
+
+    var ipAddr = req.headers["x-forwarded-for"];
+    if (ipAddr){
+        var list = ipAddr.split(",");
+        ipAddr = list[list.length-1];
+    } else {
+        ipAddr = req.connection.remoteAddress;
+    }
+    console.log("facebook posts from ip (heroku)=" + ipAddr);
 
     if (data.object == 'page') {
         // Необходимо пройтись по всем записям в запросе, т.к. их может быть несколько в случае пакетного запроса
