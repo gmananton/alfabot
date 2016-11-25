@@ -1,14 +1,17 @@
-// /**
-//  * Created by U_M0PQL on 02.11.2016.
-//  */
+/**
+ * Created by U_M0PQL on 02.11.2016.
+ *
+ * Доступ к java-middle
+ */
 
+var config = require('config');
 var express = require('express');
 var clone = require('clone');
 var rest = require('./getJSON');
 
 const JAVA_SERVICE_BASE_REQUEST = {
-    host: 'localhost',
-    port:8080 ,
+    host: config.get('javaServiceUrl'),
+    port: config.get('javaServicePort') ,
     path: '/open/api/eq/',
     method: 'GET'
 };
@@ -31,77 +34,45 @@ dataRetreiver.getBalance = function(representativeToken, callback)
         });
 }
 
+/**
+ * Получение списка заказанных карт (готовы/не готовы)
+ *
+ * @param sCrr - ИНН юр лица
+ * @return
+ */
+dataRetreiver.getCustomerRequestedCardInfo = function(crf, callback)
+{
+    var options = clone(JAVA_SERVICE_BASE_REQUEST);
+    options.path+="getCustomerRequestedCardInfo?crf=" + crf;
+
+    //Стандартную callback функцию вытащить отдельдно
+
+    // rest.getJSON(options,
+    //     function(statusCode, result)
+    //     {
+    //         console.log("Java onResult: (" + statusCode + ")" + JSON.stringify(result));
+    //         callback(result);
+    //     });
+
+    getJSONFromJavaMiddle(options,
+        function(statusCode, result)
+        {
+            console.log("Java onResult: (" + statusCode + ")" + JSON.stringify(result));
+            callback(result);
+        });
+}
+
+
+getJSONFromJavaMiddle = function(options, callback)
+{
+    //каждый раз в headers добавляем наш токен
+    options.headers = { Authorization: config.get("javaServiceToken") }
+;
+
+    rest.getJSON(options, callback);
+}
+
 module.exports = dataRetreiver;
 
 
 
-
-
-
-
-// var express = require('express');
-// var clone = require('clone');
-// var router = express.Router();
-//
-// const config     = require('config');
-//
-// const JAVA_SERVICE_URL = config.get('javaServiceUrl');
-// const JAVA_SERVICE_BASE_REQUEST = {
-//     host: 'localhost',
-//     port:8080 ,
-//     path: '/open/api/eq/',
-//     method: 'GET'
-// };
-//
-// // middleware that is specific to this router
-// router.use(function timeLog(req, res, next) {
-//     console.log('Time: ', Date.now());
-//     next();
-// });
-//
-// // define the home page route
-// router.get('/', function(req, res) {
-//     res.send('Hello from Debug Router!');
-// });
-//
-//
-// router.get('/getCustomerRequestedCardInfo', function(req, res) {
-//     res.send('About birds' + JAVA_SERVICE_URL);
-// });
-//
-//
-//
-// router.get('/getBalance', function(req, res) {
-//
-//     //{"data":[{"accountLastDigits":"test","amount":200050,"enCurrency":"EUR"}],"itemsCount":0,"success":true,"errorMsg":null,"errorCode":0}
-//
-//    // const http = require('http');
-//
-//
-//     if(!JAVA_SERVICE_URL) {
-//         res.send('About birds2' + JAVA_SERVICE_URL)
-//         return;
-//     }
-//
-//
-//
-//
-//     var options = clone(JAVA_SERVICE_BASE_REQUEST);
-//     options.path+="getBalance?representativeToken=aa";
-//
-//
-//
-//     var rest = require('./getJSON');
-//     rest.getJSON(options,
-//         function(statusCode, result)
-//         {
-//             // I could work with the result html/json here.  I could also just return it
-//             console.log("onResult: (" + statusCode + ")" + JSON.stringify(result));
-//             res.statusCode = statusCode;
-//             res.send(result);
-//         });
-//
-//     //res.send('About birds2' + JAVA_SERVICE_URL);
-// });
-//
-// module.exports = router;
