@@ -1,4 +1,4 @@
-html {
+/*html {
   background: url(../assets/alfabank-background.png) no-repeat center center fixed; 
   -webkit-background-size: cover;
   -moz-background-size: cover;
@@ -14,6 +14,74 @@ html {
 .facebook-container {
 	margin-top: 50px;
 	margin-left: 50px;
+}*/
+
+body {
+    background: #ddd;
 }
+
+h1 {
+    font-size: 18px;
+    margin: 20px;
+    text-align: center;
+}
+
+.mainTable {
+    border: 1px solid #000
+}
+
+.mainTable td {
+    vertical-align: top;
+    padding: 10px;
+}
+
+a.alert {
+    color: #a00;
+    font-weight: bold;
+}
+
+#divChat1, #divChat2{
+    border: 1px solid #000;
+
+}
+
+#chatHolderTable tr td{vertical-align: top;}
+
+.chat
+{
+    background: #ccc;
+    width: 500px;
+    padding: 20px;
+}
+
+.chat .formInput label{width: 70px; display: inline-block;}
+.chat .formInput .formSenderId{width: 200px;}
+.chat .formInput .formMessageText{width: 200px; height: 70px;}
+
+.chat .formInput .formSubmit{display: block; width: 70px; margin-left: 200px;}
+
+.chat .message {
+    margin: 20px;
+    font-size: 12px;
+}
+
+.chat .message .author {
+    color: #aa0000;
+    width: 200px;
+    float: left;
+}
+
+.chat .message .date {
+    color: #00aa00;
+    width: 200px;
+    float: right;
+}
+
+.chat .message .messageText {
+    clear: both;
+    padding: 20px;
+    border-top:1px solid #000;
+}
+
 
 
