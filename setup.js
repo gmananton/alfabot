@@ -28,9 +28,9 @@ function setupLogger() {
    
     
     logger = new Console(output, errorOutput);
-    logger.log = function(d) { 
-        output.write(dateFormat(new Date(), "dd.mm.yyyy hh:MM:ss:SSS") + " " + util.format(d) + '\r\n');
-    }
+    // logger.log = function(d) {
+    //     output.write(dateFormat(new Date(), "dd.mm.yyyy hh:MM:ss:SSS") + " " + util.format(d) + '\r\n');
+    // }
 }
 
 
