@@ -16,16 +16,14 @@ const
 const fs=require('fs');
 
 //const setup=require('setup');
-var browserify = require('browserify');
-var React = require('react');
-var jsx = require('node-jsx');
+
 
 
 var app = express();
 app.set('port', process.env.PORT || 5000);
 app.set('view engine', 'ejs');
 app.use(bodyParser.json({verify: verifyRequestSignature}));
-app.use(express.static(__dirname +  '/public')); //папка со статическим содержимым
+app.use(express.static('public')); //папка со статическим содержимым
 
 /** Настройка приложения из файла конфигурации в /config */
 
@@ -106,51 +104,18 @@ app.get('/webhook', function (req, res) {
 app.post('/webhook', function (req, res) {
     var data = req.body;
 
-    console.log("--web hook call--")
-    console.log("body: " + JSON.stringify(data));
+    console.log("facebook posts from ip1=" + req.ip);
 
-    processWebhook(data, res);
+    var ipAddr = req.headers["x-forwarded-for"];
+    if (ipAddr){
+        var list = ipAddr.split(",");
+        ipAddr = list[list.length-1];
+    } else {
+        ipAddr = req.connection.remoteAddress;
+    }
+    console.log("facebook posts from ip (heroku)=" + ipAddr);
 
-    //пробуем вытащить
-
-    // if (data.object == 'page') {
-    //     // Необходимо пройтись по всем записям в запросе, т.к. их может быть несколько в случае пакетного запроса
-    //     data.entry.forEach(function (pageEntry) {
-    //         var pageID = pageEntry.id;
-    //         var timeOfEvent = pageEntry.time;
-    //
-    //         // Пройтись по всем возможным типам сообщений в событии
-    //         pageEntry.messaging.forEach(function (messagingEvent) {
-    //             if (messagingEvent.optin) {
-    //                 receivedAuthentication(messagingEvent);
-    //             } else if (messagingEvent.message) {
-    //                 receivedMessage(messagingEvent);
-    //             } else if (messagingEvent.delivery) {
-    //                 receivedDeliveryConfirmation(messagingEvent);
-    //             } else if (messagingEvent.postback) {
-    //                 receivedPostback(messagingEvent);
-    //             } else if (messagingEvent.read) {
-    //                 receivedMessageRead(messagingEvent);
-    //             } else if (messagingEvent.account_linking) {
-    //                 receivedAccountLink(messagingEvent);
-    //             } else {
-    //                 console.log("Webhook received unknown messagingEvent: ", messagingEvent);
-    //             }
-    //         });
-    //     });
-    //
-    //     // Обязательная отправка статуса 200 в случае удачи в течение 20 секунд. Иначе наступит тайм-аут запроса
-    //     // При непрерывном накоплении таймаутов приложение может подумать, что сервер не отвечает и даже отписаться
-    //     // от событий страницы
-    //     res.sendStatus(200);
-    // }
-});
-
-function processWebhook(data, res) {
     if (data.object == 'page') {
-
-        console.log('processWebhook start');
-
         // Необходимо пройтись по всем записям в запросе, т.к. их может быть несколько в случае пакетного запроса
         data.entry.forEach(function (pageEntry) {
             var pageID = pageEntry.id;
@@ -180,27 +145,7 @@ function processWebhook(data, res) {
         // При непрерывном накоплении таймаутов приложение может подумать, что сервер не отвечает и даже отписаться
         // от событий страницы
         res.sendStatus(200);
-        console.log('processWebhook finish');
     }
-    else
-    {
-        console.log('processWebhook hasn\'t worked!');
-        res.sendStatus(200);
-    }
-}
-
-app.get('/webhook_debug', function (req, res) {
-
-    console.log("--webhook_debug call--")
-
-    var data = req.query.data;
-    console.log("qs: " + JSON.stringify(req.query));
-    console.log("qs JSON: " + JSON.stringify(JSON.parse(req.query.data)));
-
-    //webhook_debug?data={"id":122, "time"=10}
-
-    processWebhook(data, res);
-
 });
 
 /*
@@ -224,52 +169,6 @@ app.get('/authorize', function (req, res) {
         redirectURI: redirectURI,
         redirectURISuccess: redirectURISuccess
     });
-});
-
-jsx.install();
-var Books = require('./views/index.jsx');
-
-//This way the first load has a fully rendered static view and the user doesn't have to wait for the client to render it
-app.use('/aa', function(req, res) {
-    var books = [{
-        title: 'Professional Node.js',
-        read: false
-    }, {
-        title: 'Node.js Patterns',
-        read: false
-    }];
-
-    res.setHeader('Content-Type', 'text/html');
-    res.end(React.renderToStaticMarkup(
-        React.DOM.body(
-            null,
-            React.DOM.div({
-                id: 'app',
-                dangerouslySetInnerHTML: {
-                    __html: React.renderToString(React.createElement(TodoBox, {
-                        data: data
-                    }))
-                }
-            }),
-            React.DOM.script({
-                'id': 'initial-data',
-                'type': 'text/plain',
-                'data-json': JSON.stringify(data)
-            }),
-            React.DOM.script({
-                src: '/bundle.js'
-            })
-        )
-    ));
-});
-app.use('/bundle.js', function(req, res) {
-    res.setHeader('content-type', 'application/javascript');
-    browserify('./app.js', {
-        debug: true
-    })
-        .transform('reactify')
-        .bundle()
-        .pipe(res);
 });
 
 /**
@@ -352,10 +251,7 @@ function receivedMessage(event) {
 
     console.log("Received message for user %d and page %d at %d with message:",
         senderID, recipientID, timeOfMessage);
-    
-
-    console.log("message v1:" + JSON.stringify(message));
-    console.log("message v2:" + message);
+    console.log(JSON.stringify(message));
 
     var isEcho = message.is_echo;
     var messageId = message.mid;
@@ -867,20 +763,19 @@ function callSendAPI(messageData) {
 }
 
 function getUserInfo(userID) {
-    console.log("Getting user info - skip. Not works right now");
-   // console.log("Getting user info");
-    // request({
-    //     uri: 'https://graph.facebook.com/v2.6/' + userID + '/fields=first_name,last_name,profile_pic,locale,timezone,gender',
-    //     qs: {access_token: PAGE_ACCESS_TOKEN},
-    //     method: 'GET'
-    //
-    // }, function (error, response, body) {
-    //     if (!error && response.statusCode == 200) {
-    //         console.log("Successfully called Graph API for user info");
-    //     } else {
-    //         console.error("Failed calling GraphAPI", response.statusCode, response.statusMessage, body.error);
-    //     }
-    // });
+    console.log("Getting user info");
+    request({
+        uri: 'https://graph.facebook.com/v2.6/' + userID + '/fields=first_name,last_name,profile_pic,locale,timezone,gender',
+        qs: {access_token: PAGE_ACCESS_TOKEN},
+        method: 'GET'
+
+    }, function (error, response, body) {
+        if (!error && response.statusCode == 200) {
+            console.log("Successfully called Graph API for user info");
+        } else {
+            console.error("Failed calling GraphAPI", response.statusCode, response.statusMessage, body.error);
+        }
+    });
 }
 
 // Start server
@@ -1081,10 +976,6 @@ function setup()
 var debugRouter = require('./debugRouter');
 
 app.use('/debug', debugRouter);
-
-
-
-
 
 
 
