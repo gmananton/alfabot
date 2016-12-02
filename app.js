@@ -15,6 +15,8 @@ const
 
 const fs=require('fs');
 const chatLogic = require('./chat/ChatLogic');
+const facebookSend = require('./facebook/facebookSend');
+
 const utils = require('./utils');
 
 //const setup=require('setup');
@@ -504,7 +506,7 @@ function receivedPostback(event) {
                 sendATMLocationMessage(senderID);
                 break;
             case 'accountsPayload':
-                sendAccountsInfoMessage(senderID);
+                facebookSend.sendAccountsInfoMessage(senderID);
                 break;
             case 'cardLocationPayload':
                 sendCardLocationMessage(senderID);
@@ -786,10 +788,10 @@ function sendATMLocationMessage(recipientId) {
     callSendAPI(messageData);
 }
 
-/** TODO STUB Информация по счетам */
-function sendAccountsInfoMessage(recipientId) {
-    sendTextMessage(recipientId, "Чуть позже здесь появится информация о счетах");
-}
+// /** TODO STUB Информация по счетам */
+// function sendAccountsInfoMessage(recipientId) {
+//     sendTextMessage(recipientId, "Чуть позже здесь появится информация о счетах");
+// }
 
 
 
