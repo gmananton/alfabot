@@ -50,6 +50,20 @@ router.post('/webhook', function (req, res) {
 
 });
 
+// можно дебажить прямо по входящим данным формата facebook-json, которые мы возьмем из логов
+router.get('/webhook_debug', function (req, res) {
+
+    console.log("--webhook_debug call--")
+
+    var data = req.query.data;
+    console.log("qs: " + JSON.stringify(req.query));
+    console.log("qs JSON: " + JSON.stringify(JSON.parse(req.query.data)));
+
+
+    processWebhook(data, res);
+
+});
+
 function processWebhook(data, res) {
     if (data.object == 'page') {
 

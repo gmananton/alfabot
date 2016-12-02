@@ -10,20 +10,15 @@ const
     config     = require('config'),
     crypto     = require('crypto'),
     express    = require('express'),
-    https      = require('https'),
+   // https      = require('https'),
     request    = require('request');
 
-//const fs=require('fs');
+
 
 const facebookSend = require('./facebook/facebookSend');
 const facebookReceive = require('./facebook/facebookReceive');
 
-const utils = require('./utils');
 
-//const setup=require('setup');
-var browserify = require('browserify');
-var React = require('react');
-var jsx = require('node-jsx');
 var debugRouter = require('./debugRouter');
 var facebookRouter = require('./facebookRouter');
 
@@ -35,6 +30,8 @@ app.set('port', process.env.PORT || 5000);
 app.set('view engine', 'ejs');
 app.use(bodyParser.json({verify: verifyRequestSignature}));
 app.use(express.static(__dirname +  '/public')); //папка со статическим содержимым
+
+//region Config Check
 
 /** Настройка приложения из файла конфигурации в /config */
 
@@ -78,24 +75,7 @@ if (!(APP_SECRET && VALIDATION_TOKEN && PAGE_ACCESS_TOKEN && SERVER_URL)) {
 }
 
 
-//вытащить в debug - отгда можно будет дебажить прямо по входящим данным формата facebook, которые мы возьмем из логов
-
-app.get('/webhook_debug', function (req, res) {
-
-    console.log("--webhook_debug call--")
-
-    var data = req.query.data;
-    console.log("qs: " + JSON.stringify(req.query));
-    console.log("qs JSON: " + JSON.stringify(JSON.parse(req.query.data)));
-
-
-    processWebhook(data, res);
-
-});
-
-
-
-
+//endregion
 
 
 /**
@@ -136,12 +116,6 @@ function verifyRequestSignature(req, res, buf) {
 app.listen(app.get('port'), function () {
     console.log('Node app is running on port', app.get('port'));
 });
-
-//module.exports = app;
-
-
-
-
 
 
 app.use('/debug', debugRouter);
