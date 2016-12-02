@@ -170,4 +170,99 @@ facebookReceive.receivedPostback = function (event) {
 
 //endregion
 
+//region Менее важные возможности (по факту - заглушки, чтобы просто знали, что возможность есть)
+
+
+/**
+ * Message Read Event
+ *
+ * Вызывается когда предыдущее отправленное сообщение было прочитано пользоователем
+ * https://developers.facebook.com/docs/messenger-platform/webhook-reference/message-read
+ *
+ */
+ facebookReceive.receivedMessageRead = function(event) {
+    var senderID = event.sender.id;
+    var recipientID = event.recipient.id;
+
+    // Были прочитаны все сообщения до временной метки watermark или последовательности sequence
+    var watermark = event.read.watermark;
+    var sequenceNumber = event.read.seq;
+
+    console.log("Received message read event for watermark %d and sequence " +
+        "number %d", watermark, sequenceNumber);
+}
+
+
+/**
+ * Account Link Event
+ *
+ * Событие вызыавется когда наживается "Привязать аккаунт" или "отвязать аккаунт"
+ * https://developers.facebook.com/docs/messenger-platform/webhook-reference/account-linking
+ *
+ */
+  facebookReceive.receivedAccountLink = function(event) {
+    var senderID = event.sender.id;
+    var recipientID = event.recipient.id;
+
+    var status = event.account_linking.status;
+    var authCode = event.account_linking.authorization_code;
+
+    console.log("Received account link event with for user %d with status %s " +
+        "and auth code %s ", senderID, status, authCode);
+}
+
+
+/**
+ * Delivery Confirmation Event
+ * Событие подтвержлдения доставки сообщения пользователю
+ * these fields at https://developers.facebook.com/docs/messenger-platform/webhook-reference/message-delivered
+ *
+ */
+ facebookReceive.receivedDeliveryConfirmation = function(event) {
+    var senderID = event.sender.id;
+    var recipientID = event.recipient.id;
+    var delivery = event.delivery;
+    var messageIDs = delivery.mids;
+    var watermark = delivery.watermark;
+    var sequenceNumber = delivery.seq;
+
+    if (messageIDs) {
+        messageIDs.forEach(function (messageID) {
+            console.log("Received delivery confirmation for message ID: %s",
+                messageID);
+        });
+    }
+
+    console.log("All message before %d were delivered.", watermark);
+}
+
+
+/**
+ * Authorization Event
+ * Событие авторизации. В дашборде указано как 'optin.ref'. Для плагина "Send to Messenger" это поле 'data-ref'
+ * https://developers.facebook.com/docs/messenger-platform/webhook-reference/authentication
+ *
+ */
+facebookReceive.receivedAuthentication = function(event) {
+    var senderID = event.sender.id;
+    var recipientID = event.recipient.id;
+    var timeOfAuth = event.timestamp;
+
+    // The 'ref' field is set in the 'Send to Messenger' plugin, in the 'data-ref'
+    // The developer can set this to an arbitrary value to associate the
+    // authentication callback with the 'Send to Messenger' click event. This is
+    // a way to do account linking when the user clicks the 'Send to Messenger'
+    // plugin.
+    var passThroughParam = event.optin.ref;
+
+    console.log("Received authentication for user %d and page %d with pass " +
+        "through param '%s' at %d", senderID, recipientID, passThroughParam,
+        timeOfAuth);
+
+    facebookSend.sendTextMessage(senderID, "Authentication successful");
+}
+
+
+//endregion
+
 module.exports = facebookReceive;

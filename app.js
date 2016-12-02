@@ -76,83 +76,83 @@ if (!(APP_SECRET && VALIDATION_TOKEN && PAGE_ACCESS_TOKEN && SERVER_URL)) {
     process.exit(1);
 }
 
-/**
- * Не забывать, что токен, указанный в настройках Webhooks в дашборде приложения
- * Должен совпадать с токеном в конфигурации. По-умолчанию срок действия токена не ограничен
- *
- */
-app.get('/webhook', function (req, res) {
-    if (req.query['hub.mode'] === 'subscribe' &&
-        req.query['hub.verify_token'] === VALIDATION_TOKEN) {
-        console.log("Validating webhook");
-        res.status(200).send(req.query['hub.challenge']);
-    } else {
-        console.error("Failed validation. Make sure the validation tokens match.");
-        res.sendStatus(403);
-    }
-});
-
-
-/**
- * Все callback-функции, отрабатывающие при получении приложением того или иного события от страницы
- * Все присылаются на один адрес webhook-а для одной страницы POST-методом
- * Подписка приложения на события страницы:
- * https://developers.facebook.com/docs/messenger-platform/product-overview/setup#subscribe_app
- *
- */
-app.post('/webhook', function (req, res) {
-    var data = req.body;
-
-    console.log("--web hook call--")
-    console.log("body: " + JSON.stringify(data));
-
-    processWebhook(data, res);
-
-
-});
-
-function processWebhook(data, res) {
-    if (data.object == 'page') {
-
-        console.log('processWebhook start');
-
-        // Необходимо пройтись по всем записям в запросе, т.к. их может быть несколько в случае пакетного запроса
-        data.entry.forEach(function (pageEntry) {
-            var pageID = pageEntry.id;
-            var timeOfEvent = pageEntry.time;
-
-            // Пройтись по всем возможным типам сообщений в событии
-            pageEntry.messaging.forEach(function (messagingEvent) {
-                if (messagingEvent.optin) {
-                    receivedAuthentication(messagingEvent);
-                } else if (messagingEvent.message) {
-                    facebookReceive.receivedMessage(messagingEvent);
-                } else if (messagingEvent.delivery) {
-                    receivedDeliveryConfirmation(messagingEvent);
-                } else if (messagingEvent.postback) {
-                    facebookReceive.receivedPostback(messagingEvent);
-                } else if (messagingEvent.read) {
-                    receivedMessageRead(messagingEvent);
-                } else if (messagingEvent.account_linking) {
-                    receivedAccountLink(messagingEvent);
-                } else {
-                    console.log("Webhook received unknown messagingEvent: ", messagingEvent);
-                }
-            });
-        });
-
-        // Обязательная отправка статуса 200 в случае удачи в течение 20 секунд. Иначе наступит тайм-аут запроса
-        // При непрерывном накоплении таймаутов приложение может подумать, что сервер не отвечает и даже отписаться
-        // от событий страницы
-        res.sendStatus(200);
-        console.log('processWebhook finish');
-    }
-    else
-    {
-        console.log('processWebhook hasn\'t worked!');
-        res.sendStatus(200);
-    }
-}
+// /**
+//  * Не забывать, что токен, указанный в настройках Webhooks в дашборде приложения
+//  * Должен совпадать с токеном в конфигурации. По-умолчанию срок действия токена не ограничен
+//  *
+//  */
+// app.get('/webhook', function (req, res) {
+//     if (req.query['hub.mode'] === 'subscribe' &&
+//         req.query['hub.verify_token'] === VALIDATION_TOKEN) {
+//         console.log("Validating webhook");
+//         res.status(200).send(req.query['hub.challenge']);
+//     } else {
+//         console.error("Failed validation. Make sure the validation tokens match.");
+//         res.sendStatus(403);
+//     }
+// });
+//
+//
+// /**
+//  * Все callback-функции, отрабатывающие при получении приложением того или иного события от страницы
+//  * Все присылаются на один адрес webhook-а для одной страницы POST-методом
+//  * Подписка приложения на события страницы:
+//  * https://developers.facebook.com/docs/messenger-platform/product-overview/setup#subscribe_app
+//  *
+//  */
+// app.post('/webhook', function (req, res) {
+//     var data = req.body;
+//
+//     console.log("--web hook call--")
+//     console.log("body: " + JSON.stringify(data));
+//
+//     processWebhook(data, res);
+//
+//
+// });
+//
+// function processWebhook(data, res) {
+//     if (data.object == 'page') {
+//
+//         console.log('processWebhook start');
+//
+//         // Необходимо пройтись по всем записям в запросе, т.к. их может быть несколько в случае пакетного запроса
+//         data.entry.forEach(function (pageEntry) {
+//             var pageID = pageEntry.id;
+//             var timeOfEvent = pageEntry.time;
+//
+//             // Пройтись по всем возможным типам сообщений в событии
+//             pageEntry.messaging.forEach(function (messagingEvent) {
+//                 if (messagingEvent.optin) {
+//                     receivedAuthentication(messagingEvent);
+//                 } else if (messagingEvent.message) {
+//                     facebookReceive.receivedMessage(messagingEvent);
+//                 } else if (messagingEvent.delivery) {
+//                     receivedDeliveryConfirmation(messagingEvent);
+//                 } else if (messagingEvent.postback) {
+//                     facebookReceive.receivedPostback(messagingEvent);
+//                 } else if (messagingEvent.read) {
+//                     receivedMessageRead(messagingEvent);
+//                 } else if (messagingEvent.account_linking) {
+//                     receivedAccountLink(messagingEvent);
+//                 } else {
+//                     console.log("Webhook received unknown messagingEvent: ", messagingEvent);
+//                 }
+//             });
+//         });
+//
+//         // Обязательная отправка статуса 200 в случае удачи в течение 20 секунд. Иначе наступит тайм-аут запроса
+//         // При непрерывном накоплении таймаутов приложение может подумать, что сервер не отвечает и даже отписаться
+//         // от событий страницы
+//         res.sendStatus(200);
+//         console.log('processWebhook finish');
+//     }
+//     else
+//     {
+//         console.log('processWebhook hasn\'t worked!');
+//         res.sendStatus(200);
+//     }
+// }
 
 app.get('/webhook_debug', function (req, res) {
 
@@ -274,31 +274,31 @@ function verifyRequestSignature(req, res, buf) {
  *                                     Обработка событий
  * ============================================================================================
  */
-
-/**
- * Authorization Event
- * Событие авторизации. В дашборде указано как 'optin.ref'. Для плагина "Send to Messenger" это поле 'data-ref'
- * https://developers.facebook.com/docs/messenger-platform/webhook-reference/authentication
- *
- */
-function receivedAuthentication(event) {
-    var senderID = event.sender.id;
-    var recipientID = event.recipient.id;
-    var timeOfAuth = event.timestamp;
-
-    // The 'ref' field is set in the 'Send to Messenger' plugin, in the 'data-ref'
-    // The developer can set this to an arbitrary value to associate the
-    // authentication callback with the 'Send to Messenger' click event. This is
-    // a way to do account linking when the user clicks the 'Send to Messenger'
-    // plugin.
-    var passThroughParam = event.optin.ref;
-
-    console.log("Received authentication for user %d and page %d with pass " +
-        "through param '%s' at %d", senderID, recipientID, passThroughParam,
-        timeOfAuth);
-
-    sendTextMessage(senderID, "Authentication successful");
-}
+//
+// /**
+//  * Authorization Event
+//  * Событие авторизации. В дашборде указано как 'optin.ref'. Для плагина "Send to Messenger" это поле 'data-ref'
+//  * https://developers.facebook.com/docs/messenger-platform/webhook-reference/authentication
+//  *
+//  */
+// function receivedAuthentication(event) {
+//     var senderID = event.sender.id;
+//     var recipientID = event.recipient.id;
+//     var timeOfAuth = event.timestamp;
+//
+//     // The 'ref' field is set in the 'Send to Messenger' plugin, in the 'data-ref'
+//     // The developer can set this to an arbitrary value to associate the
+//     // authentication callback with the 'Send to Messenger' click event. This is
+//     // a way to do account linking when the user clicks the 'Send to Messenger'
+//     // plugin.
+//     var passThroughParam = event.optin.ref;
+//
+//     console.log("Received authentication for user %d and page %d with pass " +
+//         "through param '%s' at %d", senderID, recipientID, passThroughParam,
+//         timeOfAuth);
+//
+//     sendTextMessage(senderID, "Authentication successful");
+// }
 //
 // /**
 //  * Message Event
@@ -388,30 +388,30 @@ function receivedAuthentication(event) {
 //     }
 // }
 
-
-/**
- * Delivery Confirmation Event
- * Событие подтвержлдения доставки сообщения пользователю
- * these fields at https://developers.facebook.com/docs/messenger-platform/webhook-reference/message-delivered
- *
- */
-function receivedDeliveryConfirmation(event) {
-    var senderID = event.sender.id;
-    var recipientID = event.recipient.id;
-    var delivery = event.delivery;
-    var messageIDs = delivery.mids;
-    var watermark = delivery.watermark;
-    var sequenceNumber = delivery.seq;
-
-    if (messageIDs) {
-        messageIDs.forEach(function (messageID) {
-            console.log("Received delivery confirmation for message ID: %s",
-                messageID);
-        });
-    }
-
-    console.log("All message before %d were delivered.", watermark);
-}
+//
+// /**
+//  * Delivery Confirmation Event
+//  * Событие подтвержлдения доставки сообщения пользователю
+//  * these fields at https://developers.facebook.com/docs/messenger-platform/webhook-reference/message-delivered
+//  *
+//  */
+// function receivedDeliveryConfirmation(event) {
+//     var senderID = event.sender.id;
+//     var recipientID = event.recipient.id;
+//     var delivery = event.delivery;
+//     var messageIDs = delivery.mids;
+//     var watermark = delivery.watermark;
+//     var sequenceNumber = delivery.seq;
+//
+//     if (messageIDs) {
+//         messageIDs.forEach(function (messageID) {
+//             console.log("Received delivery confirmation for message ID: %s",
+//                 messageID);
+//         });
+//     }
+//
+//     console.log("All message before %d were delivered.", watermark);
+// }
 
 //
 // /**
@@ -466,43 +466,43 @@ function receivedDeliveryConfirmation(event) {
 // }
 
 
-
-/**
- * Message Read Event
- *
- * Вызывается когда предыдущее отправленное сообщение было прочитано пользоователем
- * https://developers.facebook.com/docs/messenger-platform/webhook-reference/message-read
- *
- */
-function receivedMessageRead(event) {
-    var senderID = event.sender.id;
-    var recipientID = event.recipient.id;
-
-    // Были прочитаны все сообщения до временной метки watermark или последовательности sequence
-    var watermark = event.read.watermark;
-    var sequenceNumber = event.read.seq;
-
-    console.log("Received message read event for watermark %d and sequence " +
-        "number %d", watermark, sequenceNumber);
-}
-
-/**
- * Account Link Event
- *
- * Событие вызыавется когда наживается "Привязать аккаунт" или "отвязать аккаунт"
- * https://developers.facebook.com/docs/messenger-platform/webhook-reference/account-linking
- *
- */
-function receivedAccountLink(event) {
-    var senderID = event.sender.id;
-    var recipientID = event.recipient.id;
-
-    var status = event.account_linking.status;
-    var authCode = event.account_linking.authorization_code;
-
-    console.log("Received account link event with for user %d with status %s " +
-        "and auth code %s ", senderID, status, authCode);
-}
+//
+// /**
+//  * Message Read Event
+//  *
+//  * Вызывается когда предыдущее отправленное сообщение было прочитано пользоователем
+//  * https://developers.facebook.com/docs/messenger-platform/webhook-reference/message-read
+//  *
+//  */
+// function receivedMessageRead(event) {
+//     var senderID = event.sender.id;
+//     var recipientID = event.recipient.id;
+//
+//     // Были прочитаны все сообщения до временной метки watermark или последовательности sequence
+//     var watermark = event.read.watermark;
+//     var sequenceNumber = event.read.seq;
+//
+//     console.log("Received message read event for watermark %d and sequence " +
+//         "number %d", watermark, sequenceNumber);
+// }
+//
+// /**
+//  * Account Link Event
+//  *
+//  * Событие вызыавется когда наживается "Привязать аккаунт" или "отвязать аккаунт"
+//  * https://developers.facebook.com/docs/messenger-platform/webhook-reference/account-linking
+//  *
+//  */
+// function receivedAccountLink(event) {
+//     var senderID = event.sender.id;
+//     var recipientID = event.recipient.id;
+//
+//     var status = event.account_linking.status;
+//     var authCode = event.account_linking.authorization_code;
+//
+//     console.log("Received account link event with for user %d with status %s " +
+//         "and auth code %s ", senderID, status, authCode);
+// }
 
 
 /**
