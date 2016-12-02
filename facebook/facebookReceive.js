@@ -3,6 +3,7 @@
  */
 
 const facebookSend = require('./facebookSend');
+const utils = require('./../utils');
 
 var facebookReceive = new Object();
 
