@@ -14,6 +14,8 @@ const
     request    = require('request');
 
 const fs=require('fs');
+const chatLogic = require('./chat/chatLogic');
+const utils = require('./utils');
 
 //const setup=require('setup');
 var browserify = require('browserify');
@@ -393,13 +395,21 @@ function receivedMessage(event) {
                 sendStartOptionsMessage(senderID);
                 break;
             default:
-                if (messageText.endsWith('?')) {
-                    replyMessage += "Я вижу, вы что-то хотите спросить, но к сожалению, я еще не достаточно умен... ";
-                } else {
-                    replyMessage += "Я, к сожалению, пока не знаю, как реагировать на вашу просьбу... ";
-                }
-                replyMessage += "Воспользуйтесь меню с кнопками в левом нижнем углу";
-                sendTextMessage(senderID, replyMessage);
+
+                var userMessage = { senderId: senderID, messageText:messageText, date: utils.getFormattedDate(new Date()) }
+                chatLogic.processUserMessage(userMessage,
+                    function(chatAnswer)
+                    {
+                        sendTextMessage(senderID, chatAnswer);
+                    })
+
+                // if (messageText.endsWith('?')) {
+                //     replyMessage += "Я вижу, вы что-то хотите спросить, но к сожалению, я еще не достаточно умен... ";
+                // } else {
+                //     replyMessage += "Я, к сожалению, пока не знаю, как реагировать на вашу просьбу... ";
+                // }
+                // replyMessage += "Воспользуйтесь меню с кнопками в левом нижнем углу";
+                // sendTextMessage(senderID, replyMessage);
         }
     } else if (messageAttachments) {
         sendTextMessage(senderID, "Ух ты какой интересный файл =) Надо будет ознакомиться");
@@ -475,6 +485,8 @@ function receivedPostback(event) {
                 sendCardLocationMessage(senderID);
                 break;
             default:
+
+
                 sendTextMessage(senderID, "Прошу прощения, я Вас не совсем понял...");
                 break;
         }

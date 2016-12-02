@@ -25,6 +25,11 @@ curl -X POST -H "Content-Type: application/json" -d '{
   "setting_type" : "call_to_actions",
   "thread_state" : "existing_thread",
   "call_to_actions":[
+   {
+        "type":"postback",
+        "title":"Главное меню",
+        "payload":"mainMenuPayload"
+      },
     {
       "type":"postback",
       "title":"Карты",
@@ -40,11 +45,7 @@ curl -X POST -H "Content-Type: application/json" -d '{
       "title":"Счета",
       "payload":"accountsPayload"
     },
-    {
-      "type":"postback",
-      "title":"Главное меню",
-      "payload":"mainMenuPayload"
-    },
+
     {
       "type":"postback",
       "title":"Повторить обучение",
