@@ -411,7 +411,7 @@ function receivedMessage(event) {
                         // console.log("chatAnswer1=" + chatAnswer);
                         // console.log("chatAnswer2=" + JSON.stringify(chatAnswer));
 
-                        for(var i=0; i<chatAnswer.chatMessages.length; i++);
+                        for(var i=0; i<chatAnswer.chatMessages.length; );
                         {
                             console.log("i=" + i);
                             console.log("chatAnswer.chatMessages[i]=" + JSON.stringify(chatAnswer.chatMessages[i]));
@@ -422,6 +422,7 @@ function receivedMessage(event) {
 
 
                             sendTextMessage(senderID, msg.messageText);
+                            i++;
                         }
 
                         //sendTextMessage(senderID, chatAnswer);
