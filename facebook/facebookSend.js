@@ -130,6 +130,46 @@ facebookSend.sendQuickReplyTutorialChoice = function (recipientId) {
 
 
 
+
+/** Геолокация с местнахождением карты (generic template) */
+facebookSend.sendCardLocationMessage = function (recipientId) {
+    var lattitude = 55.98267;
+    var longtitude = 37.1735586;
+    var messageData = {
+        recipient: {
+            id: recipientId
+        },
+        message: {
+            attachment: {
+                type: "template",
+                payload: {
+                    template_type: "generic",
+                    elements: {
+                        element: {
+                            title: "Вы сможете забрать Вашу карту в данном отделении!",
+                            subtitle: "ДО Зеленоградский Адрес: Зеленоград, микрорайон 18, Корпус 1824, +7(495)788-88-78, Понедельник-пятница 9:00-21:00",
+                            buttons: [
+                                {
+                                    type: "phone_number",
+                                    title: "Позвонить",
+                                    payload: "+74957888878"
+                                }
+                            ],
+                            "image_url": "https:\/\/maps.googleapis.com\/maps\/api\/staticmap?size=764x400&center="
+                            + lattitude + "," + longtitude +
+                            "&zoom=25&markers=" + lattitude + "," + longtitude,
+                            "item_url": "http:\/\/maps.apple.com\/maps?q=" + lattitude + "," + longtitude + "&z=16"
+                        }
+                    }
+                }
+            }
+        }
+    };
+
+    facebookSend.callSendAPI(messageData);
+}
+
+
 //region На будущее - просто примеры
 
 /** Геолокация с местнахождением ближайшего банкомата (generic template) */

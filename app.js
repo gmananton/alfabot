@@ -509,7 +509,7 @@ function receivedPostback(event) {
                 facebookSend.sendAccountsInfoMessage(senderID);
                 break;
             case 'cardLocationPayload':
-                sendCardLocationMessage(senderID);
+                facebookSend.sendCardLocationMessage(senderID);
                 break;
             default:
 
@@ -687,45 +687,45 @@ function sendStartOptionsMessage(recipientId) {
     callSendAPI(messageData);
 }
 
-
-
-/** Геолокация с местнахождением карты (generic template) */
-function sendCardLocationMessage(recipientId) {
-    var lattitude = 55.98267;
-    var longtitude = 37.1735586;
-    var messageData = {
-        recipient: {
-            id: recipientId
-        },
-        message: {
-            attachment: {
-                type: "template",
-                payload: {
-                    template_type: "generic",
-                    elements: {
-                        element: {
-                            title: "Вы сможете забрать Вашу карту в данном отделении",
-                            subtitle: "ДО Зеленоградский Адрес: Зеленоград, микрорайон 18, Корпус 1824, +7(495)788-88-78, Понедельник-пятница 9:00-21:00",
-                            buttons: [
-                                {
-                                    type: "phone_number",
-                                    title: "Позвонить",
-                                    payload: "+74957888878"
-                                }
-                            ],
-                            "image_url": "https:\/\/maps.googleapis.com\/maps\/api\/staticmap?size=764x400&center="
-                            + lattitude + "," + longtitude +
-                            "&zoom=25&markers=" + lattitude + "," + longtitude,
-                            "item_url": "http:\/\/maps.apple.com\/maps?q=" + lattitude + "," + longtitude + "&z=16"
-                        }
-                    }
-                }
-            }
-        }
-    };
-
-    callSendAPI(messageData);
-}
+//
+//
+// /** Геолокация с местнахождением карты (generic template) */
+// function sendCardLocationMessage(recipientId) {
+//     var lattitude = 55.98267;
+//     var longtitude = 37.1735586;
+//     var messageData = {
+//         recipient: {
+//             id: recipientId
+//         },
+//         message: {
+//             attachment: {
+//                 type: "template",
+//                 payload: {
+//                     template_type: "generic",
+//                     elements: {
+//                         element: {
+//                             title: "Вы сможете забрать Вашу карту в данном отделении",
+//                             subtitle: "ДО Зеленоградский Адрес: Зеленоград, микрорайон 18, Корпус 1824, +7(495)788-88-78, Понедельник-пятница 9:00-21:00",
+//                             buttons: [
+//                                 {
+//                                     type: "phone_number",
+//                                     title: "Позвонить",
+//                                     payload: "+74957888878"
+//                                 }
+//                             ],
+//                             "image_url": "https:\/\/maps.googleapis.com\/maps\/api\/staticmap?size=764x400&center="
+//                             + lattitude + "," + longtitude +
+//                             "&zoom=25&markers=" + lattitude + "," + longtitude,
+//                             "item_url": "http:\/\/maps.apple.com\/maps?q=" + lattitude + "," + longtitude + "&z=16"
+//                         }
+//                     }
+//                 }
+//             }
+//         }
+//     };
+//
+//     callSendAPI(messageData);
+// }
 //
 // /** Статус готовности карты (generic template) */
 // function sendCardStatusMessage(recipientId) {
@@ -758,36 +758,6 @@ function sendCardLocationMessage(recipientId) {
 // }
 
 
-
-//
-// /**
-//  * Выбор ответа "Провести ли обучение? Да/Нет"
-//  * Тип сообщения - кнопки Quick Reply
-//  */
-// function sendQuickReplyTutorialChoice(recipientId) {
-//     var messageData = {
-//         recipient: {
-//             id: recipientId
-//         },
-//         message: {
-//             text: "Привет! Хочешь, я немного расскажу о себе?",
-//             metadata: "quickReplyTutorialChoice-meta",
-//             quick_replies: [
-//                 {
-//                     "content_type": "text",
-//                     "title": "Да",
-//                     "payload": "quickReplyTutorialYes"
-//                 },
-//                 {
-//                     "content_type": "text",
-//                     "title": "Нет",
-//                     "payload": "quickReplyTutorialNo"
-//                 }
-//             ]
-//         }
-//     };
-//     callSendAPI(messageData);
-// }
 
 
 
