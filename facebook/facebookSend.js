@@ -9,6 +9,21 @@ const PAGE_ACCESS_TOKEN = (process.env.MESSENGER_PAGE_ACCESS_TOKEN) ?
     (process.env.MESSENGER_PAGE_ACCESS_TOKEN) :
     config.get('pageAccessToken');
 
+const SERVER_URL = (process.env.SERVER_URL) ?
+    (process.env.SERVER_URL) :
+    config.get('serverURL');
+
+
+/** Конфигурация ассетов - картинок, видео и т.п. */
+const CREDIT_CARDS_ICON_PATH       = config.get('creditCards-icon-path');
+const CREDIT_CARD_SINGLE_ICON_PATH = config.get('creditCardSingle-icon-path');
+const LOCATION_ICON_PATH           = config.get('location-icon-path');
+const PIGGI_ICON_PATH              = config.get('piggi-icon-path');
+const PERSON_ICON_PATH             = config.get('person-icon-path');
+const ARROW_ICON_PATH              = config.get('arrow-icon-path');
+const TUTORIAL_ANIMATION_PATH      = config.get('tutorial-animation-path');
+const TUTORIAL_VIDEO_PATH          = config.get('tutorial-video-path');
+
 var facebookSend = new Object();
 
 
