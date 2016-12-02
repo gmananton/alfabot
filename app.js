@@ -413,6 +413,8 @@ function receivedMessage(event) {
 
                         for(var i=0; i<chatAnswer.chatMessages.length; i++);
                         {
+                            console.log("i=" + i);
+                            console.log("chatAnswer.chatMessages[i]=" + JSON.stringify(chatAnswer.chatMessages[i]));
                             var msg =chatAnswer.chatMessages[i];
 
                             // console.log("messageText1=" + messageText);
