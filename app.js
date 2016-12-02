@@ -21,7 +21,9 @@ const utils = require('./utils');
 var browserify = require('browserify');
 var React = require('react');
 var jsx = require('node-jsx');
-var React = require('utf8-encoding');
+
+
+
 
 
 var app = express();
@@ -404,7 +406,23 @@ function receivedMessage(event) {
                     function(chatAnswer)
                     {
                         console.log("chatLogic.processUserMessage CALLBACK!");
-                        sendTextMessage(senderID, chatAnswer);
+
+                        var utf8 = require('utf8');
+                        console.log("chatAnswer1=" + chatAnswer);
+                        console.log("chatAnswer2=" + JSON.stringify(chatAnswer));
+
+                        for(var i=0; i<chatAnswer.messages.length; i++);
+                        {
+                            var msg =chatAnswer.messages[0];
+
+                            console.log("messageText1=" + messageText);
+                            console.log("messageText1 enc=" + utf8.encode(messageText));
+
+
+                            sendTextMessage(senderID, msg.messageText);
+                        }
+
+                        //sendTextMessage(senderID, chatAnswer);
                     })
 
                 // if (messageText.endsWith('?')) {
@@ -546,10 +564,10 @@ function receivedAccountLink(event) {
 /** Простое текстовое сообщение */
 function sendTextMessage(recipientId, messageText) {
 
-    var encoder = new TextEncoder();
-    var t = encoder.encode(messageText);
-    console.log("unencoded: " + messageText);
-    console.log("encoded: " + t);
+    // var encoder = new TextEncoder();
+    // var t = encoder.encode(messageText);
+    // console.log("unencoded: " + messageText);
+    // console.log("encoded: " + t);
 
     var messageData = {
         recipient: {
