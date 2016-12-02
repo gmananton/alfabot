@@ -4,6 +4,7 @@
 
 const facebookSend = require('./facebookSend');
 const utils = require('./../utils');
+const chatLogic = require('./../chat/ChatLogic');
 
 var facebookReceive = new Object();
 
