@@ -2,9 +2,12 @@
  * Created by U_M0PQL on 02.12.2016.
  */
 
-const
-    
-    request    = require('request');
+const request    = require('request');
+const config    = require('config');
+
+const PAGE_ACCESS_TOKEN = (process.env.MESSENGER_PAGE_ACCESS_TOKEN) ?
+    (process.env.MESSENGER_PAGE_ACCESS_TOKEN) :
+    config.get('pageAccessToken');
 
 var facebookSend = new Object();
 
