@@ -16,6 +16,7 @@ const
 const fs=require('fs');
 const chatLogic = require('./chat/ChatLogic');
 const facebookSend = require('./facebook/facebookSend');
+const facebookReceive = require('./facebook/facebookReceive');
 
 const utils = require('./utils');
 
@@ -70,13 +71,7 @@ const SERVER_URL = (process.env.SERVER_URL) ?
 
 
 /** Конфигурация ассетов - картинок, видео и т.п. */
-const CREDIT_CARDS_ICON_PATH       = config.get('creditCards-icon-path');
-const CREDIT_CARD_SINGLE_ICON_PATH = config.get('creditCardSingle-icon-path');
-const LOCATION_ICON_PATH           = config.get('location-icon-path');
-const PIGGI_ICON_PATH              = config.get('piggi-icon-path');
-const PERSON_ICON_PATH             = config.get('person-icon-path');
-const ARROW_ICON_PATH              = config.get('arrow-icon-path');
-const TUTORIAL_ANIMATION_PATH      = config.get('tutorial-animation-path');
+
 const TUTORIAL_VIDEO_PATH          = config.get('tutorial-video-path');
 
 var logger;
@@ -136,7 +131,7 @@ function processWebhook(data, res) {
                 if (messagingEvent.optin) {
                     receivedAuthentication(messagingEvent);
                 } else if (messagingEvent.message) {
-                    receivedMessage(messagingEvent);
+                    facebookReceive.receivedMessage(messagingEvent);
                 } else if (messagingEvent.delivery) {
                     receivedDeliveryConfirmation(messagingEvent);
                 } else if (messagingEvent.postback) {
@@ -309,108 +304,94 @@ function receivedAuthentication(event) {
 
     sendTextMessage(senderID, "Authentication successful");
 }
-
-/**
- * Message Event
- * Событие "Сообщение". Вызывается, когда сообщение посылвается вашей странице.
- * Формат объекта 'message' и его поля варьируются в зависимости от типа сообщения
- * Read more at https://developers.facebook.com/docs/messenger-platform/webhook-reference/message-received
- *
- */
-function receivedMessage(event) {
-    var senderID = event.sender.id;
-    var recipientID = event.recipient.id;
-    var timeOfMessage = event.timestamp;
-    var message = event.message;
-    var replyMessage = "";
-    getUserInfo(senderID);
-
-    console.log("Received message for user %d and page %d at %d with message:",
-        senderID, recipientID, timeOfMessage);
-    
-
-    console.log("message v1:" + JSON.stringify(message));
-    console.log("message v2:" + message);
-
-    var isEcho = message.is_echo;
-    var messageId = message.mid;
-    var appId = message.app_id;
-    var metadata = message.metadata;
-
-    // text и attachment - взаимоисключающие
-    var messageText = message.text;
-    var messageAttachments = message.attachments;
-    var quickReply = message.quick_reply;
-
-    if (isEcho) {
-        console.log("Received echo for message %s and app %d with metadata %s",
-            messageId, appId, metadata);
-        return;
-    } else if (quickReply) {
-        var quickReplyPayload = quickReply.payload;
-        console.log("Quick reply for message %s with payload %s",
-            messageId, quickReplyPayload);
-        
-        if (quickReplyPayload ==='quickReplyTutorialYes') {
-            facebookSend.sendTextMessage(senderID, "Загрузка обучения...");
-            facebookSend.sendVideoMessage(senderID, TUTORIAL_VIDEO_PATH);
-            return;
-        } else if (quickReplyPayload ==='quickReplyTutorialNo') {
-            facebookSend.sendStartOptionsMessage(senderID);
-            return;
-        }
-    }
-
-    if (messageText) {
-        // Пока наш бот ничего не умеет, так что одинаково реагируем на текстовые сообщения
-        // и предлагаем воспользоваться кнопками меню
-        switch (messageText) {
-            case 'start':
-                sendStartOptionsMessage(senderID);
-                break;
-            default:
-
-                
-                var userMessage = { senderId: senderID, messageText:messageText, date: utils.getFormattedDate(new Date()) }
-                //sendTextMessage(senderID, JSON.stringify(userMessage));
-                chatLogic.processUserMessage(userMessage,
-                    function(chatAnswer)
-                    {
-                        console.log("chatLogic.processUserMessage CALLBACK!");
-                        console.log(JSON.stringify(chatAnswer));
-                        // var utf8 = require('utf8');
-                        // console.log("chatAnswer1=" + chatAnswer);
-                        // console.log("chatAnswer2=" + JSON.stringify(chatAnswer));
-
-                        for(var i=0; i<chatAnswer.chatMessages.length; i++)
-                        {
-                            console.log("i=" + i);
-                            console.log("chatAnswer.chatMessages[i]=" + JSON.stringify(chatAnswer.chatMessages[i]));
-                            var msg =chatAnswer.chatMessages[i];
-
-                            // console.log("messageText1=" + messageText);
-                            // console.log("messageText1 enc=" + utf8.encode(messageText));
-
-
-                            sendTextMessage(senderID, msg.messageText);
-
-                        }
-
-                        //sendTextMessage(senderID, chatAnswer);
-                    })
-
-                // if (messageText.endsWith('?')) {
-                //     replyMessage += "Я вижу, вы что-то хотите спросить, но к сожалению, я еще не достаточно умен... ";
-                // } else {
-                //     replyMessage += "Я, к сожалению, пока не знаю, как реагировать на вашу просьбу... ";
-                // }
-                // replyMessage += "Воспользуйтесь меню с кнопками в левом нижнем углу";
-                // sendTextMessage(senderID, replyMessage);
-        }
-    } else if (messageAttachments) {
-        sendTextMessage(senderID, "Ух ты какой интересный файл =) Надо будет ознакомиться");
-    }
-}
+//
+// /**
+//  * Message Event
+//  * Событие "Сообщение". Вызывается, когда сообщение посылвается вашей странице.
+//  * Формат объекта 'message' и его поля варьируются в зависимости от типа сообщения
+//  * Read more at https://developers.facebook.com/docs/messenger-platform/webhook-reference/message-received
+//  *
+//  */
+// function receivedMessage(event) {
+//     var senderID = event.sender.id;
+//     var recipientID = event.recipient.id;
+//     var timeOfMessage = event.timestamp;
+//     var message = event.message;
+//     var replyMessage = "";
+//
+//
+//
+//     console.log("Received message for user %d and page %d at %d with message:",
+//         senderID, recipientID, timeOfMessage);
+//    
+//
+//     console.log("message v1:" + JSON.stringify(message));
+//     console.log("message v2:" + message);
+//
+//     var isEcho = message.is_echo;
+//     var messageId = message.mid;
+//     var appId = message.app_id;
+//     var metadata = message.metadata;
+//
+//     // text и attachment - взаимоисключающие
+//     var messageText = message.text;
+//     var messageAttachments = message.attachments;
+//     var quickReply = message.quick_reply;
+//
+//     if (isEcho) {
+//         console.log("Received echo for message %s and app %d with metadata %s",
+//             messageId, appId, metadata);
+//         return;
+//     } else if (quickReply) {
+//         var quickReplyPayload = quickReply.payload;
+//         console.log("Quick reply for message %s with payload %s",
+//             messageId, quickReplyPayload);
+//        
+//         if (quickReplyPayload ==='quickReplyTutorialYes') {
+//             facebookSend.sendTextMessage(senderID, "Загрузка обучения...");
+//             facebookSend.sendVideoMessage(senderID, TUTORIAL_VIDEO_PATH);
+//             return;
+//         } else if (quickReplyPayload ==='quickReplyTutorialNo') {
+//             facebookSend.sendStartOptionsMessage(senderID);
+//             return;
+//         }
+//     }
+//
+//     if (messageText) {
+//         // Пока наш бот ничего не умеет, так что одинаково реагируем на текстовые сообщения
+//         // и предлагаем воспользоваться кнопками меню
+//         switch (messageText) {
+//             case 'start':
+//                 facebookSend.sendStartOptionsMessage(senderID);
+//                 break;
+//             default:
+//
+//                
+//                 var userMessage = { senderId: senderID, messageText:messageText, date: utils.getFormattedDate(new Date()) }
+//                 //sendTextMessage(senderID, JSON.stringify(userMessage));
+//                 chatLogic.processUserMessage(userMessage,
+//                     function(chatAnswer)
+//                     {
+//                         console.log("chatLogic.processUserMessage CALLBACK!");
+//                         console.log(JSON.stringify(chatAnswer));
+//
+//                         for(var i=0; i<chatAnswer.chatMessages.length; i++)
+//                         {
+//                             console.log("i=" + i);
+//                             console.log("chatAnswer.chatMessages[i]=" + JSON.stringify(chatAnswer.chatMessages[i]));
+//                             var msg =chatAnswer.chatMessages[i];
+//
+//                             sendTextMessage(senderID, msg.messageText);
+//                         }
+//
+//
+//                     })
+//
+//         }
+//     } else if (messageAttachments) {
+//         sendTextMessage(senderID, "Ух ты какой интересный файл =) Надо будет ознакомиться");
+//     }
+// }
 
 
 /**
