@@ -67,6 +67,37 @@ facebookSend.sendAccountsInfoMessage = function (recipientId) {
 }
 
 
+/**
+ * Выбор ответа "Провести ли обучение? Да/Нет"
+ * Тип сообщения - кнопки Quick Reply
+ */
+facebookSend.sendQuickReplyTutorialChoice = function (recipientId) {
+    var messageData = {
+        recipient: {
+            id: recipientId
+        },
+        message: {
+            text: "Привет! Хочешь, я немного расскажу о себе??",
+            metadata: "quickReplyTutorialChoice-meta",
+            quick_replies: [
+                {
+                    "content_type": "text",
+                    "title": "Да",
+                    "payload": "quickReplyTutorialYes"
+                },
+                {
+                    "content_type": "text",
+                    "title": "Нет",
+                    "payload": "quickReplyTutorialNo"
+                }
+            ]
+        }
+    };
+    facebookSend.callSendAPI(messageData);
+}
+
+
+
 //region На будущее - просто примеры
 
 /** Геолокация с местнахождением ближайшего банкомата (generic template) */
@@ -98,6 +129,8 @@ facebookSend.sendATMLocationMessage =function (recipientId) {
 
     facebookSend.callSendAPI(messageData);
 }
+
+
 
 //endregion
 

@@ -491,13 +491,13 @@ function receivedPostback(event) {
     if (payload) {
         switch (payload) {
             case 'startConversationPayload':
-                sendQuickReplyTutorialChoice(senderID);
+                facebookSend.sendQuickReplyTutorialChoice(senderID);
                 break;
             case 'mainMenuPayload':
                 sendStartOptionsMessage(senderID);
                 break;
             case 'tutorialPayload':
-                sendQuickReplyTutorialChoice(senderID);
+                facebookSend.sendQuickReplyTutorialChoice(senderID);
                 break;
             case 'cardStatusPayload':
                 sendCardStatusMessage(senderID);
@@ -757,72 +757,37 @@ function sendCardStatusMessage(recipientId) {
     callSendAPI(messageData);
 }
 
+
+
 //
-// /** Геолокация с местнахождением ближайшего банкомата (generic template) */
-// function sendATMLocationMessage(recipientId) {
-//     var lattitude = 55.774822;
-//     var longtitude = 37.649813;
+// /**
+//  * Выбор ответа "Провести ли обучение? Да/Нет"
+//  * Тип сообщения - кнопки Quick Reply
+//  */
+// function sendQuickReplyTutorialChoice(recipientId) {
 //     var messageData = {
 //         recipient: {
 //             id: recipientId
 //         },
 //         message: {
-//             attachment: {
-//                 type: "template",
-//                 payload: {
-//                     template_type: "generic",
-//                     elements: {
-//                         element: {
-//                             title: "ул. Каланчевская, 27 (test)",
-//                             subtitle: "Открыто с 9:00 до 21:00",
-//                             "image_url": "https:\/\/maps.googleapis.com\/maps\/api\/staticmap?size=764x400&center="
-//                             + lattitude + "," + longtitude + "&zoom=25&markers=" + lattitude + "," + longtitude,
-//                             "item_url": "http:\/\/maps.apple.com\/maps?q=" + lattitude + "," + longtitude + "&z=16"
-//                         }
-//                     }
+//             text: "Привет! Хочешь, я немного расскажу о себе?",
+//             metadata: "quickReplyTutorialChoice-meta",
+//             quick_replies: [
+//                 {
+//                     "content_type": "text",
+//                     "title": "Да",
+//                     "payload": "quickReplyTutorialYes"
+//                 },
+//                 {
+//                     "content_type": "text",
+//                     "title": "Нет",
+//                     "payload": "quickReplyTutorialNo"
 //                 }
-//             }
+//             ]
 //         }
 //     };
-//
 //     callSendAPI(messageData);
 // }
-
-// /** TODO STUB Информация по счетам */
-// function sendAccountsInfoMessage(recipientId) {
-//     sendTextMessage(recipientId, "Чуть позже здесь появится информация о счетах");
-// }
-
-
-
-/**
- * Выбор ответа "Провести ли обучение? Да/Нет"
- * Тип сообщения - кнопки Quick Reply
- */
-function sendQuickReplyTutorialChoice(recipientId) {
-    var messageData = {
-        recipient: {
-            id: recipientId
-        },
-        message: {
-            text: "Привет! Хочешь, я немного расскажу о себе?",
-            metadata: "quickReplyTutorialChoice-meta",
-            quick_replies: [
-                {
-                    "content_type": "text",
-                    "title": "Да",
-                    "payload": "quickReplyTutorialYes"
-                },
-                {
-                    "content_type": "text",
-                    "title": "Нет",
-                    "payload": "quickReplyTutorialNo"
-                }
-            ]
-        }
-    };
-    callSendAPI(messageData);
-}
 
 
 
