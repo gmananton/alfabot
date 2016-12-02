@@ -407,16 +407,16 @@ function receivedMessage(event) {
                     {
                         console.log("chatLogic.processUserMessage CALLBACK!");
 
-                        var utf8 = require('utf8');
-                        console.log("chatAnswer1=" + chatAnswer);
-                        console.log("chatAnswer2=" + JSON.stringify(chatAnswer));
+                        // var utf8 = require('utf8');
+                        // console.log("chatAnswer1=" + chatAnswer);
+                        // console.log("chatAnswer2=" + JSON.stringify(chatAnswer));
 
                         for(var i=0; i<chatAnswer.chatMessages.length; i++);
                         {
-                            var msg =chatAnswer.chatMessages[0];
+                            var msg =chatAnswer.chatMessages[i];
 
-                            console.log("messageText1=" + messageText);
-                            console.log("messageText1 enc=" + utf8.encode(messageText));
+                            // console.log("messageText1=" + messageText);
+                            // console.log("messageText1 enc=" + utf8.encode(messageText));
 
 
                             sendTextMessage(senderID, msg.messageText);
