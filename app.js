@@ -938,7 +938,12 @@ app.listen(app.get('port'), function () {
 
 module.exports = app;
 //
+function setup()
+{
 
+
+
+}
 
 ////////////////ТЕСТ
 
@@ -947,182 +952,23 @@ module.exports = app;
 app.get('/test', function (req, res) {
 
     console.log("testlog1");
-
-    //logger.log("testlog");
-
-
-
-    //logger.time('100-elements');
-
-        res.status(200).send("test ok!!");
-  
-
-    //logger.timeEnd('100-elements');
-
-    //logger.trace();
-
-
-
+    res.status(200).send("test ok!!");
 
 });
 
-//app.use(testError)
-//app.use(logErrors)
-
-// function testError(req, res, next) {
-//     console.log("!!111")
-//     var ejs = require("ejs");
-//     //var a = ejs.render("<div><%=ab%></div>", {a: 5});
-//
-//     console.log("!!222")
-//
-//     next("sss");
-// }
-
-// function logErrors(err, req, res, next) {
-//     console.log("!!!!!!!!!!!!!!!!!!!!")
-//     console.error(err.stack);
-//
-//     res.send("error occured");
-//    // next(err);
-// }
-
-
-app.get('/c', function (req, res) {
-
-
-    const http = require('http');
-
-        var options = {
-            host: 'localhost',
-            port: 8080,
-            path: '/open/api/eq/getBalance?representativeToken=aa',
-            method: 'GET'
-        };
-
-        var rest = require('./getJSON');
-        rest.getJSON(options,
-            function(statusCode, result)
-            {
-                // I could work with the result html/json here.  I could also just return it
-                console.log("onResult: (" + statusCode + ")" + JSON.stringify(result));
-                res.statusCode = statusCode;
-                res.send(result);
-            });
-
-
-        // http.request(options, function(res) {
-        //
-        //     var str='';
-        //
-        //     console.log('STATUS: ' + res.statusCode);
-        //     console.log('HEADERS: ' + JSON.stringify(res.headers));
-        //     res.setEncoding('utf8');
-        //
-        //     res.on('data', function (chunk) {
-        //         console.log('CHUNK BODY: ' + chunk);
-        //         str+=chunk;
-        //     });
-        //     res.on('end', function () {
-        //         console.log('ENTIRE BODY: ' + str);
-        //         res.send(str);
-        //
-        //     });
-        // }).end();
-
-
-    //var ejs = require("ejs");
-    //var a = ejs.render("<div><%=a%></div>", {a: 5});
-
-
-  //  res.send('ok');
-    //res.render('testTyapkin', { });
-    //res.render('authorize', { redirectURI: 'Hey', redirectURISuccess: 'Hello there!'});
-}
-);
-
-//
-// app.get('/user/:id', function (req, res, next) {
-//     // if the user ID is 0, skip to the next route
-//     if (req.params.id == 0) next('route');
-//     // otherwise pass the control to the next middleware function in this stack
-//     else next(); //
-// }
-//     , function (req, res, next) {
-//         console.log('fn2')
-//         next();
-//     }
-//     , function (req, res, next) {
-//     // render a regular page
-//     res.send('regular');
-// });
-//
-// // handler for the /user/:id path, which renders a special page
-// app.get('/user/:id', function (req, res, next) {
-//     res.send('special');
-// });
 
 
 
-//
-//
-// var birds = require('./birds');
-//
-// app.use('/birds', birds);
-//
-// app.all('/ab?cd', function(req, res) {
-//     res.send('ab?cd');
-// });
-//
-// var myLogger = function (req, res, next) {
-//     console.log('LOGGED');
-//     next();
-// };
-//
-// app.use(myLogger);
-// app.use('/a1/', function (req, res, next) {
-//     console.log('Request Type:', req.method);
-//     next();
-// });
-//
-// app.get('/a/', function(req, res) {
-//     //res.send('/a/');
-//     var o = new Object();
-//     o.name="tt";
-//     o.age=15;
-//     res.json(o);
-//     //res.redirect("http://mail.ru")
-// });
-//
-// app.get('/users/:userId/:bookId', function(req, res) {
-//     res.send(req.params);
-// });
-//
-// app.get('/ex/b', function (req, res, next) {
-//     console.log('the response will be sent by the next function ...');
-//     next();
-// }, function (req, res) {
-//     res.send('Hello from B!');
-// });
-
-function setup()
-{
-   // var setup = require('./setup');
-
-   // setup.setup();
-   // logger=setup.getLogger();
-
-   // logger.log("Logger started")
 
 
-
-}
 
 //////////////
 
 var debugRouter = require('./debugRouter');
+var facebookRouter = require('./facebookRouter');
 
 app.use('/debug', debugRouter);
+app.use('/', facebookRouter);
 
 
 
