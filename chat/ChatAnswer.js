@@ -4,7 +4,7 @@
 
 //Это набор ChatMessages
 
-const ChatMessage = require('./ChatMessage')
+const ChatMessage = require('./chatMessage')
 
 var method = ChatAnswer.prototype;
 
