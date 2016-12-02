@@ -95,4 +95,24 @@ function processWebhook(data, res) {
 
 
 
+//Попробовать все же как-то получить имя пользователя - позднее, если понадобится
+
+function getUserInfo(userID) {
+    console.log("Getting user info - skip. Not works right now");
+    // console.log("Getting user info");
+    // request({
+    //     uri: 'https://graph.facebook.com/v2.6/' + userID + '/fields=first_name,last_name,profile_pic,locale,timezone,gender',
+    //     qs: {access_token: PAGE_ACCESS_TOKEN},
+    //     method: 'GET'
+    //
+    // }, function (error, response, body) {
+    //     if (!error && response.statusCode == 200) {
+    //         console.log("Successfully called Graph API for user info");
+    //     } else {
+    //         console.error("Failed calling GraphAPI", response.statusCode, response.statusMessage, body.error);
+    //     }
+    // });
+}
+
+
 module.exports = router;
