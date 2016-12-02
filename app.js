@@ -398,10 +398,11 @@ function receivedMessage(event) {
 
                 
                 var userMessage = { senderId: senderID, messageText:messageText, date: utils.getFormattedDate(new Date()) }
-                sendTextMessage(senderID, JSON.stringify(userMessage));
+                //sendTextMessage(senderID, JSON.stringify(userMessage));
                 chatLogic.processUserMessage(userMessage,
                     function(chatAnswer)
                     {
+                        console.log("chatLogic.processUserMessage CALLBACK!");
                         sendTextMessage(senderID, chatAnswer);
                     })
 

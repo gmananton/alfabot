@@ -45,6 +45,9 @@ chatLogic.processUserMessage = function(userMessage, callback)
 
             //Запомнить состояние диалога
             clients.add(senderId, clientDialogState, true);
+
+            console.log("clientDialogState = " + JSON.stringify(clientDialogState));
+
             callback(chatAnswer);
         }
     );
