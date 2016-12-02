@@ -3,8 +3,8 @@
  */
 
 const config     = require('config');
-const ChatAnswer = require('./ChatAnswer');
-const EnumThreadNames = require('./EnumThreadNames');
+const ChatAnswer = require('./chatAnswer');
+const EnumThreadNames = require('./enumThreadNames');
 const dataRetreiver = config.get('javaServiceUrl') ? require('../dataJava') : require('../dataStub');
 
 var chatActions = new Object();

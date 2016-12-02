@@ -12,10 +12,10 @@ const config     = require('config');
 var clone = require('clone');
 var hashes = require('hashes');
 var utils = require('./../utils');
-var ChatMessage = require('./ChatMessage');
-var СhatAnswer = require('./ChatAnswer');
+var ChatMessage = require('./chatMessage');
+var СhatAnswer = require('./chatAnswer');
 
-var chatActions = require('./ChatActions')
+var chatActions = require('./chatActions')
 
 //В зависимости от того, установлен ли у нас источник данных, будем использовать либо источник либо заглушку (для Heroku)
 const dataRetreiver = config.get('javaServiceUrl') ? require('./../dataJava') : require('./../dataStub');
