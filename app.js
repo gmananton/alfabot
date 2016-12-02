@@ -13,8 +13,8 @@ const
     https      = require('https'),
     request    = require('request');
 
-const fs=require('fs');
-const chatLogic = require('./chat/ChatLogic');
+//const fs=require('fs');
+
 const facebookSend = require('./facebook/facebookSend');
 const facebookReceive = require('./facebook/facebookReceive');
 
@@ -70,11 +70,6 @@ const SERVER_URL = (process.env.SERVER_URL) ?
     config.get('serverURL');
 
 
-/** Конфигурация ассетов - картинок, видео и т.п. */
-
-const TUTORIAL_VIDEO_PATH          = config.get('tutorial-video-path');
-
-var logger;
 
 if (!(APP_SECRET && VALIDATION_TOKEN && PAGE_ACCESS_TOKEN && SERVER_URL)) {
     console.error("Missing config values");
@@ -135,7 +130,7 @@ function processWebhook(data, res) {
                 } else if (messagingEvent.delivery) {
                     receivedDeliveryConfirmation(messagingEvent);
                 } else if (messagingEvent.postback) {
-                    receivedPostback(messagingEvent);
+                    facebookReceive.receivedPostback(messagingEvent);
                 } else if (messagingEvent.read) {
                     receivedMessageRead(messagingEvent);
                 } else if (messagingEvent.account_linking) {
@@ -418,57 +413,57 @@ function receivedDeliveryConfirmation(event) {
     console.log("All message before %d were delivered.", watermark);
 }
 
-
-/**
- * Postback Event
- *
- * Вызывается при нажатии на какую-либо postback-кнопку generic-сообщения
- * https://developers.facebook.com/docs/messenger-platform/webhook-reference/postback-received
- *
- */
-function receivedPostback(event) {
-    var senderID = event.sender.id;
-    var recipientID = event.recipient.id;
-    var timeOfPostback = event.timestamp;
-
-    var payload = event.postback.payload;
-
-    console.log("Received postback for user %d and page %d with payload '%s' " +
-        "at %d", senderID, recipientID, payload, timeOfPostback);
-
-    console.log(JSON.stringify(event.sender));
-
-    if (payload) {
-        switch (payload) {
-            case 'startConversationPayload':
-                facebookSend.sendQuickReplyTutorialChoice(senderID);
-                break;
-            case 'mainMenuPayload':
-                facebookSend.sendStartOptionsMessage(senderID);
-                break;
-            case 'tutorialPayload':
-                facebookSend.sendQuickReplyTutorialChoice(senderID);
-                break;
-            case 'cardStatusPayload':
-                facebookSend.sendCardStatusMessage(senderID);
-                break;
-            case 'atmPayload':
-                facebookSend.sendATMLocationMessage(senderID);
-                break;
-            case 'accountsPayload':
-                facebookSend.sendAccountsInfoMessage(senderID);
-                break;
-            case 'cardLocationPayload':
-                facebookSend.sendCardLocationMessage(senderID);
-                break;
-            default:
-
-
-                sendTextMessage(senderID, "Прошу прощения, я Вас не совсем понял...");
-                break;
-        }
-    }
-}
+//
+// /**
+//  * Postback Event
+//  *
+//  * Вызывается при нажатии на какую-либо postback-кнопку generic-сообщения
+//  * https://developers.facebook.com/docs/messenger-platform/webhook-reference/postback-received
+//  *
+//  */
+// function receivedPostback(event) {
+//     var senderID = event.sender.id;
+//     var recipientID = event.recipient.id;
+//     var timeOfPostback = event.timestamp;
+//
+//     var payload = event.postback.payload;
+//
+//     console.log("Received postback for user %d and page %d with payload '%s' " +
+//         "at %d", senderID, recipientID, payload, timeOfPostback);
+//
+//     console.log(JSON.stringify(event.sender));
+//
+//     if (payload) {
+//         switch (payload) {
+//             case 'startConversationPayload':
+//                 facebookSend.sendQuickReplyTutorialChoice(senderID);
+//                 break;
+//             case 'mainMenuPayload':
+//                 facebookSend.sendStartOptionsMessage(senderID);
+//                 break;
+//             case 'tutorialPayload':
+//                 facebookSend.sendQuickReplyTutorialChoice(senderID);
+//                 break;
+//             case 'cardStatusPayload':
+//                 facebookSend.sendCardStatusMessage(senderID);
+//                 break;
+//             case 'atmPayload':
+//                 facebookSend.sendATMLocationMessage(senderID);
+//                 break;
+//             case 'accountsPayload':
+//                 facebookSend.sendAccountsInfoMessage(senderID);
+//                 break;
+//             case 'cardLocationPayload':
+//                 facebookSend.sendCardLocationMessage(senderID);
+//                 break;
+//             default:
+//
+//
+//                 sendTextMessage(senderID, "Прошу прощения, я Вас не совсем понял...");
+//                 break;
+//         }
+//     }
+// }
 
 
 

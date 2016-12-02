@@ -9,6 +9,8 @@ const chatLogic = require('./../chat/ChatLogic');
 var facebookReceive = new Object();
 
 
+//region Основные методы  - получение текстовых сообщений и кнопочных postBack-ов
+
 /**
  * Message Event
  * Событие "Сообщение". Вызывается, когда сообщение посылвается вашей странице.
@@ -113,5 +115,59 @@ facebookReceive.receivedMessage = function(event) {
     }
 
 }
+
+
+/**
+ * Postback Event
+ *
+ * Вызывается при нажатии на какую-либо postback-кнопку generic-сообщения
+ * https://developers.facebook.com/docs/messenger-platform/webhook-reference/postback-received
+ *
+ */
+facebookReceive.receivedPostback = function (event) {
+    var senderID = event.sender.id;
+    var recipientID = event.recipient.id;
+    var timeOfPostback = event.timestamp;
+
+    var payload = event.postback.payload;
+
+    console.log("Received postback for user %d and page %d with payload '%s' " +
+        "at %d", senderID, recipientID, payload, timeOfPostback);
+
+    console.log(JSON.stringify(event.sender));
+
+    if (payload) {
+        switch (payload) {
+            case 'startConversationPayload':
+                facebookSend.sendQuickReplyTutorialChoice(senderID);
+                break;
+            case 'mainMenuPayload':
+                facebookSend.sendStartOptionsMessage(senderID);
+                break;
+            case 'tutorialPayload':
+                facebookSend.sendQuickReplyTutorialChoice(senderID);
+                break;
+            case 'cardStatusPayload':
+                facebookSend.sendCardStatusMessage(senderID);
+                break;
+            case 'atmPayload':
+                facebookSend.sendATMLocationMessage(senderID);
+                break;
+            case 'accountsPayload':
+                facebookSend.sendAccountsInfoMessage(senderID);
+                break;
+            case 'cardLocationPayload':
+                facebookSend.sendCardLocationMessage(senderID);
+                break;
+            default:
+
+
+                facebookSend.sendTextMessage(senderID, "Прошу прощения, я Вас не совсем понял...");
+                break;
+        }
+    }
+}
+
+//endregion
 
 module.exports = facebookReceive;
