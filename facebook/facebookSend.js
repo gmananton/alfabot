@@ -76,6 +76,70 @@ facebookSend.sendTextMessage = function (recipientId, messageText) {
 
 //endregion
 
+
+
+/** Главное меню с выбором действий (generic template) */
+facebookSend.sendStartOptionsMessage = function (recipientId) {
+    var messageData = {
+        recipient: {
+            id: recipientId
+        },
+        message: {
+            attachment: {
+                type: "template",
+                payload: {
+                    template_type: "generic",
+                    elements: [
+                        {
+                            title: "Банковские карты",
+                            subtitle: "Узнать статус готовности заказанной карты",
+                            image_url: SERVER_URL + CREDIT_CARDS_ICON_PATH,
+                            buttons: [{
+                                type: "postback",
+                                title: "Узнать статус",
+                                payload: "cardStatusPayload"
+                            }]
+                        },
+                        {
+                            title: "Ближайший банкомат",
+                            subtitle: "Посмотреть адрес ближайшего банкомата",
+                            image_url: SERVER_URL + LOCATION_ICON_PATH,
+                            buttons: [{
+                                type: "postback",
+                                title: "Посмотреть ближайший банкомат",
+                                payload: "atmPayload"
+                            }]
+                        },
+                        {
+                            title: "Счета",
+                            subtitle: "Посмотреть текущее состояние счетов",
+                            image_url: SERVER_URL + PIGGI_ICON_PATH,
+                            buttons: [{
+                                type: "postback",
+                                title: "Посмотреть состояние счетов",
+                                payload: "accountsPayload"
+                            }]
+                        },
+                        {
+                            title: "Сотрудник",
+                            subtitle: "Связаться с поддержкой банка",
+                            image_url: SERVER_URL + PERSON_ICON_PATH,
+                            buttons: [{
+                                type: "phone_number",
+                                title: "Связаться с поддержкой",
+                                payload: "+74957888878"
+                            }]
+                        }
+                    ]
+                }
+            }
+        }
+    };
+
+    facebookSend.callSendAPI(messageData);
+}
+
+
 /** TODO STUB Информация по счетам */
 facebookSend.sendAccountsInfoMessage = function (recipientId) {
     facebookSend.sendTextMessage(recipientId, "Чуть позже здесь появится информация о счетах !!");

@@ -118,39 +118,7 @@ app.post('/webhook', function (req, res) {
 
     processWebhook(data, res);
 
-    //пробуем вытащить
 
-    // if (data.object == 'page') {
-    //     // Необходимо пройтись по всем записям в запросе, т.к. их может быть несколько в случае пакетного запроса
-    //     data.entry.forEach(function (pageEntry) {
-    //         var pageID = pageEntry.id;
-    //         var timeOfEvent = pageEntry.time;
-    //
-    //         // Пройтись по всем возможным типам сообщений в событии
-    //         pageEntry.messaging.forEach(function (messagingEvent) {
-    //             if (messagingEvent.optin) {
-    //                 receivedAuthentication(messagingEvent);
-    //             } else if (messagingEvent.message) {
-    //                 receivedMessage(messagingEvent);
-    //             } else if (messagingEvent.delivery) {
-    //                 receivedDeliveryConfirmation(messagingEvent);
-    //             } else if (messagingEvent.postback) {
-    //                 receivedPostback(messagingEvent);
-    //             } else if (messagingEvent.read) {
-    //                 receivedMessageRead(messagingEvent);
-    //             } else if (messagingEvent.account_linking) {
-    //                 receivedAccountLink(messagingEvent);
-    //             } else {
-    //                 console.log("Webhook received unknown messagingEvent: ", messagingEvent);
-    //             }
-    //         });
-    //     });
-    //
-    //     // Обязательная отправка статуса 200 в случае удачи в течение 20 секунд. Иначе наступит тайм-аут запроса
-    //     // При непрерывном накоплении таймаутов приложение может подумать, что сервер не отвечает и даже отписаться
-    //     // от событий страницы
-    //     res.sendStatus(200);
-    // }
 });
 
 function processWebhook(data, res) {
@@ -204,7 +172,7 @@ app.get('/webhook_debug', function (req, res) {
     console.log("qs: " + JSON.stringify(req.query));
     console.log("qs JSON: " + JSON.stringify(JSON.parse(req.query.data)));
 
-    //webhook_debug?data={"id":122, "time"=10}
+
 
     processWebhook(data, res);
 
@@ -494,7 +462,7 @@ function receivedPostback(event) {
                 facebookSend.sendQuickReplyTutorialChoice(senderID);
                 break;
             case 'mainMenuPayload':
-                sendStartOptionsMessage(senderID);
+                facebookSend.sendStartOptionsMessage(senderID);
                 break;
             case 'tutorialPayload':
                 facebookSend.sendQuickReplyTutorialChoice(senderID);
@@ -626,136 +594,6 @@ function sendVideoMessage(recipientId, videoURL) {
 }
 
 
-/** Главное меню с выбором действий (generic template) */
-function sendStartOptionsMessage(recipientId) {
-    var messageData = {
-        recipient: {
-            id: recipientId
-        },
-        message: {
-            attachment: {
-                type: "template",
-                payload: {
-                    template_type: "generic",
-                    elements: [
-                        {
-                            title: "Банковские карты",
-                            subtitle: "Узнать статус готовности заказанной карты",
-                            image_url: SERVER_URL + CREDIT_CARDS_ICON_PATH,
-                            buttons: [{
-                                type: "postback",
-                                title: "Узнать статус",
-                                payload: "cardStatusPayload"
-                            }]
-                        },
-                        {
-                            title: "Ближайший банкомат",
-                            subtitle: "Посмотреть адрес ближайшего банкомата",
-                            image_url: SERVER_URL + LOCATION_ICON_PATH,
-                            buttons: [{
-                                type: "postback",
-                                title: "Посмотреть ближайший банкомат",
-                                payload: "atmPayload"
-                            }]
-                        },
-                        {
-                            title: "Счета",
-                            subtitle: "Посмотреть текущее состояние счетов",
-                            image_url: SERVER_URL + PIGGI_ICON_PATH,
-                            buttons: [{
-                                type: "postback",
-                                title: "Посмотреть состояние счетов",
-                                payload: "accountsPayload"
-                            }]
-                        },
-                        {
-                            title: "Сотрудник",
-                            subtitle: "Связаться с поддержкой банка",
-                            image_url: SERVER_URL + PERSON_ICON_PATH,
-                            buttons: [{
-                                type: "phone_number",
-                                title: "Связаться с поддержкой",
-                                payload: "+74957888878"
-                            }]
-                        }
-                    ]
-                }
-            }
-        }
-    };
-
-    callSendAPI(messageData);
-}
-
-//
-//
-// /** Геолокация с местнахождением карты (generic template) */
-// function sendCardLocationMessage(recipientId) {
-//     var lattitude = 55.98267;
-//     var longtitude = 37.1735586;
-//     var messageData = {
-//         recipient: {
-//             id: recipientId
-//         },
-//         message: {
-//             attachment: {
-//                 type: "template",
-//                 payload: {
-//                     template_type: "generic",
-//                     elements: {
-//                         element: {
-//                             title: "Вы сможете забрать Вашу карту в данном отделении",
-//                             subtitle: "ДО Зеленоградский Адрес: Зеленоград, микрорайон 18, Корпус 1824, +7(495)788-88-78, Понедельник-пятница 9:00-21:00",
-//                             buttons: [
-//                                 {
-//                                     type: "phone_number",
-//                                     title: "Позвонить",
-//                                     payload: "+74957888878"
-//                                 }
-//                             ],
-//                             "image_url": "https:\/\/maps.googleapis.com\/maps\/api\/staticmap?size=764x400&center="
-//                             + lattitude + "," + longtitude +
-//                             "&zoom=25&markers=" + lattitude + "," + longtitude,
-//                             "item_url": "http:\/\/maps.apple.com\/maps?q=" + lattitude + "," + longtitude + "&z=16"
-//                         }
-//                     }
-//                 }
-//             }
-//         }
-//     };
-//
-//     callSendAPI(messageData);
-// }
-//
-// /** Статус готовности карты (generic template) */
-// function sendCardStatusMessage(recipientId) {
-//     var messageData = {
-//         recipient: {
-//             id: recipientId
-//         },
-//         message: {
-//             attachment: {
-//                 type: "template",
-//                 payload: {
-//                     template_type: "generic",
-//                     elements: {
-//                         element: {
-//                             title: "Ваша карта готова!",
-//                             image_url: SERVER_URL + CREDIT_CARD_SINGLE_ICON_PATH,
-//                             buttons: [{
-//                                 type: "postback",
-//                                 title: "Где забрать?",
-//                                 payload: "cardLocationPayload",
-//                             }]
-//                         }
-//                     }
-//                 }
-//             }
-//         }
-//     };
-//
-//     callSendAPI(messageData);
-// }
 
 
 
