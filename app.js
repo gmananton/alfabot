@@ -21,6 +21,7 @@ const utils = require('./utils');
 var browserify = require('browserify');
 var React = require('react');
 var jsx = require('node-jsx');
+var React = require('utf8-encoding');
 
 
 var app = express();
@@ -544,7 +545,12 @@ function receivedAccountLink(event) {
 
 /** Простое текстовое сообщение */
 function sendTextMessage(recipientId, messageText) {
-   
+
+    var encoder = new TextEncoder();
+    var t = encoder.encode(messageText);
+    console.log("unencoded: " + messageText);
+    console.log("encoded: " + t);
+
     var messageData = {
         recipient: {
             id: recipientId
