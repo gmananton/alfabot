@@ -350,12 +350,13 @@ function receivedMessage(event) {
         var quickReplyPayload = quickReply.payload;
         console.log("Quick reply for message %s with payload %s",
             messageId, quickReplyPayload);
+        
         if (quickReplyPayload ==='quickReplyTutorialYes') {
-            sendTextMessage(senderID, "Загрузка обучения...");
-            sendVideoMessage(senderID, TUTORIAL_VIDEO_PATH);
+            facebookSend.sendTextMessage(senderID, "Загрузка обучения...");
+            facebookSend.sendVideoMessage(senderID, TUTORIAL_VIDEO_PATH);
             return;
         } else if (quickReplyPayload ==='quickReplyTutorialNo') {
-            sendStartOptionsMessage(senderID);
+            facebookSend.sendStartOptionsMessage(senderID);
             return;
         }
     }
@@ -556,76 +557,11 @@ function sendTextMessage(recipientId, messageText) {
 }
 
 
-/** Сообщение с картинкой */
-function sendImageMessage(recipientId, imageURL) {
-    var messageData = {
-        recipient: {
-            id: recipientId
-        },
-        message: {
-            attachment: {
-                type: "image",
-                payload: {
-                    url: SERVER_URL + imageURL
-                }
-            }
-        }
-    }
-    callSendAPI(messageData);
-}
-
-/** Сообщение с видео */
-function sendVideoMessage(recipientId, videoURL) {
-    console.log("sendVideoMessage started");
-    var messageData = {
-        recipient: {
-            id: recipientId
-        },
-        message: {
-            attachment: {
-                type: "video",
-                payload: {
-                    url: SERVER_URL + videoURL
-                }
-            }
-        }
-    };
-    callSendAPI(messageData);
-}
 
 
 
 
 
-
-
-/** Индикатор "бот набирает сообщение" */
-function sendTypingOn(recipientId) {
-    console.log("Turning typing indicator on");
-
-    var messageData = {
-        recipient: {
-            id: recipientId
-        },
-        sender_action: "typing_on"
-    };
-
-    callSendAPI(messageData);
-}
-
-/** Выключить индикатор "бот набирает сообщение" */
-function sendTypingOff(recipientId) {
-    console.log("Turning typing indicator off");
-
-    var messageData = {
-        recipient: {
-            id: recipientId
-        },
-        sender_action: "typing_off"
-    };
-
-    callSendAPI(messageData);
-}
 
 
 

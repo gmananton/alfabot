@@ -76,7 +76,39 @@ facebookSend.sendTextMessage = function (recipientId, messageText) {
 
 //endregion
 
+//region Set Typing On-Off
 
+
+
+/** Индикатор "бот набирает сообщение" */
+ facebookSend.sendTypingOn = function(recipientId) {
+    console.log("Turning typing indicator on");
+
+    var messageData = {
+        recipient: {
+            id: recipientId
+        },
+        sender_action: "typing_on"
+    };
+
+     facebookSend.callSendAPI(messageData);
+}
+
+/** Выключить индикатор "бот набирает сообщение" */
+facebookSend.sendTypingOff = function (recipientId) {
+    console.log("Turning typing indicator off");
+
+    var messageData = {
+        recipient: {
+            id: recipientId
+        },
+        sender_action: "typing_off"
+    };
+
+    facebookSend.callSendAPI(messageData);
+}
+
+//endregion
 
 /** Главное меню с выбором действий (generic template) */
 facebookSend.sendStartOptionsMessage = function (recipientId) {
@@ -281,6 +313,43 @@ facebookSend.sendATMLocationMessage =function (recipientId) {
     facebookSend.callSendAPI(messageData);
 }
 
+
+/** Сообщение с картинкой */
+ facebookSend.sendImageMessage = function(recipientId, imageURL) {
+    var messageData = {
+        recipient: {
+            id: recipientId
+        },
+        message: {
+            attachment: {
+                type: "image",
+                payload: {
+                    url: SERVER_URL + imageURL
+                }
+            }
+        }
+    }
+     facebookSend.callSendAPI(messageData);
+}
+
+/** Сообщение с видео */
+  facebookSend.sendVideoMessage = function(recipientId, videoURL) {
+    console.log("sendVideoMessage started");
+    var messageData = {
+        recipient: {
+            id: recipientId
+        },
+        message: {
+            attachment: {
+                type: "video",
+                payload: {
+                    url: SERVER_URL + videoURL
+                }
+            }
+        }
+    };
+      facebookSend.callSendAPI(messageData);
+}
 
 
 //endregion
