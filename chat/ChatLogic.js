@@ -13,7 +13,7 @@ var clone = require('clone');
 var hashes = require('hashes');
 var utils = require('./../utils');
 //var ChatMessage = require('./chatMessage');
-var СhatAnswer = require('./chatAnswer');
+var СhatAnswer = require('./ChatAnswer');
 
 var chatActions = require('./chatActions')
 

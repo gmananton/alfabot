@@ -3,7 +3,7 @@
  */
 
 const config     = require('config');
-const ChatAnswer = require('./chatAnswer');
+const ChatAnswer = require('./ChatAnswer');
 const EnumThreadNames = require('./enumThreadNames');
 const dataRetreiver = config.get('javaServiceUrl') ? require('../dataJava') : require('../dataStub');
 
