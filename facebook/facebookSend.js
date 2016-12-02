@@ -67,7 +67,7 @@ facebookSend.sendTextMessage = function (recipientId, messageText) {
         },
         message: {
             text: messageText,
-            metadata: "DEVELOPER_DEFINED_METADATA" //удалить
+            //metadata: "DEVELOPER_DEFINED_METADATA" //удалить
         }
     };
 
