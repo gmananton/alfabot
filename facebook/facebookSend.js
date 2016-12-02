@@ -67,6 +67,38 @@ facebookSend.sendAccountsInfoMessage = function (recipientId) {
 }
 
 
+
+/** Статус готовности карты (generic template) */
+facebookSend.sendCardStatusMessage = function (recipientId) {
+    var messageData = {
+        recipient: {
+            id: recipientId
+        },
+        message: {
+            attachment: {
+                type: "template",
+                payload: {
+                    template_type: "generic",
+                    elements: {
+                        element: {
+                            title: "Ваша карта готова!",
+                            image_url: SERVER_URL + CREDIT_CARD_SINGLE_ICON_PATH,
+                            buttons: [{
+                                type: "postback",
+                                title: "Где забрать?",
+                                payload: "cardLocationPayload",
+                            }]
+                        }
+                    }
+                }
+            }
+        }
+    };
+
+    facebookSend.callSendAPI(messageData);
+}
+
+
 /**
  * Выбор ответа "Провести ли обучение? Да/Нет"
  * Тип сообщения - кнопки Quick Reply

@@ -500,7 +500,7 @@ function receivedPostback(event) {
                 facebookSend.sendQuickReplyTutorialChoice(senderID);
                 break;
             case 'cardStatusPayload':
-                sendCardStatusMessage(senderID);
+                facebookSend.sendCardStatusMessage(senderID);
                 break;
             case 'atmPayload':
                 facebookSend.sendATMLocationMessage(senderID);
@@ -726,36 +726,36 @@ function sendCardLocationMessage(recipientId) {
 
     callSendAPI(messageData);
 }
-
-/** Статус готовности карты (generic template) */
-function sendCardStatusMessage(recipientId) {
-    var messageData = {
-        recipient: {
-            id: recipientId
-        },
-        message: {
-            attachment: {
-                type: "template",
-                payload: {
-                    template_type: "generic",
-                    elements: {
-                        element: {
-                            title: "Ваша карта готова!",
-                            image_url: SERVER_URL + CREDIT_CARD_SINGLE_ICON_PATH,
-                            buttons: [{
-                                type: "postback",
-                                title: "Где забрать?",
-                                payload: "cardLocationPayload",
-                            }]
-                        }
-                    }
-                }
-            }
-        }
-    };
-
-    callSendAPI(messageData);
-}
+//
+// /** Статус готовности карты (generic template) */
+// function sendCardStatusMessage(recipientId) {
+//     var messageData = {
+//         recipient: {
+//             id: recipientId
+//         },
+//         message: {
+//             attachment: {
+//                 type: "template",
+//                 payload: {
+//                     template_type: "generic",
+//                     elements: {
+//                         element: {
+//                             title: "Ваша карта готова!",
+//                             image_url: SERVER_URL + CREDIT_CARD_SINGLE_ICON_PATH,
+//                             buttons: [{
+//                                 type: "postback",
+//                                 title: "Где забрать?",
+//                                 payload: "cardLocationPayload",
+//                             }]
+//                         }
+//                     }
+//                 }
+//             }
+//         }
+//     };
+//
+//     callSendAPI(messageData);
+// }
 
 
 
