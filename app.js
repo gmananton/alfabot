@@ -411,9 +411,9 @@ function receivedMessage(event) {
                         console.log("chatAnswer1=" + chatAnswer);
                         console.log("chatAnswer2=" + JSON.stringify(chatAnswer));
 
-                        for(var i=0; i<chatAnswer.messages.length; i++);
+                        for(var i=0; i<chatAnswer.chatMessages.length; i++);
                         {
-                            var msg =chatAnswer.messages[0];
+                            var msg =chatAnswer.chatMessages[0];
 
                             console.log("messageText1=" + messageText);
                             console.log("messageText1 enc=" + utf8.encode(messageText));
