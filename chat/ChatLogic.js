@@ -15,7 +15,7 @@ var utils = require('./../utils');
 //var ChatMessage = require('./chatMessage');
 var СhatAnswer = require('./ChatAnswer');
 
-var chatActions = require('./chatActions')
+var chatActions = require('./ChatActions')
 
 //В зависимости от того, установлен ли у нас источник данных, будем использовать либо источник либо заглушку (для Heroku)
 const dataRetreiver = config.get('javaServiceUrl') ? require('./../dataJava') : require('./../dataStub');
