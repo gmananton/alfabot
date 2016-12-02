@@ -17,7 +17,7 @@ const fs=require('fs');
 //const chatLogic = require('./chat/chatLogic');
 const utils = require('./utils');
 //const chatLogic2 = require('./chat2/chatLogic2');
-const test2 = require('./test2');
+const test2 = require('./chat/test2');
 
 const dataStub = require('./dataStub');
 
