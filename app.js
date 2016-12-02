@@ -396,6 +396,7 @@ function receivedMessage(event) {
                 break;
             default:
 
+                
                 var userMessage = { senderId: senderID, messageText:messageText, date: utils.getFormattedDate(new Date()) }
                 sendTextMessage(senderID, JSON.stringify(userMessage));
                 // chatLogic.processUserMessage(userMessage,
