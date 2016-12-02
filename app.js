@@ -24,7 +24,8 @@ const utils = require('./utils');
 var browserify = require('browserify');
 var React = require('react');
 var jsx = require('node-jsx');
-
+var debugRouter = require('./debugRouter');
+var facebookRouter = require('./facebookRouter');
 
 
 
@@ -77,6 +78,8 @@ if (!(APP_SECRET && VALIDATION_TOKEN && PAGE_ACCESS_TOKEN && SERVER_URL)) {
 }
 
 
+//вытащить в debug - отгда можно будет дебажить прямо по входящим данным формата facebook, которые мы возьмем из логов
+
 app.get('/webhook_debug', function (req, res) {
 
     console.log("--webhook_debug call--")
@@ -86,79 +89,14 @@ app.get('/webhook_debug', function (req, res) {
     console.log("qs JSON: " + JSON.stringify(JSON.parse(req.query.data)));
 
 
-
     processWebhook(data, res);
 
 });
 
-/*
- * This path is used for account linking. The account linking call-to-action
- * (sendAccountLinking) is pointed to this URL.
- *
- */
-app.get('/authorize', function (req, res) {
-    var accountLinkingToken = req.query.account_linking_token;
-    var redirectURI = req.query.redirect_uri;
 
-    // Authorization Code should be generated per user by the developer. This will
-    // be passed to the Account Linking callback.
-    var authCode = "1234567890";
 
-    // Redirect users to this URI on successful login
-    var redirectURISuccess = redirectURI + "&authorization_code=" + authCode;
 
-    res.render('authorize', {
-        accountLinkingToken: accountLinkingToken,
-        redirectURI: redirectURI,
-        redirectURISuccess: redirectURISuccess
-    });
-});
 
-jsx.install();
-var Books = require('./views/index.jsx');
-
-//This way the first load has a fully rendered static view and the user doesn't have to wait for the client to render it
-app.use('/aa', function(req, res) {
-    var books = [{
-        title: 'Professional Node.js',
-        read: false
-    }, {
-        title: 'Node.js Patterns',
-        read: false
-    }];
-
-    res.setHeader('Content-Type', 'text/html');
-    res.end(React.renderToStaticMarkup(
-        React.DOM.body(
-            null,
-            React.DOM.div({
-                id: 'app',
-                dangerouslySetInnerHTML: {
-                    __html: React.renderToString(React.createElement(TodoBox, {
-                        data: data
-                    }))
-                }
-            }),
-            React.DOM.script({
-                'id': 'initial-data',
-                'type': 'text/plain',
-                'data-json': JSON.stringify(data)
-            }),
-            React.DOM.script({
-                src: '/bundle.js'
-            })
-        )
-    ));
-});
-app.use('/bundle.js', function(req, res) {
-    res.setHeader('content-type', 'application/javascript');
-    browserify('./app.js', {
-        debug: true
-    })
-        .transform('reactify')
-        .bundle()
-        .pipe(res);
-});
 
 /**
  * Проверка подписи запроса, чтобы убедиться, что он пришел от Facebook
@@ -196,43 +134,15 @@ function verifyRequestSignature(req, res, buf) {
 // Webhooks must be available via SSL with a certificate signed by a valid
 // certificate authority.
 app.listen(app.get('port'), function () {
-
-    //Первичные насторйки - логгер, бд, WS_Client, еще что-нибудь
-    setup();
-
     console.log('Node app is running on port', app.get('port'));
 });
 
 module.exports = app;
-//
-function setup()
-{
-
-
-
-}
-
-////////////////ТЕСТ
-
-
-
-app.get('/test', function (req, res) {
-
-    console.log("testlog1");
-    res.status(200).send("test ok!!");
-
-});
 
 
 
 
 
-
-
-//////////////
-
-var debugRouter = require('./debugRouter');
-var facebookRouter = require('./facebookRouter');
 
 app.use('/debug', debugRouter);
 app.use('/', facebookRouter);
