@@ -14,8 +14,10 @@ const
     request    = require('request');
 
 const fs=require('fs');
-const chatLogic = require('./chat/chatLogic');
+//const chatLogic = require('./chat/chatLogic');
 const utils = require('./utils');
+
+const dataStub = require('./dataStub');
 
 //const setup=require('setup');
 var browserify = require('browserify');
@@ -357,7 +359,7 @@ function receivedMessage(event) {
     
 
     console.log("message v1:" + JSON.stringify(message));
-    console.log("message v2:" + message);
+
 
     var isEcho = message.is_echo;
     var messageId = message.mid;
@@ -396,8 +398,13 @@ function receivedMessage(event) {
                 break;
             default:
 
+                dataStub.getCustomerRequestedCardInfo(function(res){console.log("STUB = " + res)});
+
                 var userMessage = { senderId: senderID, messageText:messageText, date: utils.getFormattedDate(new Date()) }
+
                 sendTextMessage(senderID, JSON.stringify(userMessage));
+
+
                 // chatLogic.processUserMessage(userMessage,
                 //     function(chatAnswer)
                 //     {
