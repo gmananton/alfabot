@@ -24,11 +24,11 @@
 //
 // var clients = new hashes.HashTable();
 
-var chatLogic2 = new Object();
+var test2 = new Object();
 
 
 
-chatLogic2.processUserMessage = function(userMessage, callback)
+test2.processUserMessage = function(userMessage, callback)
 {
     console.log("chatLogic2.processUserMessage()!!");
     // var senderId = userMessage.senderId;
@@ -66,7 +66,7 @@ chatLogic2.processUserMessage = function(userMessage, callback)
 
 
 
-module.exports = chatLogic2;
+module.exports = test2;
 
 
 

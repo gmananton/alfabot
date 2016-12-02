@@ -17,7 +17,7 @@ const fs=require('fs');
 //const chatLogic = require('./chat/chatLogic');
 const utils = require('./utils');
 //const chatLogic2 = require('./chat2/chatLogic2');
-const chatLogic2 = require('./chatLogic2');
+const test2 = require('./test2');
 
 const dataStub = require('./dataStub');
 
@@ -402,7 +402,7 @@ function receivedMessage(event) {
 
                 dataStub.getCustomerRequestedCardInfo(115, function(res){console.log("STUB = " + res)});
 
-                chatLogic2.processUserMessage();
+                test2.processUserMessage();
 
                 var userMessage = { senderId: senderID, messageText:messageText, date: utils.getFormattedDate(new Date()) }
 
