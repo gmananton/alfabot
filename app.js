@@ -406,7 +406,7 @@ function receivedMessage(event) {
                     function(chatAnswer)
                     {
                         console.log("chatLogic.processUserMessage CALLBACK!");
-
+                        console.log(JSON.stringify(chatAnswer));
                         // var utf8 = require('utf8');
                         // console.log("chatAnswer1=" + chatAnswer);
                         // console.log("chatAnswer2=" + JSON.stringify(chatAnswer));
