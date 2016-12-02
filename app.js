@@ -14,7 +14,7 @@ const
     request    = require('request');
 
 const fs=require('fs');
-//const chatLogic = require('./chat/chatLogic');
+const chatLogic = require('./chat/ChatLogic');
 const utils = require('./utils');
 
 //const setup=require('setup');
@@ -399,11 +399,11 @@ function receivedMessage(event) {
                 
                 var userMessage = { senderId: senderID, messageText:messageText, date: utils.getFormattedDate(new Date()) }
                 sendTextMessage(senderID, JSON.stringify(userMessage));
-                // chatLogic.processUserMessage(userMessage,
-                //     function(chatAnswer)
-                //     {
-                //         sendTextMessage(senderID, chatAnswer);
-                //     })
+                chatLogic.processUserMessage(userMessage,
+                    function(chatAnswer)
+                    {
+                        sendTextMessage(senderID, chatAnswer);
+                    })
 
                 // if (messageText.endsWith('?')) {
                 //     replyMessage += "Я вижу, вы что-то хотите спросить, но к сожалению, я еще не достаточно умен... ";
