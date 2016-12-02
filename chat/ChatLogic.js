@@ -12,7 +12,7 @@ const config     = require('config');
 var clone = require('clone');
 var hashes = require('hashes');
 var utils = require('./../utils');
-var ChatMessage = require('./chatMessage');
+//var ChatMessage = require('./chatMessage');
 var СhatAnswer = require('./chatAnswer');
 
 var chatActions = require('./chatActions')
