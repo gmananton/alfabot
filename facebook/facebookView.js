@@ -123,7 +123,7 @@ facebookView.getMainMenu = function (recipientId) {
         }
     };
 
-    facebookSend.callSendAPI(messageData);
+    return messageData;
 }
 
 
