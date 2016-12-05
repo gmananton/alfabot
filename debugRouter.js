@@ -63,7 +63,7 @@ router.get('/sendChatMessage', function(req, res) {
     var messageText = req.query.messageText.trim();
 
     //current User Message
-    var userMessage = { senderId: senderId, messageExample:messageText, date: utils.getFormattedDate(new Date()) };
+    var userMessage = { senderId: senderId, messageText:messageText, date: utils.getFormattedDate(new Date()) };
 
     //saveToDb (log) - логировать надо из chatLogic
 
@@ -72,7 +72,8 @@ router.get('/sendChatMessage', function(req, res) {
 
         function(chatAnswer)
         {
-            chatAnswer.chatMessages.splice(0, 0, userMessage); //insert userMessage at the begining
+            //insert userMessage at the beginning
+            chatAnswer.chatMessages.splice(0, 0,  { senderId: senderId, messageExample:messageText, date: utils.getFormattedDate(new Date()) });
 
             res.setHeader('Content-Type', 'application/json');
             res.send(JSON.stringify(chatAnswer.chatMessages));

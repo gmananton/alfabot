@@ -3,8 +3,12 @@
  */
 
 const facebookSend = require('./facebookSend');
+const facebookView = require('./facebookView');
+
 const utils = require('./../utils');
 const chatLogic = require('./../chat/ChatLogic');
+
+const EnumDialogCommands = require('./../chat/EnumDialogCommands');
 
 var facebookReceive = new Object();
 
@@ -77,9 +81,6 @@ facebookReceive.receivedMessage = function(event) {
 
     //Пришел какой-то текст
     if (messageText) {
-        // Пока наш бот ничего не умеет, так что одинаково реагируем на текстовые сообщения
-        // и предлагаем воспользоваться кнопками меню
-
         //сразу все это в chatLogic вогнать, даже приветственный текст
         
             if(messageText == 'start') 
@@ -105,7 +106,14 @@ facebookReceive.receivedMessage = function(event) {
                         console.log("chatAnswer.chatMessages[i]=" + JSON.stringify(chatAnswer.chatMessages[i]));
                         var msg =chatAnswer.chatMessages[i];
 
-                        facebookSend.sendTextMessage(senderID, msg.messageText);
+                        //facebookSend.sendTextMessage(senderID, msg.messageText);
+                        //facebookSend.sendTextMessage(senderID, msg.messageExample);
+                        
+                        var facebookJsonMessage = facebookView.Convert(senderID, msg);
+
+                        facebookSend.callSendAPI(facebookJsonMessage);
+                        
+                        
                     }
 
 
@@ -141,13 +149,15 @@ facebookReceive.receivedPostback = function (event) {
             case 'startConversationPayload':
                 facebookSend.sendQuickReplyTutorialChoice(senderID);
                 break;
-            case 'mainMenuPayload':
+            //case 'mainMenuPayload':
+            case EnumDialogCommands.ab2510cmdMainMenu:
                 facebookSend.sendStartOptionsMessage(senderID);
                 break;
             case 'tutorialPayload':
                 facebookSend.sendQuickReplyTutorialChoice(senderID);
                 break;
-            case 'cardStatusPayload':
+            //case 'cardStatusPayload':
+            case EnumDialogCommands.ab2510cmdCardListStart:
                 facebookSend.sendCardStatusMessage(senderID);
                 break;
             case 'atmPayload':
