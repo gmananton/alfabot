@@ -60,10 +60,10 @@ router.get('/chat', function(req, res) {
 router.get('/sendChatMessage', function(req, res) {
 
     var senderId = req.query.senderId;
-    var messageText = req.query.messageText;
+    var messageText = req.query.messageText.trim();
 
     //current User Message
-    var userMessage = { senderId: senderId, messageText:messageText, date: utils.getFormattedDate(new Date()) };
+    var userMessage = { senderId: senderId, messageExample:messageText, date: utils.getFormattedDate(new Date()) };
 
     //saveToDb (log) - логировать надо из chatLogic
 

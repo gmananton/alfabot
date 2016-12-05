@@ -12,7 +12,10 @@ const config     = require('config');
 var clone = require('clone');
 var hashes = require('hashes');
 var utils = require('./../utils');
-//var ChatMessage = require('./chatMessage');
+
+const EnumDialogCommands = require('./EnumDialogCommands');
+const EnumMessageCodes = require('./EnumMessageCodes');
+
 var СhatAnswer = require('./ChatAnswer');
 
 var chatActions = require('./ChatActions')
@@ -25,6 +28,10 @@ const dataRetreiver = config.get('javaServiceUrl') ? require('./../dataJava') : 
 var clients = new hashes.HashTable();
 
 var chatLogic = new Object();
+
+var standartMenuCaption =  "Пожалуйста, нажмите "
+    + EnumDialogCommands.ab2510cmdCardListStart + " для Списка карт и "
+    + EnumDialogCommands.ab2510cmdBalanceStart + " для Баланса";
 
 
 
@@ -75,7 +82,7 @@ chatLogic.getAnswer = function(clientDialogState, messageText, callback)
 
 
     //0. Вызов "меню" из любого места сбрасывает текущие Тред
-    if (messageText == "меню") {
+    if (messageText == EnumDialogCommands.ab2510cmdMainMenu) {
 
         chatActions.main.getMenu(clientDialogState, callback);
         return;
@@ -96,13 +103,13 @@ chatLogic.getAnswer = function(clientDialogState, messageText, callback)
 
         //Ожидаем выбор пункта меню (только для дебага)
         if (clientDialogState.waitChooseMenu) {
-            if (messageText == "1") {
+            if (messageText == EnumDialogCommands.ab2510cmdCardListStart) {
 
                 chatActions.customerRequestedCardInfo.startThread(clientDialogState, callback);
                 return;
             }
 
-            if (messageText == "2") {
+            if (messageText == EnumDialogCommands.ab2510cmdBalanceStart) {
 
                 chatActions.balance.startThread(clientDialogState, callback);
                 return;
@@ -110,7 +117,7 @@ chatLogic.getAnswer = function(clientDialogState, messageText, callback)
 
             //Не распознали выбор
             var chatAnswer = new СhatAnswer();
-            chatAnswer.addMessage("Пожалуйста, нажмите 1 для Списка карт и 2 для Баланса");
+            chatAnswer.addMessage(EnumMessageCodes.main_whatCanIHelp, null, standartMenuCaption);
             callback(chatAnswer);
             return;
         }

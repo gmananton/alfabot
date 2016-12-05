@@ -113,7 +113,8 @@ class Chat extends React.Component{
 
                     for(var i=0; i<data.length; i++) {
 
-                        s.messages.push({authorName: data[i].senderId, messageText: data[i].messageText, date: data[i].date});
+                        //s.messages.push({authorName: data[i].senderId, messageText: data[i].messageText, date: data[i].date});
+                        s.messages.push({authorName: data[i].senderId, messageText: data[i].messageExample, date: data[i].date});
                     }
                     return s;
 
