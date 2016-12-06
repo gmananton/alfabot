@@ -113,7 +113,13 @@ facebookReceive.receivedMessage = function(event) {
 
                         console.log("converted = " + JSON.stringify(facebookJsonMessage));
 
-                        facebookSend.callSendAPI(facebookJsonMessage);
+                        facebookSend.sendTypingOn(senderID);
+
+                        setTimeout(1000, function(){facebookSend.sendTypingOff(senderID);})
+                        setTimeout(2000, function(){facebookSend.sendTypingOn(senderID);})
+
+                        setTimeout(2500, function(){facebookSend.callSendAPI(facebookJsonMessage);})
+                        //facebookSend.callSendAPI(facebookJsonMessage);
                         
                         
                     }
