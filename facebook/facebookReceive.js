@@ -115,12 +115,13 @@ facebookReceive.receivedMessage = function(event) {
 
                         facebookSend.sendTypingOn(senderID);
 
-                        setTimeout(function(){console.log('timeout')}, 2000);
+                       // setTimeout(function(){console.log('timeout')}, 2000);
 
-                        // setTimeout(function(){facebookSend.sendTypingOff(senderID);}, 2000);
-                        //
-                        // setTimeout(function(){facebookSend.sendTypingOn(senderID);}, 3000);
-                        //
+                        setTimeout(function(){facebookSend.sendTextMessage(senderID,'Извините, я Вас не понял. Выберите вариант из меню');}
+                            , 2000);
+
+                        setTimeout(function(){facebookSend.sendTypingOn(senderID);}, 3000);
+
                         // setTimeout(function(){facebookSend.sendTypingOff(senderID);}, 6000);
                         //
                         // setTimeout(function(){facebookSend.sendTypingOn(senderID);}, 7000);
@@ -129,7 +130,7 @@ facebookReceive.receivedMessage = function(event) {
                         //
                         // setTimeout(function(){facebookSend.sendTypingOn(senderID);}, 16000);
                         //
-                        // setTimeout(function(){facebookSend.callSendAPI(facebookJsonMessage);}, 20000);
+                         setTimeout(function(){facebookSend.callSendAPI(facebookJsonMessage);}, 4000);
                         //facebookSend.callSendAPI(facebookJsonMessage);
                         
                         
