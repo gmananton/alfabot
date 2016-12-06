@@ -126,8 +126,7 @@ facebookSend.sendAnswer =  function(chatAnswer)
         console.log("chatAnswer.chatMessages[i]=" + JSON.stringify(chatAnswer.chatMessages[i]));
         var msg =chatAnswer.chatMessages[i];
 
-        facebookSend.sendTextMessage(msg.recepientId, "Опс, ошибочка \n вышла!  ))")
-        return;
+     
 
         var facebookJsonMessage;
 
