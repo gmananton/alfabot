@@ -28,7 +28,7 @@ dataRetreiver.getCustomerRequestedCardInfo = function(crf, callback)
     //         callback(result);
     //     });
 
-   // var res={"data":[{"cards": 145}]}
+    //var res={"data":[{"cards": 145}]}
     var res={"data":[{"cards": [
         {name: "Александр Бут", status: "ready"},
         {name: "Андрей Вас", status: "ready"},
