@@ -117,6 +117,7 @@ chatLogic.getAnswer = function(clientDialogState, messageText, callback)
 
             //Не распознали выбор
             var chatAnswer = new СhatAnswer();
+            chatAnswer.addMessage(EnumMessageCodes.main_iCantUnderstand, null, "Извинте, я вас не понимаю");
             chatAnswer.addMessage(EnumMessageCodes.main_whatCanIHelp, null, standartMenuCaption);
             callback(chatAnswer);
             return;

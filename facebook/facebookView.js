@@ -39,6 +39,9 @@ facebookView.Convert = function(recipientId, chatMessage)
         case EnumMessageCodes.main_whatCanIHelp:
             fbJson = facebookView.getMainMenu(recipientId);
             break;
+        case EnumMessageCodes.main_iCantUnderstand:
+            fbJson = facebookView.getSimpleTextMessage(recipientId, "(fb): Извините, я Вас не понимаю. Воспользуйтесь меню");
+            break;
         case EnumMessageCodes.cardList_ProvideInn:
             fbJson = facebookView.getSimpleTextMessage(recipientId, "(fb): Введите ИНН");
             break;

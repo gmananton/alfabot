@@ -106,33 +106,20 @@ facebookReceive.receivedMessage = function(event) {
                         console.log("chatAnswer.chatMessages[i]=" + JSON.stringify(chatAnswer.chatMessages[i]));
                         var msg =chatAnswer.chatMessages[i];
 
-                        //facebookSend.sendTextMessage(senderID, msg.messageText);
-                        //facebookSend.sendTextMessage(senderID, msg.messageExample);
-                        
                         var facebookJsonMessage = facebookView.Convert(senderID, msg);
 
-                        console.log("converted = " + JSON.stringify(facebookJsonMessage));
 
-                        facebookSend.sendTypingOn(senderID);
+                        setTimeout(function(){
+                            facebookSend.sendTypingOn(senderID);}, i * 2000);
 
-                       // setTimeout(function(){console.log('timeout')}, 2000);
+                        //только такой замысловатой конструкцией можно из замыкания вызвать анонимную функцию с параметром
+                        setTimeout((function(facebookJsonMessage){
+                            return function() {
+                                facebookSend.callSendAPI(facebookJsonMessage);
+                            }
+                        })(facebookJsonMessage), i* 2000+1000);
 
-                        setTimeout(function(){facebookSend.sendTextMessage(senderID,'Извините, я Вас не понял. Выберите вариант из меню');}
-                            , 2000);
 
-                        setTimeout(function(){facebookSend.sendTypingOn(senderID);}, 3000);
-
-                        // setTimeout(function(){facebookSend.sendTypingOff(senderID);}, 6000);
-                        //
-                        // setTimeout(function(){facebookSend.sendTypingOn(senderID);}, 7000);
-                        //
-                        // setTimeout(function(){facebookSend.sendTypingOff(senderID);}, 11000);
-                        //
-                        // setTimeout(function(){facebookSend.sendTypingOn(senderID);}, 16000);
-                        //
-                         setTimeout(function(){facebookSend.callSendAPI(facebookJsonMessage);}, 4000);
-                        //facebookSend.callSendAPI(facebookJsonMessage);
-                        
                         
                     }
 

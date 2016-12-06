@@ -7,7 +7,8 @@ EnumMessageCodes = {
 
     isNoSubject: 0,
 
-    main_whatCanIHelp : 1,
+    main_whatCanIHelp : 1000,
+    main_iCantUnderstand : 1001,
 
     
    
