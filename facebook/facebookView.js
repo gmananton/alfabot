@@ -47,6 +47,8 @@ facebookView.Convert = function(recipientId, chatMessage)
             break;
     }
 
+    return fbJson;
+
 }
 
 facebookView.getSimpleTextMessage = function(recipientId, messageText)

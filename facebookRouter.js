@@ -59,8 +59,9 @@ router.get('/webhook_debug', function (req, res) {
     console.log("qs: " + JSON.stringify(req.query));
     console.log("qs JSON: " + JSON.stringify(JSON.parse(req.query.data)));
 
+    var jsonData = JSON.parse(req.query.data);
 
-    processWebhook(data, res);
+    processWebhook(jsonData, res);
 
 });
 

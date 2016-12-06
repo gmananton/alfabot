@@ -111,6 +111,8 @@ facebookReceive.receivedMessage = function(event) {
                         
                         var facebookJsonMessage = facebookView.Convert(senderID, msg);
 
+                        console.log("converted = " + JSON.stringify(facebookJsonMessage));
+
                         facebookSend.callSendAPI(facebookJsonMessage);
                         
                         
