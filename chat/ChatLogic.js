@@ -213,11 +213,12 @@ chatLogic.getAnswer = function(clientDialogState, messageText, callback)
     //текущие данные, сохраняемые в рамках треда. При смене треда, данные обнуляются
     o.data = new Object();
 
+    //сбрасываем состояние диалога и переходим в ожидание выбора меню (обычно вызывается при явном вызове меню посередине любой ветки диалога)
     o.resetDialog = function () {
         o.currentThread = EnumThreadNames.isNoSubject;
 
         //текущее состояние пользователя в рамках Треда
-        o.waitChooseMenu = false; //Ожидается выбор меню действий
+        o.waitChooseMenu = true; //Ожидается выбор меню действий
         o.waitInputCrf = false;   //Ожидается ввод ИНН
         o.waitInputLast4PhoneDigits = false;   //Ожидается ввод последних 4 цифр телефона
         o.waitSmsAnswer = false;  //Ожидается ввод СМС-кода
