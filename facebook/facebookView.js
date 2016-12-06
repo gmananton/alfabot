@@ -43,6 +43,8 @@ facebookView.Convert = function(chatMessage)
         case EnumMessageCodes.main_iCantUnderstand:
             fbJson = facebookView.getSimpleTextMessage(recipientId, "(fb): Извините, я Вас не понимаю. Воспользуйтесь меню");
             break;
+
+        //region Списое карт
         case EnumMessageCodes.cardList_ProvideInn:
             fbJson = facebookView.getSimpleTextMessage(recipientId, "(fb): Введите ИНН");
             break;
@@ -52,6 +54,41 @@ facebookView.Convert = function(chatMessage)
         case EnumMessageCodes.cardList_Result:
             fbJson = facebookView.getSimpleTextMessage(recipientId, "(fb): Результат: " + JSON.stringify(chatMessage.messageData));
             break;
+
+        //endregion
+
+        //region Баланс
+
+        case EnumMessageCodes.balance_ProvideInn:
+            fbJson = facebookView.getSimpleTextMessage(recipientId, "(fb): Введите ИНН");
+            break;
+
+        case EnumMessageCodes.balance_IncorrectInn:
+            fbJson = facebookView.getSimpleTextMessage(recipientId, "(fb): Введен некорректный ИНН");
+            break;
+
+        case EnumMessageCodes.balance_ProvideLast4Digits:
+            fbJson = facebookView.getSimpleTextMessage(recipientId, "(fb): Введите последине 4 цифры вашего телефона");
+            break;
+
+        case EnumMessageCodes.balance_IncorrectLast4Digits:
+            fbJson = facebookView.getSimpleTextMessage(recipientId, "(fb): Введен некорректные 4 цифры");
+            break;
+
+        case EnumMessageCodes.balance_ProvideSmsCode:
+            fbJson = facebookView.getSimpleTextMessage(recipientId, "(fb): Введите SMS код");
+            break;
+
+        case EnumMessageCodes.balance_IncorrectSmsCode:
+            fbJson = facebookView.getSimpleTextMessage(recipientId, "(fb): Введен некорректный SMS код");
+            break;
+
+        case EnumMessageCodes.balance_Result:
+            fbJson = facebookView.getSimpleTextMessage(recipientId, "(fb): Результат: " + JSON.stringify(chatMessage.messageData));
+            break;
+
+        //endregion
+
         default:
             fbJson = facebookView.getSimpleTextMessage(recipientId, "(fb): Нет фразы для заданного кода сообщения. Example:" + chatMessage.messageExample);
             break;
