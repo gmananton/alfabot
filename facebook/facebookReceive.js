@@ -82,8 +82,8 @@ facebookReceive.receivedMessage = function(event) {
     //Пришел какой-то текст
     if (messageText) {
         
-            //обработать входящее сообщение
-            var userMessage = { senderId: senderID, messageText:messageText, date: utils.getFormattedDate(new Date()) }
+            //обработать входящее сообщение. Оно идет в рамках текущей ветки диалога
+            var userMessage = { senderId: senderID, messageText:messageText, resetCurrentDialog:false, date: utils.getFormattedDate(new Date()) }
             
             chatLogic.processUserMessage(userMessage, facebookSend.sendAnswer);
         
@@ -115,8 +115,9 @@ facebookReceive.receivedPostback = function (event) {
         
         //payload приравниваем к текстовому сообщению (поскольку все payload-ы условно уникальны и не набираются пользователем)
 
-        //обработать входящее сообщение
-        var userMessage = { senderId: senderID, messageText:payload, date: utils.getFormattedDate(new Date()) }
+        //обработать входящее сообщение. Поскольку это команда из Меню, то сбрасываем текущую ветку диалога 
+        // (кнопки quickReply - особые, обрабатываются в facebookReceive.receivedMessage)
+        var userMessage = { senderId: senderID, messageText:payload, resetCurrentDialog:true, date: utils.getFormattedDate(new Date()) }
 
         chatLogic.processUserMessage(userMessage, facebookSend.sendAnswer);
         

@@ -39,10 +39,14 @@ chatLogic.processUserMessage = function(userMessage, callback)
 {
     var senderId = userMessage.senderId;
     var messageText = userMessage.messageText;
+    var resetCurrentDialog = userMessage.resetCurrentDialog;
 
 
     //забрать инфо по состоянию диалога
     var clientDialogState = clients.contains(senderId) ? clients.get(senderId).value : createNewUserDialogState(senderId);
+
+    if(resetCurrentDialog)
+        clientDialogState.resetDialog();
 
     clientDialogState.numOfMessagesDuringLastSession++;
 
@@ -208,6 +212,16 @@ chatLogic.getAnswer = function(clientDialogState, messageText, callback)
 
     //текущие данные, сохраняемые в рамках треда. При смене треда, данные обнуляются
     o.data = new Object();
+
+    o.resetDialog = function () {
+        o.currentThread = EnumThreadNames.isNoSubject;
+
+        //текущее состояние пользователя в рамках Треда
+        o.waitChooseMenu = false; //Ожидается выбор меню действий
+        o.waitInputCrf = false;   //Ожидается ввод ИНН
+        o.waitInputLast4PhoneDigits = false;   //Ожидается ввод последних 4 цифр телефона
+        o.waitSmsAnswer = false;  //Ожидается ввод СМС-кода
+    }
 
     return o;
 }
