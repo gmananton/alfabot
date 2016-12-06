@@ -66,13 +66,13 @@ facebookView.Convert = function(chatMessage)
 
             console.log("Список карт: " + JSON.stringify(chatMessage.messageData))
 
-            // var str="";
-            // chatMessage.messageData.data.cards.forEach(function(item, i, arr) {
-            //     str+=item.name + " - " + item.status + "\n";
-            // });
+            var str="";
+            chatMessage.messageData.data.cards.forEach(function(item, i, arr) {
+                str+=item.name + " - " + item.status + "\n";
+            });
 
-            //fbJson = facebookView.getSimpleTextMessage(recipientId, "(fb): Результат: \n" + str );
-            fbJson = facebookView.getSimpleTextMessage(recipientId, "(fb): Результат: \n" + JSON.stringify(chatMessage.messageData) );
+            fbJson = facebookView.getSimpleTextMessage(recipientId, "(fb): Результат: \n" + str );
+            //fbJson = facebookView.getSimpleTextMessage(recipientId, "(fb): Результат: \n" + JSON.stringify(chatMessage.messageData) );
             break;
 
         //endregion
