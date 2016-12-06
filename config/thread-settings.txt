@@ -28,24 +28,24 @@ curl -X POST -H "Content-Type: application/json" -d '{
    {
         "type":"postback",
         "title":"Главное меню",
-        "payload":"mainMenuPayload"
+        "payload":"ab2510cmdMainMenu"
       },
     {
       "type":"postback",
       "title":"Заказанные карты",
       "payload":"ab2510cmdCardListStart"
     },
+
     {
+      "type":"postback",
+      "title":"Баланс по счетам",
+      "payload":"ab2510cmdBalanceStart"
+    },
+{
       "type":"postback",
       "title":"Банкоматы",
       "payload":"atmPayload"
     },
-    {
-      "type":"postback",
-      "title":"Счета",
-      "payload":"accountsPayload"
-    },
-
     {
       "type":"postback",
       "title":"Повторить обучение",

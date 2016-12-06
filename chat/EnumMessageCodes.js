@@ -5,8 +5,6 @@
 //все возможные виды сообщений ботов перечислены здесь (для удобства в соответствии с ветками диалогов)
 EnumMessageCodes = {
 
-    isNoSubject: 0,
-
     main_whatCanIHelp : "main_whatCanIHelp",
     main_iCantUnderstand : "main_iCantUnderstand",
 
@@ -16,13 +14,13 @@ EnumMessageCodes = {
     cardList_IncorrectInn : "cardList_IncorrectInn",
     cardList_Result : "cardList_Result",
     
-    balance_ProvideInn : 5,
-    balance_IncorrectInn: 6,
-    balance_ProvideLast4Digits: 7,
-    balance_IncorrectLast4Digits: 8,
-    balance_ProvideSmsCode: 9,
-    balance_IncorrectSmsCode: 10,
-    balance_Result: 11
+    balance_ProvideInn : "balance_ProvideInn",
+    balance_IncorrectInn: "balance_IncorrectInn",
+    balance_ProvideLast4Digits: "balance_ProvideLast4Digits",
+    balance_IncorrectLast4Digits: "balance_IncorrectLast4Digits",
+    balance_ProvideSmsCode: "balance_ProvideSmsCode",
+    balance_IncorrectSmsCode: "balance_IncorrectSmsCode",
+    balance_Result: "balance_Result"
     
     
     

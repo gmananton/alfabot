@@ -100,35 +100,36 @@ facebookView.getMainMenu = function (recipientId) {
                             }]
                         },
                         {
-                            title: "Ближайший банкомат",
-                            subtitle: "Посмотреть адрес ближайшего банкомата",
-                            image_url: SERVER_URL + LOCATION_ICON_PATH,
-                            buttons: [{
-                                type: "postback",
-                                title: "Посмотреть ближайший банкомат",
-                                payload: "atmPayload"
-                            }]
-                        },
-                        {
                             title: "Счета",
                             subtitle: "Посмотреть текущее состояние счетов",
                             image_url: SERVER_URL + PIGGI_ICON_PATH,
                             buttons: [{
                                 type: "postback",
                                 title: "Посмотреть состояние счетов",
-                                payload: "accountsPayload"
+                                payload: "ab2510cmdBalanceStart"
                             }]
                         },
-                        {
-                            title: "Сотрудник",
-                            subtitle: "Связаться с поддержкой банка",
-                            image_url: SERVER_URL + PERSON_ICON_PATH,
-                            buttons: [{
-                                type: "phone_number",
-                                title: "Связаться с поддержкой",
-                                payload: "+74957888878"
-                            }]
-                        }
+                        // {
+                        //     title: "Ближайший банкомат",
+                        //     subtitle: "Посмотреть адрес ближайшего банкомата",
+                        //     image_url: SERVER_URL + LOCATION_ICON_PATH,
+                        //     buttons: [{
+                        //         type: "postback",
+                        //         title: "Посмотреть ближайший банкомат",
+                        //         payload: "atmPayload"
+                        //     }]
+                        // },
+                        //
+                        // {
+                        //     title: "Сотрудник",
+                        //     subtitle: "Связаться с поддержкой банка",
+                        //     image_url: SERVER_URL + PERSON_ICON_PATH,
+                        //     buttons: [{
+                        //         type: "phone_number",
+                        //         title: "Связаться с поддержкой",
+                        //         payload: "+74957888878"
+                        //     }]
+                        // }
                     ]
                 }
             }

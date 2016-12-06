@@ -157,66 +157,6 @@ facebookSend.sendAnswer =  function(chatAnswer)
 
 
 
-/** Главное меню с выбором действий (generic template) */
-facebookSend.sendStartOptionsMessage = function (recipientId) {
-    var messageData = {
-        recipient: {
-            id: recipientId
-        },
-        message: {
-            attachment: {
-                type: "template",
-                payload: {
-                    template_type: "generic",
-                    elements: [
-                        {
-                            title: "Банковские карты",
-                            subtitle: "Узнать статус готовности заказанной карты",
-                            image_url: SERVER_URL + CREDIT_CARDS_ICON_PATH,
-                            buttons: [{
-                                type: "postback",
-                                title: "Узнать статус",
-                                payload: "cardStatusPayload"
-                            }]
-                        },
-                        {
-                            title: "Ближайший банкомат",
-                            subtitle: "Посмотреть адрес ближайшего банкомата",
-                            image_url: SERVER_URL + LOCATION_ICON_PATH,
-                            buttons: [{
-                                type: "postback",
-                                title: "Посмотреть ближайший банкомат",
-                                payload: "atmPayload"
-                            }]
-                        },
-                        {
-                            title: "Счета",
-                            subtitle: "Посмотреть текущее состояние счетов",
-                            image_url: SERVER_URL + PIGGI_ICON_PATH,
-                            buttons: [{
-                                type: "postback",
-                                title: "Посмотреть состояние счетов",
-                                payload: "accountsPayload"
-                            }]
-                        },
-                        {
-                            title: "Сотрудник",
-                            subtitle: "Связаться с поддержкой банка",
-                            image_url: SERVER_URL + PERSON_ICON_PATH,
-                            buttons: [{
-                                type: "phone_number",
-                                title: "Связаться с поддержкой",
-                                payload: "+74957888878"
-                            }]
-                        }
-                    ]
-                }
-            }
-        }
-    };
-
-    facebookSend.callSendAPI(messageData);
-}
 
 
 /** TODO STUB Информация по счетам */
@@ -290,7 +230,7 @@ facebookSend.sendQuickReplyTutorialChoice = function (recipientId) {
 
 
 /** Геолокация с местнахождением карты (generic template) */
-facebookSend.sendCardLocationMessage = function (recipientId) {
+facebookSend.__sendCardLocationMessage = function (recipientId) {
     var lattitude = 55.98267;
     var longtitude = 37.1735586;
     var messageData = {
@@ -330,8 +270,71 @@ facebookSend.sendCardLocationMessage = function (recipientId) {
 
 //region На будущее - просто примеры
 
+/** Главное меню с выбором действий (generic template) */
+facebookSend.__sendStartOptionsMessage = function (recipientId) {
+    var messageData = {
+        recipient: {
+            id: recipientId
+        },
+        message: {
+            attachment: {
+                type: "template",
+                payload: {
+                    template_type: "generic",
+                    elements: [
+                        {
+                            title: "Банковские карты",
+                            subtitle: "Узнать статус готовности заказанной карты",
+                            image_url: SERVER_URL + CREDIT_CARDS_ICON_PATH,
+                            buttons: [{
+                                type: "postback",
+                                title: "Узнать статус",
+                                payload: "cardStatusPayload"
+                            }]
+                        },
+                        {
+                            title: "Ближайший банкомат",
+                            subtitle: "Посмотреть адрес ближайшего банкомата",
+                            image_url: SERVER_URL + LOCATION_ICON_PATH,
+                            buttons: [{
+                                type: "postback",
+                                title: "Посмотреть ближайший банкомат",
+                                payload: "atmPayload"
+                            }]
+                        },
+                        {
+                            title: "Счета",
+                            subtitle: "Посмотреть текущее состояние счетов",
+                            image_url: SERVER_URL + PIGGI_ICON_PATH,
+                            buttons: [{
+                                type: "postback",
+                                title: "Посмотреть состояние счетов",
+                                payload: "accountsPayload"
+                            }]
+                        },
+                        {
+                            title: "Сотрудник",
+                            subtitle: "Связаться с поддержкой банка",
+                            image_url: SERVER_URL + PERSON_ICON_PATH,
+                            buttons: [{
+                                type: "phone_number",
+                                title: "Связаться с поддержкой",
+                                payload: "+74957888878"
+                            }]
+                        }
+                    ]
+                }
+            }
+        }
+    };
+
+    facebookSend.callSendAPI(messageData);
+}
+
+
+
 /** Геолокация с местнахождением ближайшего банкомата (generic template) */
-facebookSend.sendATMLocationMessage =function (recipientId) {
+facebookSend.__sendATMLocationMessage =function (recipientId) {
     var lattitude = 55.774822;
     var longtitude = 37.649813;
     var messageData = {
