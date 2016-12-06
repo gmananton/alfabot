@@ -4,6 +4,7 @@
 
 const request    = require('request');
 const config    = require('config');
+const facebookView = require('./facebookView');
 
 const PAGE_ACCESS_TOKEN = (process.env.MESSENGER_PAGE_ACCESS_TOKEN) ?
     (process.env.MESSENGER_PAGE_ACCESS_TOKEN) :
@@ -74,6 +75,8 @@ facebookSend.sendTextMessage = function (recipientId, messageText) {
     facebookSend.callSendAPI(messageData);
 }
 
+
+
 //endregion
 
 //region Set Typing On-Off
@@ -109,6 +112,50 @@ facebookSend.sendTypingOff = function (recipientId) {
 }
 
 //endregion
+
+
+//Отсыл ответа (возможно несколько messages в chatAnswer)
+facebookSend.sendAnswer =  function(chatAnswer)
+{
+    console.log("chatLogic.processUserMessage CALLBACK!");
+    console.log(JSON.stringify(chatAnswer));
+
+    for(var i=0; i<chatAnswer.chatMessages.length; i++)
+    {
+        console.log("i=" + i);
+        console.log("chatAnswer.chatMessages[i]=" + JSON.stringify(chatAnswer.chatMessages[i]));
+        var msg =chatAnswer.chatMessages[i];
+
+        var facebookJsonMessage = facebookView.Convert(msg);
+
+
+        setTimeout(function(){
+            facebookSend.sendTypingOn(msg.recepientId);}, i * 2000);
+
+        //только такой замысловатой конструкцией можно из замыкания вызвать анонимную функцию с параметром
+        setTimeout((function(facebookJsonMessage){
+            return function() {
+                facebookSend.callSendAPI(facebookJsonMessage);
+            }
+        })(facebookJsonMessage), i* 2000+1000);
+
+
+
+    }
+
+
+}
+
+
+
+
+
+
+
+
+
+
+
 
 /** Главное меню с выбором действий (generic template) */
 facebookSend.sendStartOptionsMessage = function (recipientId) {

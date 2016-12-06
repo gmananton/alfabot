@@ -46,6 +46,12 @@ facebookView.Convert = function(chatMessage)
         case EnumMessageCodes.cardList_ProvideInn:
             fbJson = facebookView.getSimpleTextMessage(recipientId, "(fb): Введите ИНН");
             break;
+        case EnumMessageCodes.cardList_IncorrectInn:
+            fbJson = facebookView.getSimpleTextMessage(recipientId, "(fb): Введен некорректный ИНН");
+            break;
+        case EnumMessageCodes.cardList_Result:
+            fbJson = facebookView.getSimpleTextMessage(recipientId, "(fb): Результат: " + JSON.stringify(chatMessage.messageData));
+            break;
         default:
             fbJson = facebookView.getSimpleTextMessage(recipientId, "(fb): Нет фразы для заданного кода сообщения. Example:" + chatMessage.messageExample);
             break;

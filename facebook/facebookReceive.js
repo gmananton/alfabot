@@ -81,57 +81,16 @@ facebookReceive.receivedMessage = function(event) {
 
     //Пришел какой-то текст
     if (messageText) {
-        //сразу все это в chatLogic вогнать, даже приветственный текст
-        
-            // if(messageText == 'start')
-            // {
-            //     facebookSend.sendStartOptionsMessage(senderID);
-            //     return;
-            // }
-                
-             
         
             //обработать входящее сообщение
             var userMessage = { senderId: senderID, messageText:messageText, date: utils.getFormattedDate(new Date()) }
             
-            chatLogic.processUserMessage(userMessage, facebookReceive.sendAnswer);
-
-
+            chatLogic.processUserMessage(userMessage, facebookSend.sendAnswer);
         
     }
 
 }
 
-facebookReceive.sendAnswer =  function(chatAnswer)
-{
-    console.log("chatLogic.processUserMessage CALLBACK!");
-    console.log(JSON.stringify(chatAnswer));
-
-    for(var i=0; i<chatAnswer.chatMessages.length; i++)
-    {
-        console.log("i=" + i);
-        console.log("chatAnswer.chatMessages[i]=" + JSON.stringify(chatAnswer.chatMessages[i]));
-        var msg =chatAnswer.chatMessages[i];
-
-        var facebookJsonMessage = facebookView.Convert(msg);
-
-
-        setTimeout(function(){
-            facebookSend.sendTypingOn(msg.recepientId);}, i * 2000);
-
-        //только такой замысловатой конструкцией можно из замыкания вызвать анонимную функцию с параметром
-        setTimeout((function(facebookJsonMessage){
-            return function() {
-                facebookSend.callSendAPI(facebookJsonMessage);
-            }
-        })(facebookJsonMessage), i* 2000+1000);
-
-
-
-    }
-
-
-}
 
 /**
  * Postback Event
@@ -153,36 +112,45 @@ facebookReceive.receivedPostback = function (event) {
     console.log(JSON.stringify(event.sender));
 
     if (payload) {
-        switch (payload) {
-            case 'startConversationPayload':
-                facebookSend.sendQuickReplyTutorialChoice(senderID);
-                break;
-            //case 'mainMenuPayload':
-            case EnumDialogCommands.ab2510cmdMainMenu:
-                facebookSend.sendStartOptionsMessage(senderID);
-                break;
-            case 'tutorialPayload':
-                facebookSend.sendQuickReplyTutorialChoice(senderID);
-                break;
-            //case 'cardStatusPayload':
-            case EnumDialogCommands.ab2510cmdCardListStart:
-                facebookSend.sendCardStatusMessage(senderID);
-                break;
-            case 'atmPayload':
-                facebookSend.sendATMLocationMessage(senderID);
-                break;
-            case 'accountsPayload':
-                facebookSend.sendAccountsInfoMessage(senderID);
-                break;
-            case 'cardLocationPayload':
-                facebookSend.sendCardLocationMessage(senderID);
-                break;
-            default:
+        
+        //payload приравниваем к текстовому сообщению (поскольку все payload-ы условно уникальны и не набираются пользователем)
 
+        //обработать входящее сообщение
+        var userMessage = { senderId: senderID, messageText:payload, date: utils.getFormattedDate(new Date()) }
 
-                facebookSend.sendTextMessage(senderID, "Прошу прощения, я Вас не совсем понял...");
-                break;
-        }
+        chatLogic.processUserMessage(userMessage, facebookSend.sendAnswer);
+        
+        
+        // switch (payload) {
+        //     case 'startConversationPayload':
+        //         facebookSend.sendQuickReplyTutorialChoice(senderID);
+        //         break;
+        //     //case 'mainMenuPayload':
+        //     case EnumDialogCommands.ab2510cmdMainMenu:
+        //         facebookSend.sendStartOptionsMessage(senderID);
+        //         break;
+        //     case 'tutorialPayload':
+        //         facebookSend.sendQuickReplyTutorialChoice(senderID);
+        //         break;
+        //     //case 'cardStatusPayload':
+        //     case EnumDialogCommands.ab2510cmdCardListStart:
+        //         facebookSend.sendCardStatusMessage(senderID);
+        //         break;
+        //     case 'atmPayload':
+        //         facebookSend.sendATMLocationMessage(senderID);
+        //         break;
+        //     case 'accountsPayload':
+        //         facebookSend.sendAccountsInfoMessage(senderID);
+        //         break;
+        //     case 'cardLocationPayload':
+        //         facebookSend.sendCardLocationMessage(senderID);
+        //         break;
+        //     default:
+        //
+        //
+        //         facebookSend.sendTextMessage(senderID, "Прошу прощения, я Вас не совсем понял...");
+        //         break;
+        // }
     }
 }
 
