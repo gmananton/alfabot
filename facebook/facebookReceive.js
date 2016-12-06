@@ -115,19 +115,21 @@ facebookReceive.receivedMessage = function(event) {
 
                         facebookSend.sendTypingOn(senderID);
 
-                        setTimeout(function(){facebookSend.sendTypingOff(senderID);}, 2000);
+                        setTimeout(function(){console.log('timeout')}, 2000);
 
-                        setTimeout(function(){facebookSend.sendTypingOn(senderID);}, 3000);
-
-                        setTimeout(function(){facebookSend.sendTypingOff(senderID);}, 6000);
-
-                        setTimeout(function(){facebookSend.sendTypingOn(senderID);}, 7000);
-
-                        setTimeout(function(){facebookSend.sendTypingOff(senderID);}, 11000);
-
-                        setTimeout(function(){facebookSend.sendTypingOn(senderID);}, 16000);
-
-                        setTimeout(function(){facebookSend.callSendAPI(facebookJsonMessage);}, 20000)
+                        // setTimeout(function(){facebookSend.sendTypingOff(senderID);}, 2000);
+                        //
+                        // setTimeout(function(){facebookSend.sendTypingOn(senderID);}, 3000);
+                        //
+                        // setTimeout(function(){facebookSend.sendTypingOff(senderID);}, 6000);
+                        //
+                        // setTimeout(function(){facebookSend.sendTypingOn(senderID);}, 7000);
+                        //
+                        // setTimeout(function(){facebookSend.sendTypingOff(senderID);}, 11000);
+                        //
+                        // setTimeout(function(){facebookSend.sendTypingOn(senderID);}, 16000);
+                        //
+                        // setTimeout(function(){facebookSend.callSendAPI(facebookJsonMessage);}, 20000);
                         //facebookSend.callSendAPI(facebookJsonMessage);
                         
                         
