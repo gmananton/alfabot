@@ -63,7 +63,15 @@ facebookView.Convert = function(chatMessage)
             fbJson = facebookView.getSimpleTextMessage(recipientId, "(fb): Введен некорректный ИНН");
             break;
         case EnumMessageCodes.cardList_Result:
-            fbJson = facebookView.getSimpleTextMessage(recipientId, "(fb): Результат: " + JSON.stringify(chatMessage.messageData));
+
+            console.log("Список карт: " + JSON.stringify(chatMessage.messageData))
+
+            var str="";
+            chatMessage.messageData.data.cards.forEach(function(item, i, arr) {
+                str+=item.name + " - " + item.status + "\n";
+            });
+
+            fbJson = facebookView.getSimpleTextMessage(recipientId, "(fb): Результат: \n" + str );
             break;
 
         //endregion
