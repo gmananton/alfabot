@@ -38,7 +38,8 @@ facebookView.Convert = function(chatMessage)
     switch (chatMessage.messageCode)
     {
         case EnumMessageCodes.main_whatCanIHelp:
-            var txt = chatMessage.messageData.numOfMessagesDuringLastSession==1 ?
+            var clientDialogState = chatMessage.messageData; //сюда передается clientDialogState
+            var txt = clientDialogState.numOfMessagesDuringLastSession==1 ?
                 "Здравствуйте! Я чат-бот Альфа банка. Я могу выполнить для Вас некоторые операции. Воспользуйтесь меню, " +
                 "находящееся слева от поля ввода" :
                 "Чем я могу еще помочь? Выберите пункт меню";

@@ -122,7 +122,7 @@ chatLogic.getAnswer = function(clientDialogState, messageText, callback)
             //Не распознали выбор
             var chatAnswer = new СhatAnswer();
             chatAnswer.addMessage(clientDialogState.userId, EnumMessageCodes.main_iCantUnderstand, null, "Извинте, я вас не понимаю");
-            chatAnswer.addMessage(clientDialogState.userId, EnumMessageCodes.main_whatCanIHelp, null, standartMenuCaption);
+            chatAnswer.addMessage(clientDialogState.userId, EnumMessageCodes.main_whatCanIHelp, clientDialogState, standartMenuCaption);
             callback(chatAnswer);
             return;
         }

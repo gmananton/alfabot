@@ -59,7 +59,7 @@ chatActions.main.greeting = function(clientDialogState, callback)
         "Чем я еще могу вам помочь? "+standartMenuCaption+" (в любой момент времени введите \"ab2510cmdMainMenu\" для выхода из текущего диалога)";
 
     var chatAnswer = new ChatAnswer();
-    chatAnswer.addMessage(clientDialogState.userId, EnumMessageCodes.main_whatCanIHelp, {numOfMessagesDuringLastSession: clientDialogState.numOfMessagesDuringLastSession}, greeting);
+    chatAnswer.addMessage(clientDialogState.userId, EnumMessageCodes.main_whatCanIHelp,  clientDialogState, greeting);
     callback(chatAnswer);
 }
 
