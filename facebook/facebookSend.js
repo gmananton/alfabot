@@ -126,7 +126,7 @@ facebookSend.sendAnswer =  function(chatAnswer)
         console.log("chatAnswer.chatMessages[i]=" + JSON.stringify(chatAnswer.chatMessages[i]));
         var msg =chatAnswer.chatMessages[i];
 
-     
+
 
         var facebookJsonMessage;
 
@@ -135,7 +135,7 @@ facebookSend.sendAnswer =  function(chatAnswer)
         }
         catch(ex)
         {
-            console.log("Ошибка при вызове facebookView.Convert: " + JSON.stringify(err));
+            console.log("Ошибка при вызове facebookView.Convert: " + JSON.stringify(ex));
             facebookSend.sendTextMessage(msg.recepientId, "Опс, ошибочка вышла! ))")
             return;
         }
