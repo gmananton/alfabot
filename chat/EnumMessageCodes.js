@@ -7,6 +7,7 @@ EnumMessageCodes = {
 
     main_whatCanIHelp : "main_whatCanIHelp",
     main_iCantUnderstand : "main_iCantUnderstand",
+    main_showMenu: "main_showMenu",
 
     
    

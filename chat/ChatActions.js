@@ -38,7 +38,7 @@ chatActions.main.getMenu = function(clientDialogState, callback)
     clientDialogState.waitChooseMenu=true;
 
     var chatAnswer = new ChatAnswer();
-    chatAnswer.addMessage(clientDialogState.userId, EnumMessageCodes.main_whatCanIHelp, null, "Выберите операцию. " + standartMenuCaption);
+    chatAnswer.addMessage(clientDialogState.userId, EnumMessageCodes.main_showMenu, null, "Выберите операцию. " + standartMenuCaption);
     callback(chatAnswer);
 }
 
@@ -59,7 +59,7 @@ chatActions.main.greeting = function(clientDialogState, callback)
         "Чем я еще могу вам помочь? "+standartMenuCaption+" (в любой момент времени введите \"ab2510cmdMainMenu\" для выхода из текущего диалога)";
 
     var chatAnswer = new ChatAnswer();
-    chatAnswer.addMessage(clientDialogState.userId, EnumMessageCodes.main_whatCanIHelp, null, greeting);
+    chatAnswer.addMessage(clientDialogState.userId, EnumMessageCodes.main_whatCanIHelp, {numOfMessagesDuringLastSession: clientDialogState.numOfMessagesDuringLastSession}, greeting);
     callback(chatAnswer);
 }
 
@@ -104,7 +104,7 @@ chatActions.customerRequestedCardInfo.getRequestedCardInfo = function(clientDial
             clientDialogState.waitChooseMenu=true;
 
             chatAnswer.addMessage(clientDialogState.userId, EnumMessageCodes.cardList_Result, res, "[Получение списка карт]: " + answer);
-            chatAnswer.addMessage(clientDialogState.userId, EnumMessageCodes.main_whatCanIHelp, null, "Чем я еще могу помочь? " + standartMenuCaption);
+            //chatAnswer.addMessage(clientDialogState.userId, EnumMessageCodes.main_whatCanIHelp, null, "Чем я еще могу помочь? " + standartMenuCaption);
             callback(chatAnswer);
             return;
         });
@@ -204,7 +204,7 @@ chatActions.balance.checkSmsAnswer = function(clientDialogState, callback, messa
         clientDialogState.waitSmsAnswer = false;
 
         chatAnswer.addMessage(clientDialogState.userId,EnumMessageCodes.balance_Result, answer,"[Получение баланса]: " + answer);
-        chatAnswer.addMessage(clientDialogState.userId,EnumMessageCodes.main_whatCanIHelp, null, "Чем я еще могу помочь? (Нажмите 1 для Списка карт и 2 для Баланса)");
+        //chatAnswer.addMessage(clientDialogState.userId,EnumMessageCodes.main_whatCanIHelp, null, "Чем я еще могу помочь? (Нажмите 1 для Списка карт и 2 для Баланса)");
 
 
         callback(chatAnswer);

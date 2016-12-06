@@ -38,8 +38,18 @@ facebookView.Convert = function(chatMessage)
     switch (chatMessage.messageCode)
     {
         case EnumMessageCodes.main_whatCanIHelp:
+            var txt = chatMessage.messageData.numOfMessagesDuringLastSession==1 ?
+                "Здравствуйте! Я чат-бот Альфа банка. Я могу выполнить для Вас некоторые операции. Воспользуйтесь меню, " +
+                "находящееся слева от поля ввода" :
+                "Чем я могу еще помочь? Выберите пункт меню";
+
+            fbJson = facebookView.getSimpleTextMessage(recipientId, txt);
+            break;
+        
+        case EnumMessageCodes.main_showMenu:
             fbJson = facebookView.getMainMenu(recipientId);
             break;
+        
         case EnumMessageCodes.main_iCantUnderstand:
             fbJson = facebookView.getSimpleTextMessage(recipientId, "(fb): Извините, я Вас не понимаю. Воспользуйтесь меню");
             break;
