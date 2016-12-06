@@ -15,12 +15,12 @@ function ChatAnswer(chatMessages) {
 
 }
 
-method.addMessage = function(messageCode, messageData, messageExample) {
+method.addMessage = function(recepientId, messageCode, messageData, messageExample) {
 
     if(!this.senderId)
         throw "Не задан senderId";
 
-    var chatMessage = new ChatMessage(this.senderId, messageCode, messageData, messageExample);
+    var chatMessage = new ChatMessage(this.senderId, recepientId, messageCode, messageData, messageExample);
     this.chatMessages.push(chatMessage);
 };
 

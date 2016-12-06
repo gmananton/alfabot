@@ -38,7 +38,7 @@ chatActions.main.getMenu = function(clientDialogState, callback)
     clientDialogState.waitChooseMenu=true;
 
     var chatAnswer = new ChatAnswer();
-    chatAnswer.addMessage(EnumMessageCodes.main_whatCanIHelp, null, "Выберите операцию. " + standartMenuCaption);
+    chatAnswer.addMessage(clientDialogState.userId, EnumMessageCodes.main_whatCanIHelp, null, "Выберите операцию. " + standartMenuCaption);
     callback(chatAnswer);
 }
 
@@ -59,7 +59,7 @@ chatActions.main.greeting = function(clientDialogState, callback)
         "Чем я еще могу вам помочь? "+standartMenuCaption+" (в любой момент времени введите \"ab2510cmdMainMenu\" для выхода из текущего диалога)";
 
     var chatAnswer = new ChatAnswer();
-    chatAnswer.addMessage(EnumMessageCodes.main_whatCanIHelp, null, greeting);
+    chatAnswer.addMessage(clientDialogState.userId, EnumMessageCodes.main_whatCanIHelp, null, greeting);
     callback(chatAnswer);
 }
 
@@ -77,7 +77,7 @@ chatActions.customerRequestedCardInfo.startThread = function(clientDialogState, 
 
     clientDialogState.waitChooseMenu = false;
     clientDialogState.currentThread = EnumThreadNames.getCustomerRequestedCardInfo;
-    chatAnswer.addMessage(EnumMessageCodes.cardList_ProvideInn, null, "[Получение списка карт]: Введите ИНН юр. лица");
+    chatAnswer.addMessage(clientDialogState.userId, EnumMessageCodes.cardList_ProvideInn, null, "[Получение списка карт]: Введите ИНН юр. лица");
     callback(chatAnswer);
 }
 
@@ -89,7 +89,7 @@ chatActions.customerRequestedCardInfo.getRequestedCardInfo = function(clientDial
 
     //проверка валидности ИНН
     if(!chatActions.common.checkIsCrf(messageText)) {
-        chatAnswer.addMessage(EnumMessageCodes.cardList_IncorrectInn, null, "ИНН введен некорректно. Попробуйте еще раз (\"ab2510cmdMainMenu\" для выхода из диалога)");
+        chatAnswer.addMessage(clientDialogState.userId, EnumMessageCodes.cardList_IncorrectInn, null, "ИНН введен некорректно. Попробуйте еще раз (\"ab2510cmdMainMenu\" для выхода из диалога)");
         callback(chatAnswer);
         return;
     }
@@ -103,8 +103,8 @@ chatActions.customerRequestedCardInfo.getRequestedCardInfo = function(clientDial
             clientDialogState.currentThread = EnumThreadNames.isNoSubject;
             clientDialogState.waitChooseMenu=true;
 
-            chatAnswer.addMessage(EnumMessageCodes.cardList_Result, res, "[Получение списка карт]: " + answer);
-            chatAnswer.addMessage(EnumMessageCodes.main_whatCanIHelp, null, "Чем я еще могу помочь? " + standartMenuCaption);
+            chatAnswer.addMessage(clientDialogState.userId, EnumMessageCodes.cardList_Result, res, "[Получение списка карт]: " + answer);
+            chatAnswer.addMessage(clientDialogState.userId, EnumMessageCodes.main_whatCanIHelp, null, "Чем я еще могу помочь? " + standartMenuCaption);
             callback(chatAnswer);
             return;
         });
@@ -129,7 +129,7 @@ chatActions.balance.startThread = function(clientDialogState, callback)
     clientDialogState.waitInputLast4PhoneDigits = false;
     clientDialogState.waitSmsAnswer = false;
 
-    chatAnswer.addMessage(EnumMessageCodes.balance_ProvideInn, null, "[Получение баланса]: Введите ИНН юр. лица");
+    chatAnswer.addMessage(clientDialogState.userId, EnumMessageCodes.balance_ProvideInn, null, "[Получение баланса]: Введите ИНН юр. лица");
     callback(chatAnswer);
 }
 
@@ -141,7 +141,7 @@ chatActions.balance.сheckCrf = function(clientDialogState, callback, messageTex
 
     //проверка валидности ИНН
     if(!chatActions.common.checkIsCrf(messageText)) {
-        chatAnswer.addMessage(EnumMessageCodes.balance_IncorrectInn, null, "[Получение баланса]: ИНН введен некорректно. Попробуйте еще раз (\"ab2510cmdMainMenu\" для выхода из диалога)");
+        chatAnswer.addMessage(clientDialogState.userId, EnumMessageCodes.balance_IncorrectInn, null, "[Получение баланса]: ИНН введен некорректно. Попробуйте еще раз (\"ab2510cmdMainMenu\" для выхода из диалога)");
         callback(chatAnswer);
         return;
     }
@@ -153,7 +153,7 @@ chatActions.balance.сheckCrf = function(clientDialogState, callback, messageTex
     clientDialogState.waitInputCrf = false;
     clientDialogState.waitInputLast4PhoneDigits = true;
 
-    chatAnswer.addMessage(EnumMessageCodes.balance_ProvideLast4Digits, null,"[Получение баланса]: Введите последние 4 цифры номера телефона");
+    chatAnswer.addMessage(clientDialogState.userId, EnumMessageCodes.balance_ProvideLast4Digits, null,"[Получение баланса]: Введите последние 4 цифры номера телефона");
     callback(chatAnswer);
 }
 
@@ -165,7 +165,7 @@ chatActions.balance.checkLast4PhoneDigits = function(clientDialogState, callback
 
         //проверка валидности ввода
         if(!chatActions.common.checkIsLast4Digits(messageText)) {
-            chatAnswer.addMessage(EnumMessageCodes.balance_IncorrectLast4Digits, null,"[Получение баланса]: 4 цифры введены некорректно. Попробуйте еще раз (\"ab2510cmdMainMenu\" для выхода из диалога)");
+            chatAnswer.addMessage(clientDialogState.userId, EnumMessageCodes.balance_IncorrectLast4Digits, null,"[Получение баланса]: 4 цифры введены некорректно. Попробуйте еще раз (\"ab2510cmdMainMenu\" для выхода из диалога)");
             callback(chatAnswer);
             return;
         }
@@ -178,7 +178,7 @@ chatActions.balance.checkLast4PhoneDigits = function(clientDialogState, callback
         clientDialogState.waitInputLast4PhoneDigits = false;
         clientDialogState.waitSmsAnswer = true;
 
-        chatAnswer.addMessage(EnumMessageCodes.balance_ProvideSmsCode, null,"[Получение баланса]: Введите последние код, направленный вам по SMS");
+        chatAnswer.addMessage(clientDialogState.userId, EnumMessageCodes.balance_ProvideSmsCode, null,"[Получение баланса]: Введите последние код, направленный вам по SMS");
         callback(chatAnswer);
     }
 
@@ -191,7 +191,7 @@ chatActions.balance.checkSmsAnswer = function(clientDialogState, callback, messa
 
         //проверка Sms-кода
         if(messageText!="1111") {
-            chatAnswer.addMessage(EnumMessageCodes.balance_IncorrectSmsCode, null, "[Получение баланса]: Введен неверный SMS код. Попробуйте еще раз (\"ab2510cmdMainMenu\" для выхода из диалога)");
+            chatAnswer.addMessage(clientDialogState.userId,EnumMessageCodes.balance_IncorrectSmsCode, null, "[Получение баланса]: Введен неверный SMS код. Попробуйте еще раз (\"ab2510cmdMainMenu\" для выхода из диалога)");
             callback(chatAnswer);
             return;
         }
@@ -203,8 +203,8 @@ chatActions.balance.checkSmsAnswer = function(clientDialogState, callback, messa
         clientDialogState.waitChooseMenu=true;
         clientDialogState.waitSmsAnswer = false;
 
-        chatAnswer.addMessage(EnumMessageCodes.balance_Result, answer,"[Получение баланса]: " + answer);
-        chatAnswer.addMessage(EnumMessageCodes.main_whatCanIHelp, null, "Чем я еще могу помочь? (Нажмите 1 для Списка карт и 2 для Баланса)");
+        chatAnswer.addMessage(clientDialogState.userId,EnumMessageCodes.balance_Result, answer,"[Получение баланса]: " + answer);
+        chatAnswer.addMessage(clientDialogState.userId,EnumMessageCodes.main_whatCanIHelp, null, "Чем я еще могу помочь? (Нажмите 1 для Списка карт и 2 для Баланса)");
 
 
         callback(chatAnswer);

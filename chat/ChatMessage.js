@@ -6,8 +6,9 @@ const utils = require('../utils');
 
 var method = ChatMessage.prototype;
 
-function ChatMessage(senderId, messageCode, messageData, messageExample, messageDate) {
-    this.senderId = senderId;
+function ChatMessage(senderId, recepientId, messageCode, messageData, messageExample, messageDate) {
+    this.senderId = senderId;       //от кого пришло
+    this.recepientId = recepientId; //кому направлено (должно быть заполнен senderId или recepientId - id юзера)
     
     this.messageCode = messageCode; //код сообщения (чтобы разные боты и debugChat на основе их форматировали вывод данных)
     this.messageData = messageData; //данные

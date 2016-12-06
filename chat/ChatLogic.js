@@ -117,8 +117,8 @@ chatLogic.getAnswer = function(clientDialogState, messageText, callback)
 
             //Не распознали выбор
             var chatAnswer = new СhatAnswer();
-            chatAnswer.addMessage(EnumMessageCodes.main_iCantUnderstand, null, "Извинте, я вас не понимаю");
-            chatAnswer.addMessage(EnumMessageCodes.main_whatCanIHelp, null, standartMenuCaption);
+            chatAnswer.addMessage(clientDialogState.userId, EnumMessageCodes.main_iCantUnderstand, null, "Извинте, я вас не понимаю");
+            chatAnswer.addMessage(clientDialogState.userId, EnumMessageCodes.main_whatCanIHelp, null, standartMenuCaption);
             callback(chatAnswer);
             return;
         }
@@ -185,10 +185,10 @@ chatLogic.getAnswer = function(clientDialogState, messageText, callback)
 /**
  * Шаблон состояния нового пользователя
  */
- createNewUserDialogState = function(senderId)
+ createNewUserDialogState = function(userId)
 {
     var o = new Object();
-    o.senderId = senderId;
+    o.userId = userId;
     o.lastSpeakDate = new Date(); //после длительного перерыва (10 мин) сбросится состояние авторизации
     o.numOfMessagesDuringLastSession=0;
 

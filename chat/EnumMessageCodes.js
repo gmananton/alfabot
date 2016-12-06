@@ -7,14 +7,14 @@ EnumMessageCodes = {
 
     isNoSubject: 0,
 
-    main_whatCanIHelp : 1000,
-    main_iCantUnderstand : 1001,
+    main_whatCanIHelp : "main_whatCanIHelp",
+    main_iCantUnderstand : "main_iCantUnderstand",
 
     
    
-    cardList_ProvideInn : 2,
-    cardList_IncorrectInn : 3,
-    cardList_Result : 4,
+    cardList_ProvideInn : "cardList_ProvideInn",
+    cardList_IncorrectInn : "cardList_IncorrectInn",
+    cardList_Result : "cardList_Result",
     
     balance_ProvideInn : 5,
     balance_IncorrectInn: 6,

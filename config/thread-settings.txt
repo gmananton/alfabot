@@ -32,8 +32,8 @@ curl -X POST -H "Content-Type: application/json" -d '{
       },
     {
       "type":"postback",
-      "title":"Карты",
-      "payload":"cardStatusPayload"
+      "title":"Заказанные карты",
+      "payload":"ab2510cmdCardListStart"
     },
     {
       "type":"postback",

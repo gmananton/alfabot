@@ -72,7 +72,7 @@ facebookReceive.receivedMessage = function(event) {
         return;
     }
 
-    //Пришел какой-то аттачмент
+    //Пришел какой-то аттачмент (либо аттачмент либо текст)
     if (messageAttachments) {
         facebookSend.sendTextMessage(senderID, "Ух ты какой интересный файл =) Надо будет ознакомиться");
         return;
@@ -83,54 +83,55 @@ facebookReceive.receivedMessage = function(event) {
     if (messageText) {
         //сразу все это в chatLogic вогнать, даже приветственный текст
         
-            if(messageText == 'start') 
-            {
-                facebookSend.sendStartOptionsMessage(senderID);
-                return;
-            }
+            // if(messageText == 'start')
+            // {
+            //     facebookSend.sendStartOptionsMessage(senderID);
+            //     return;
+            // }
                 
              
         
             //обработать входящее сообщение
             var userMessage = { senderId: senderID, messageText:messageText, date: utils.getFormattedDate(new Date()) }
             
-            chatLogic.processUserMessage(userMessage,
-                function(chatAnswer)
-                {
-                    console.log("chatLogic.processUserMessage CALLBACK!");
-                    console.log(JSON.stringify(chatAnswer));
+            chatLogic.processUserMessage(userMessage, facebookReceive.sendAnswer);
 
-                    for(var i=0; i<chatAnswer.chatMessages.length; i++)
-                    {
-                        console.log("i=" + i);
-                        console.log("chatAnswer.chatMessages[i]=" + JSON.stringify(chatAnswer.chatMessages[i]));
-                        var msg =chatAnswer.chatMessages[i];
-
-                        var facebookJsonMessage = facebookView.Convert(senderID, msg);
-
-
-                        setTimeout(function(){
-                            facebookSend.sendTypingOn(senderID);}, i * 2000);
-
-                        //только такой замысловатой конструкцией можно из замыкания вызвать анонимную функцию с параметром
-                        setTimeout((function(facebookJsonMessage){
-                            return function() {
-                                facebookSend.callSendAPI(facebookJsonMessage);
-                            }
-                        })(facebookJsonMessage), i* 2000+1000);
-
-
-                        
-                    }
-
-
-                });
 
         
     }
 
 }
 
+facebookReceive.sendAnswer =  function(chatAnswer)
+{
+    console.log("chatLogic.processUserMessage CALLBACK!");
+    console.log(JSON.stringify(chatAnswer));
+
+    for(var i=0; i<chatAnswer.chatMessages.length; i++)
+    {
+        console.log("i=" + i);
+        console.log("chatAnswer.chatMessages[i]=" + JSON.stringify(chatAnswer.chatMessages[i]));
+        var msg =chatAnswer.chatMessages[i];
+
+        var facebookJsonMessage = facebookView.Convert(msg);
+
+
+        setTimeout(function(){
+            facebookSend.sendTypingOn(msg.recepientId);}, i * 2000);
+
+        //только такой замысловатой конструкцией можно из замыкания вызвать анонимную функцию с параметром
+        setTimeout((function(facebookJsonMessage){
+            return function() {
+                facebookSend.callSendAPI(facebookJsonMessage);
+            }
+        })(facebookJsonMessage), i* 2000+1000);
+
+
+
+    }
+
+
+}
 
 /**
  * Postback Event

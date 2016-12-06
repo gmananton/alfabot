@@ -30,9 +30,10 @@ const TUTORIAL_VIDEO_PATH          = config.get('tutorial-video-path');
 
 var facebookView = new Object();
 
-facebookView.Convert = function(recipientId, chatMessage)
+facebookView.Convert = function(chatMessage)
 {
     var fbJson;
+    var recipientId = chatMessage.recepientId;
 
     switch (chatMessage.messageCode)
     {
@@ -83,13 +84,13 @@ facebookView.getMainMenu = function (recipientId) {
                     template_type: "generic",
                     elements: [
                         {
-                            title: "Банковские карты",
-                            subtitle: "Узнать статус готовности заказанной карты",
+                            title: "Заказанные карты",
+                            subtitle: "Узнать статус готовности заказанных карт",
                             image_url: SERVER_URL + CREDIT_CARDS_ICON_PATH,
                             buttons: [{
                                 type: "postback",
                                 title: "Узнать статус",
-                                payload: "cardStatusPayload"
+                                payload: "ab2510cmdCardListStart"
                             }]
                         },
                         {
