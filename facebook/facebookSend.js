@@ -135,7 +135,7 @@ facebookSend.sendAnswer =  function(chatAnswer)
         }
         catch(ex)
         {
-            console.log("Ошибка при вызове facebookView.Convert: " + JSON.stringify(ex));
+            console.log("Опс, ошибочка вышла!! Ошибка при вызове facebookView.Convert: " + JSON.stringify(ex));
             facebookSend.sendTextMessage(msg.recepientId, "Опс, ошибочка вышла! ))")
             return;
         }
