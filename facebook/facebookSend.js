@@ -126,8 +126,17 @@ facebookSend.sendAnswer =  function(chatAnswer)
         console.log("chatAnswer.chatMessages[i]=" + JSON.stringify(chatAnswer.chatMessages[i]));
         var msg =chatAnswer.chatMessages[i];
 
-        var facebookJsonMessage = facebookView.Convert(msg);
+        var facebookJsonMessage;
 
+        try {
+            facebookJsonMessage = facebookView.Convert(msg);
+        }
+        catch(ex)
+        {
+            console.log("Ошибка при вызове facebookView.Convert: " + JSON.stringify(err));
+            facebookSend.sendTextMessage(msg.recepientId, "Опс, ошибочка вышла! ))")
+            return;
+        }
 
         setTimeout(function(){
             facebookSend.sendTypingOn(msg.recepientId);}, i * 2000);
@@ -137,7 +146,7 @@ facebookSend.sendAnswer =  function(chatAnswer)
             return function() {
                 facebookSend.callSendAPI(facebookJsonMessage);
             }
-        })(facebookJsonMessage), i* 2000+1000);
+        })(facebookJsonMessage), i* 2000+500);
 
 
 
