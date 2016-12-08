@@ -65,13 +65,17 @@ facebookView.Convert = function(chatMessage)
         case EnumMessageCodes.cardList_Result:
 
             console.log("Список карт: " + JSON.stringify(chatMessage.messageData))
-            console.log("length: " + chatMessage.messageData.data.cards.length);
+            console.log("length: " + chatMessage.messageData.data.customerRequestedCardInfos.length);
 
             var str="";
-            for(var i=0; i<chatMessage.messageData.data.cards.length; i++)
+            for(var i=0; i<chatMessage.messageData.data.customerRequestedCardInfos.length; i++)
             {
-                var item = chatMessage.messageData.data.cards[i];
-                str+=item.name + " - " + item.status + "\n";
+                var item = chatMessage.messageData.data.customerRequestedCardInfos[i];
+                var strStatus = item.enCardStatus=="Ready" ? "готово" : "не готово";
+                var strOfficeAddress = item.officeAddress ? "\n(" + item.officeAddress + ")" : "";
+
+                str+=item.firstName + " " + item.middleName + "  - " + strStatus + strOfficeAddress + "\n"
+                ;
             }
             // chatMessage.messageData.data.cards.forEach(function(item, i, arr) {
             //     str+=item.name + " - " + item.status + "\n";

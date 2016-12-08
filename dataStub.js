@@ -16,23 +16,22 @@ dataRetreiver.getBalance = function(representativeToken, callback)
 
 dataRetreiver.getCustomerRequestedCardInfo = function(crf, callback)
 {
-    //var options = clone(JAVA_SERVICE_BASE_REQUEST);
-    //options.path+="getCustomerRequestedCardInfo?crf=" + crf;
 
-    //Стандартную callback функцию вытащить отдельдно
-
-    // rest.getJSON(options,
-    //     function(statusCode, result)
-    //     {
-    //         console.log("Java onResult: (" + statusCode + ")" + JSON.stringify(result));
-    //         callback(result);
-    //     });
 
     //var res={"data":[{"cards": 145}]}
-    var res={"data":{"cards": [
-        {name: "Александр Бут", status: "ready"},
-        {name: "Андрей Вас", status: "ready"},
-        {name: "Вячеслва Олв", status: "not ready"}]}}
+    // var res={"data":{"cards": [
+    //     {name: "Александр Бут", status: "ready"},
+    //     {name: "Андрей Вас", status: "ready"},
+    //     {name: "Вячеслва Олв", status: "not ready"}]}}
+
+    var res={data:{customerRequestedCardInfos:
+        [
+            {firstName:"Сергей",middleName:"Михайлович",enCardStatus:"Ready",officeAddress:"123022,Москва, ул. Пресненский Вал,д.3, стр.1"},
+            {firstName:"Паулина",middleName:"Никитьевна",enCardStatus:"Ready",officeAddress:"123022,Москва, ул. Пресненский Вал,д.3, стр.1"},
+            {firstName:"Екатерина",middleName:"Миладовна",enCardStatus:"Ready",officeAddress:"123022,Москва, ул. Пресненский Вал,д.3, стр.1"}
+        ],message:null,success:false},
+        itemsCount:0,success:true,errorMsg:null,errorCode:0};
+
     console.log("Stub onResult: " + JSON.stringify(res));
     callback(res);
 }
