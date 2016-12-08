@@ -72,9 +72,9 @@ facebookView.Convert = function(chatMessage)
             {
                 var item = chatMessage.messageData.data.customerRequestedCardInfos[i];
                 var strStatus = item.enCardStatus=="Ready" ? "готово" : "не готово";
-                var strOfficeAddress = item.officeAddress ? "\n(" + item.officeAddress + ")" : "";
+                var strOfficeAddress = item.officeAddress ? "\n\n(" + item.officeAddress + ")" : "";
 
-                str+=item.firstName + " " + item.middleName + "  - " + strStatus + strOfficeAddress + "\n"
+                str+=item.firstName + " " + item.middleName + ":   " + strStatus + strOfficeAddress + "\n\n"
                 ;
             }
             // chatMessage.messageData.data.cards.forEach(function(item, i, arr) {
