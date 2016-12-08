@@ -38,6 +38,8 @@
 //  port: 8080,
 //  path: '/open/api/eq/
 
+  "port_https": 5443,
+
   "creditCards-icon-path": "/assets/credit-card-icon.png",
   "creditCardSingle-icon-path": "/assets/credit-card-single-icon.png",
   "location-icon-path": "/assets/location-icon.png",

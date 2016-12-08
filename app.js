@@ -10,7 +10,9 @@ const
     config     = require('config'),
     crypto     = require('crypto'),
     express    = require('express'),
-   // https      = require('https'),
+    fs         = require('fs'),
+    http         = require('http'),
+    https         = require('https'),
     request    = require('request');
 
 
@@ -67,6 +69,10 @@ const SERVER_URL = (process.env.SERVER_URL) ?
     (process.env.SERVER_URL) :
     config.get('serverURL');
 
+const PORT_HTTPS = (process.env.PORT_HTTPS) ?
+    (process.env.PORT_HTTPS) :
+    config.get('port_https');
+
 
 
 if (!(APP_SECRET && VALIDATION_TOKEN && PAGE_ACCESS_TOKEN && SERVER_URL)) {
@@ -108,14 +114,30 @@ function verifyRequestSignature(req, res, buf) {
     }
 }
 
+//ssl certificate
+var privateKey = fs.readFileSync('./ssl_cert/test.bot.ru.key').toString();
+var certificate = fs.readFileSync('./ssl_cert/test.bot.ru.cert').toString();
 
+//можно открыть Http и https вместе
+http.createServer(app).listen(app.get('port'), function () {
+         console.log('Node app is running on port', app.get('port'));
+     });
 
-// Start server
-// Webhooks must be available via SSL with a certificate signed by a valid
-// certificate authority.
-app.listen(app.get('port'), function () {
-    console.log('Node app is running on port', app.get('port'));
-});
+if(PORT_HTTPS) {
+    https.createServer({
+        key: privateKey,
+        cert: certificate
+    }, app).listen(PORT_HTTPS, function () {
+        console.log('Node app is running on HTTPS port', PORT_HTTPS);
+    });
+}
+else
+    console.log("PORT_HTTPS is undefined")
+
+//вариант для деплоя на heroku
+ // app.listen(app.get('port'), function () {
+ //     console.log('Node app is running on port', app.get('port'));
+ // });
 
 
 app.use('/debug', debugRouter);
