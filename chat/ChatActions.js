@@ -175,7 +175,7 @@ chatActions.balance.сheckCrf = function(clientDialogState, callback, messageTex
             clientDialogState.waitChooseMenu=true;
             clientDialogState.waitInputCrf = false;
 
-            chatAnswer.addMessage(clientDialogState.userId, EnumMessageCodes.payDocStatus_Result, result, "[Получение баланса]: " + JSON.stringify(answer));
+            chatAnswer.addMessage(clientDialogState.userId, EnumMessageCodes.balance_Result, result, "[Получение баланса]: " + JSON.stringify(answer));
             callback(chatAnswer);
             return;
 

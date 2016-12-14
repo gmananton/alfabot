@@ -106,7 +106,30 @@ facebookView.Convert = function(chatMessage)
 
 
         case EnumMessageCodes.balance_Result:
-            fbJson = facebookView.getSimpleTextMessage(recipientId, "(fb): Результат: " + JSON.stringify(chatMessage.messageData));
+
+            console.log("Статус платежки: " + JSON.stringify(chatMessage.messageData))
+
+            var str="";
+
+            if(chatMessage.messageData.data.message) //данные по балансу не найдены или  не получены по какой-либо бизнес-причине
+                str = chatMessage.messageData.data.message;
+            else {
+
+                var accountsList = chatMessage.messageData.data.accountsList;
+
+                for(var i=0; i<accountsList.length; i++)
+                {
+                    var item = accountsList[i]; //показываем последние 4 цифры номера счета
+                    str+= "****" + item.accountNumber.substr(item.accountNumber.length - 4)
+                        + " - " + item.amount + " " + item.enCurrency + "\n\n";
+                }
+
+            }
+
+
+            fbJson = facebookView.getSimpleTextMessage(recipientId, "(fb): Результат: \n" + str );
+
+            //fbJson = facebookView.getSimpleTextMessage(recipientId, "(fb): Результат: " + JSON.stringify(chatMessage.messageData));
             break;
 
         //endregion
@@ -139,10 +162,10 @@ facebookView.Convert = function(chatMessage)
             if(chatMessage.messageData.data.message) //данные по платежке не найдены или  не получены по какой-либо бизнес-причине
                 str = chatMessage.messageData.data.message;
             else {
-                console.log("pdi_1");
+
                 var payDocInfo = chatMessage.messageData.data.payDocInfo;
                 var strStatus="";
-                console.log("pdi_2");
+
                 switch (payDocInfo.enPayDocStatus)
                 {
                     case "InProgress":  strStatus="в процессе"; break;
@@ -151,15 +174,15 @@ facebookView.Convert = function(chatMessage)
                     case "Refused":     strStatus="отклонен";break;
                     default:            strStatus="статус не распознан"; break;
                 }
-                console.log("pdi_3");
+
                     str = "Статус платежного документа " + payDocInfo.docid + ": " + strStatus;
-                console.log("pdi_4");
+
 
             }
 
 
             fbJson = facebookView.getSimpleTextMessage(recipientId, "(fb): Результат: \n" + str );
-            console.log("pdi_5");
+
             break;
 
         //endregion
