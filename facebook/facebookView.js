@@ -71,14 +71,15 @@ facebookView.Convert = function(chatMessage)
             for(var i=0; i<chatMessage.messageData.data.customerRequestedCardInfos.length; i++)
             {
                 var item = chatMessage.messageData.data.customerRequestedCardInfos[i];
-                str+=item.firstName + " " + item.middleName + " - " + item.enCardStatus + "\n";
+                var strStatus = item.enCardStatus=="Ready" ? "готово" : "не готово";
+                var strOfficeAddress = item.officeAddress ? "\n\n(" + item.officeAddress + ")" : "";
+
+                str+=item.firstName + " " + item.middleName + ":   " + strStatus + strOfficeAddress + "\n\n";
+
             }
-            // chatMessage.messageData.data.cards.forEach(function(item, i, arr) {
-            //     str+=item.name + " - " + item.status + "\n";
-            // });
+
 
             fbJson = facebookView.getSimpleTextMessage(recipientId, "(fb): Результат: \n" + str );
-            //fbJson = facebookView.getSimpleTextMessage(recipientId, "(fb): Результат: \n" + JSON.stringify(chatMessage.messageData) );
             break;
 
         //endregion
@@ -106,6 +107,56 @@ facebookView.Convert = function(chatMessage)
 
         case EnumMessageCodes.balance_Result:
             fbJson = facebookView.getSimpleTextMessage(recipientId, "(fb): Результат: " + JSON.stringify(chatMessage.messageData));
+            break;
+
+        //endregion
+
+
+        //region Платежки
+
+        case EnumMessageCodes.payDocStatus_ProvideInn:
+            fbJson = facebookView.getSimpleTextMessage(recipientId, "(fb): Введите ИНН");
+            break;
+
+        case EnumMessageCodes.payDocStatus_IncorrectInn:
+            fbJson = facebookView.getSimpleTextMessage(recipientId, "(fb): Введен некорректный ИНН");
+            break;
+
+        case EnumMessageCodes.payDocStatus_ProvidePayDocNumber:
+            fbJson = facebookView.getSimpleTextMessage(recipientId, "(fb): Введите номер платежного поручения");
+            break;
+
+        case EnumMessageCodes.payDocStatus_IncorrectPayDocNumber:
+            fbJson = facebookView.getSimpleTextMessage(recipientId, "(fb): Введен некорректный номер платежного поручения");
+            break;
+
+        case EnumMessageCodes.payDocStatus_Result:
+
+            console.log("Статус платежки: " + JSON.stringify(chatMessage.messageData))
+
+            var str="";
+
+            if(chatMessage.messageData.message) //данные по платежке не найдены или  не получены по какой-либо бизнес-причине
+                str = chatMessage.messageData.message;
+            else {
+
+                var payDocInfo = chatMessage.messageData.payDocInfo;
+                var strStatus="";
+                switch (payDocInfo.enPayDocStatus)
+                {
+                    case "InProgress":  strStatus="в процессе"; break;
+                    case "Done":        strStatus="выполнен"; break;
+                    case "Cancelled":   strStatus="отменен";break;
+                    case "Refused":     strStatus="отклонен";break;
+                    default:            strStatus="статус не распознан"; break;
+                }
+
+                    str = "Статус платежного документа " + payDocInfo.docid + ": " + strStatus;
+
+                }
+            
+
+            fbJson = facebookView.getSimpleTextMessage(recipientId, "(fb): Результат: \n" + str );
             break;
 
         //endregion

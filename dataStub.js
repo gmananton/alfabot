@@ -42,7 +42,7 @@ dataRetreiver.getPayDocStatus = function(crf, docId, callback)
 
     var res={data:{payDocInfo:
         {
-            docid:"Z562D00000000326 (STUB)",crf:7654545455,enPayDocStatus:"InProgress (STUB)"
+            docid:"Z562D00000000326 (STUB)",crf:7654545455,enPayDocStatus:"InProgress"
         },
         message:null,success:false},itemsCount:0,success:true,errorMsg:null,errorCode:0}
 
