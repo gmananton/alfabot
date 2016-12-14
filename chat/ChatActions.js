@@ -7,6 +7,7 @@ const ChatAnswer = require('./ChatAnswer');
 const EnumThreadNames = require('./EnumThreadNames');
 const EnumMessageCodes = require('./EnumMessageCodes');
 const dataRetreiver = config.get('javaServiceUrl') ? require('../dataJava') : require('../dataStub');
+const utils     = require('../utils');
 
 var chatActions = new Object();
 
@@ -117,7 +118,7 @@ chatActions.customerRequestedCardInfo.getRequestedCardInfo = function(clientDial
 
 //region getBalance
 
-chatActions.balance.startThread = function(clientDialogState, callback)
+chatActions.balance.startThread = function(clientDialogState, clientsIdHash, callback)
 {
 
     var chatAnswer = new ChatAnswer();
@@ -131,7 +132,7 @@ chatActions.balance.startThread = function(clientDialogState, callback)
 
     if(!chatActions.common.checkUserIsAuthenticated(clientDialogState))
     {
-        chatActions.balance.promptForAuthentication(clientDialogState, callback);
+        chatActions.balance.promptForAuthentication(clientDialogState, clientsIdHash, callback);
         return;
     }
     else
@@ -186,13 +187,17 @@ chatActions.balance.сheckCrf = function(clientDialogState, callback, messageTex
 }
 
 //для неаутентифицированного пользователя - попровить аутентифицироваться
-chatActions.balance.promptForAuthentication = function(clientDialogState, callback)
+chatActions.balance.promptForAuthentication = function(clientDialogState, clientsIdHash, callback)
     {
 
         var chatAnswer = new ChatAnswer();
         
         //Сгенерить и запомнить chatUserHash-сопоставление
-        var chatUserHash = clientDialogState.userId;
+        var chatUserHash = utils.getHashCode(Date.now().toString() + clientDialogState.userId.toString()) // clientDialogState.userId;
+
+        //ведем хэш-таблицу сопоставления замаскированного userId и оригинальноо userId
+        clientsIdHash.add(chatUserHash, clientDialogState.userId, true); //вообще, это можно в БД сохранить и после 3 мин удалять
+        
 
         chatAnswer.addMessage(clientDialogState.userId, EnumMessageCodes.balance_PromptForAuthentication, {chatUserHash: clientDialogState.userId},"[Получение баланса]: Войдите в ALBO по ссылке http://localhost:5000/loginPage.html?chatUserHash=" + chatUserHash);
        // chatAnswer.addMessage(clientDialogState.userId, EnumMessageCodes.balance_AuthenticationSuccess, {login: "alboUser166"},"[Получение баланса]: Вы вошли в систему под учетной записью alboUser166");

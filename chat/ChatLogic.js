@@ -26,6 +26,7 @@ const dataRetreiver = config.get('javaServiceUrl') ? require('./../dataJava') : 
 
 
 var clients = new hashes.HashTable();
+var clientsIdHash = new hashes.HashTable(); //сопоставление временно выданного хэша, основанного на userId для аутентификации в Албо
 
 var chatLogic = new Object();
 
@@ -35,6 +36,7 @@ var standartMenuCaption =  "Пожалуйста, нажмите "
     + EnumDialogCommands.ab2510cmdPayDocStatusStart + " для Статуса платежного документа ";
 
 
+chatLogic.getClientsIdHash = function(){ return clientsIdHash; }
 
 //вызывается НЕ из чата, поэтому сохраняем состояние диалога отдельно.
 chatLogic.SetUserAuthenticated = function (userId, cus)
@@ -130,7 +132,7 @@ chatLogic.getAnswer = function(clientDialogState, messageText, callback)
 
             if (messageText == EnumDialogCommands.ab2510cmdBalanceStart) {
 
-                chatActions.balance.startThread(clientDialogState, callback);
+                chatActions.balance.startThread(clientDialogState, clientsIdHash, callback);
                 return;
             }
 
@@ -194,7 +196,7 @@ chatLogic.getAnswer = function(clientDialogState, messageText, callback)
 
         if(!chatActions.common.checkUserIsAuthenticated(clientDialogState))
         {
-            chatActions.balance.promptForAuthentication(clientDialogState, callback);
+            chatActions.balance.promptForAuthentication(clientDialogState, clientsIdHash, callback);
             return;
         }
 

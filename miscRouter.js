@@ -27,7 +27,17 @@ router.get('/loginToAlbo', function(req, res) {
     // console.log(req.query.dialogUserId);
 
     var chatUserHash = req.query.chatUserHash;
-    var userId = chatUserHash;//getUserIdFromUserHash(chatUserHash);
+    var userId = null;//chatUserHash;//getUserIdFromUserHash(chatUserHash);
+
+    var clientsIdHash = chatLogic.getClientsIdHash();
+    if(clientsIdHash.contains(chatUserHash))
+        userId = clientsIdHash.get(chatUserHash).value;
+
+
+    if(userId==null)
+    {
+        return; //нет такого хэша = пользователь не собирался аутентифицироваться для важных операций
+    }
 
     var cus="XABJVZ"
 
