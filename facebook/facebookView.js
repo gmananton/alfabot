@@ -136,11 +136,11 @@ facebookView.Convert = function(chatMessage)
 
             var str="";
 
-            if(chatMessage.messageData.message) //данные по платежке не найдены или  не получены по какой-либо бизнес-причине
-                str = chatMessage.messageData.message;
+            if(chatMessage.messageData.data.message) //данные по платежке не найдены или  не получены по какой-либо бизнес-причине
+                str = chatMessage.messageData.data.message;
             else {
                 console.log("pdi_1");
-                var payDocInfo = chatMessage.messageData.payDocInfo;
+                var payDocInfo = chatMessage.messageData.data.payDocInfo;
                 var strStatus="";
                 console.log("pdi_2");
                 switch (payDocInfo.enPayDocStatus)
