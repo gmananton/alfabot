@@ -194,6 +194,7 @@ chatActions.balance.promptForAuthentication = function(clientDialogState, client
         
         //Сгенерить и запомнить chatUserHash-сопоставление
         var chatUserHash = utils.getHashCode(Date.now().toString() + clientDialogState.userId.toString()) // clientDialogState.userId;
+        console.log("Сгенерирован chatUserHash=" + chatUserHash);
 
         //ведем хэш-таблицу сопоставления замаскированного userId и оригинальноо userId
         clientsIdHash.add(chatUserHash, clientDialogState.userId, true); //вообще, это можно в БД сохранить и после 3 мин удалять
