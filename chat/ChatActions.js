@@ -200,7 +200,7 @@ chatActions.balance.promptForAuthentication = function(clientDialogState, client
         clientsIdHash.add(chatUserHash, clientDialogState.userId, true); //вообще, это можно в БД сохранить и после 3 мин удалять
         
 
-        chatAnswer.addMessage(clientDialogState.userId, EnumMessageCodes.balance_PromptForAuthentication, {chatUserHash: clientDialogState.userId},"[Получение баланса]: Войдите в ALBO по ссылке http://localhost:5000/loginPage.html?chatUserHash=" + chatUserHash);
+        chatAnswer.addMessage(clientDialogState.userId, EnumMessageCodes.balance_PromptForAuthentication, {chatUserHash: chatUserHash},"[Получение баланса]: Войдите в ALBO по ссылке http://localhost:5000/loginPage.html?chatUserHash=" + chatUserHash);
        // chatAnswer.addMessage(clientDialogState.userId, EnumMessageCodes.balance_AuthenticationSuccess, {login: "alboUser166"},"[Получение баланса]: Вы вошли в систему под учетной записью alboUser166");
 
         callback(chatAnswer);
