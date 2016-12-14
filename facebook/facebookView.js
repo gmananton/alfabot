@@ -139,9 +139,10 @@ facebookView.Convert = function(chatMessage)
             if(chatMessage.messageData.message) //данные по платежке не найдены или  не получены по какой-либо бизнес-причине
                 str = chatMessage.messageData.message;
             else {
-
+                console.log("pdi_1");
                 var payDocInfo = chatMessage.messageData.payDocInfo;
                 var strStatus="";
+                console.log("pdi_2");
                 switch (payDocInfo.enPayDocStatus)
                 {
                     case "InProgress":  strStatus="в процессе"; break;
@@ -150,13 +151,15 @@ facebookView.Convert = function(chatMessage)
                     case "Refused":     strStatus="отклонен";break;
                     default:            strStatus="статус не распознан"; break;
                 }
-
+                console.log("pdi_3");
                     str = "Статус платежного документа " + payDocInfo.docid + ": " + strStatus;
+                console.log("pdi_4");
 
-                }
-            
+            }
+
 
             fbJson = facebookView.getSimpleTextMessage(recipientId, "(fb): Результат: \n" + str );
+            console.log("pdi_5");
             break;
 
         //endregion
