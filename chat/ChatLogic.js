@@ -37,7 +37,7 @@ var standartMenuCaption =  "Пожалуйста, нажмите "
 
 
 //вызывается НЕ из чата, поэтому сохраняем состояние диалога отдельно.
-chatLogic.SetUserAuthenticated = function (userId, cus, login)
+chatLogic.SetUserAuthenticated = function (userId, cus)
 {
     //забрать инфо по состоянию диалога
     var clientDialogState = clients.contains(userId) ? clients.get(userId).value : createNewUserDialogState(userId);

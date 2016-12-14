@@ -26,6 +26,9 @@ EnumMessageCodes = {
     payDocStatus_ProvidePayDocNumber : "payDocStatus_ProvidePayDocNumber",
     payDocStatus_IncorrectPayDocNumber : "payDocStatus_IncorrectPayDocNumber",
     payDocStatus_Result : "payDocStatus_Result",
+
+
+    security_AuthenticationSuccess : "security_AuthenticationSuccess",
     
     
     

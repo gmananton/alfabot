@@ -35,22 +35,21 @@ facebookView.Convert = function(chatMessage)
     var fbJson;
     var recipientId = chatMessage.recepientId;
 
-    switch (chatMessage.messageCode)
-    {
+    switch (chatMessage.messageCode) {
         case EnumMessageCodes.main_whatCanIHelp:
             var clientDialogState = chatMessage.messageData; //сюда передается clientDialogState
-            var txt = clientDialogState.numOfMessagesDuringLastSession==1 ?
-                "Здравствуйте! Я чат-бот Альфа банка. Я могу выполнить для Вас некоторые операции. Воспользуйтесь меню, " +
-                "находящееся слева от поля ввода" :
+            var txt = clientDialogState.numOfMessagesDuringLastSession == 1 ?
+            "Здравствуйте! Я чат-бот Альфа банка. Я могу выполнить для Вас некоторые операции. Воспользуйтесь меню, " +
+            "находящееся слева от поля ввода" :
                 "Чем я могу еще помочь? Выберите пункт меню";
 
             fbJson = facebookView.getSimpleTextMessage(recipientId, txt);
             break;
-        
+
         case EnumMessageCodes.main_showMenu:
             fbJson = facebookView.getMainMenu(recipientId);
             break;
-        
+
         case EnumMessageCodes.main_iCantUnderstand:
             fbJson = facebookView.getSimpleTextMessage(recipientId, "(fb): Извините, я Вас не понимаю. Воспользуйтесь меню");
             break;
@@ -67,19 +66,18 @@ facebookView.Convert = function(chatMessage)
             console.log("Список карт: " + JSON.stringify(chatMessage.messageData))
             console.log("length: " + chatMessage.messageData.data.customerRequestedCardInfos.length);
 
-            var str="";
-            for(var i=0; i<chatMessage.messageData.data.customerRequestedCardInfos.length; i++)
-            {
+            var str = "";
+            for (var i = 0; i < chatMessage.messageData.data.customerRequestedCardInfos.length; i++) {
                 var item = chatMessage.messageData.data.customerRequestedCardInfos[i];
-                var strStatus = item.enCardStatus=="Ready" ? "готово" : "не готово";
+                var strStatus = item.enCardStatus == "Ready" ? "готово" : "не готово";
                 var strOfficeAddress = item.officeAddress ? "\n\n(" + item.officeAddress + ")" : "";
 
-                str+=item.firstName + " " + item.middleName + ":   " + strStatus + strOfficeAddress + "\n\n";
+                str += item.firstName + " " + item.middleName + ":   " + strStatus + strOfficeAddress + "\n\n";
 
             }
 
 
-            fbJson = facebookView.getSimpleTextMessage(recipientId, "(fb): Результат: \n" + str );
+            fbJson = facebookView.getSimpleTextMessage(recipientId, "(fb): Результат: \n" + str);
             break;
 
         //endregion
@@ -95,7 +93,6 @@ facebookView.Convert = function(chatMessage)
             break;
 
 
-
         case EnumMessageCodes.balance_PromptForAuthentication:
             fbJson = facebookView.getSimpleTextMessage(recipientId, "(fb): Для получения защищенных данных, пожалуйста, войдите в систему http://albo.ru/loginPage.html?chatUserHash=" + chatMessage.messageData.chatUserHash);
             break;
@@ -109,25 +106,24 @@ facebookView.Convert = function(chatMessage)
 
             console.log("Статус платежки: " + JSON.stringify(chatMessage.messageData))
 
-            var str="";
+            var str = "";
 
-            if(chatMessage.messageData.data.message) //данные по балансу не найдены или  не получены по какой-либо бизнес-причине
+            if (chatMessage.messageData.data.message) //данные по балансу не найдены или  не получены по какой-либо бизнес-причине
                 str = chatMessage.messageData.data.message;
             else {
 
                 var accountsList = chatMessage.messageData.data.accountsList;
 
-                for(var i=0; i<accountsList.length; i++)
-                {
+                for (var i = 0; i < accountsList.length; i++) {
                     var item = accountsList[i]; //показываем последние 4 цифры номера счета
-                    str+= "****" + item.accountNumber.substr(item.accountNumber.length - 4)
+                    str += "****" + item.accountNumber.substr(item.accountNumber.length - 4)
                         + " - " + item.amount + " " + item.enCurrency + "\n\n";
                 }
 
             }
 
 
-            fbJson = facebookView.getSimpleTextMessage(recipientId, "(fb): Результат: \n" + str );
+            fbJson = facebookView.getSimpleTextMessage(recipientId, "(fb): Результат: \n" + str);
 
             //fbJson = facebookView.getSimpleTextMessage(recipientId, "(fb): Результат: " + JSON.stringify(chatMessage.messageData));
             break;
@@ -157,35 +153,51 @@ facebookView.Convert = function(chatMessage)
 
             console.log("Статус платежки: " + JSON.stringify(chatMessage.messageData))
 
-            var str="";
+            var str = "";
 
-            if(chatMessage.messageData.data.message) //данные по платежке не найдены или  не получены по какой-либо бизнес-причине
+            if (chatMessage.messageData.data.message) //данные по платежке не найдены или  не получены по какой-либо бизнес-причине
                 str = chatMessage.messageData.data.message;
             else {
 
                 var payDocInfo = chatMessage.messageData.data.payDocInfo;
-                var strStatus="";
+                var strStatus = "";
 
-                switch (payDocInfo.enPayDocStatus)
-                {
-                    case "InProgress":  strStatus="в процессе"; break;
-                    case "Done":        strStatus="выполнен"; break;
-                    case "Cancelled":   strStatus="отменен";break;
-                    case "Refused":     strStatus="отклонен";break;
-                    default:            strStatus="статус не распознан"; break;
+                switch (payDocInfo.enPayDocStatus) {
+                    case "InProgress":
+                        strStatus = "в процессе";
+                        break;
+                    case "Done":
+                        strStatus = "выполнен";
+                        break;
+                    case "Cancelled":
+                        strStatus = "отменен";
+                        break;
+                    case "Refused":
+                        strStatus = "отклонен";
+                        break;
+                    default:
+                        strStatus = "статус не распознан";
+                        break;
                 }
 
-                    str = "Статус платежного документа " + payDocInfo.docid + ": " + strStatus;
+                str = "Статус платежного документа " + payDocInfo.docid + ": " + strStatus;
 
 
             }
 
 
-            fbJson = facebookView.getSimpleTextMessage(recipientId, "(fb): Результат: \n" + str );
+            fbJson = facebookView.getSimpleTextMessage(recipientId, "(fb): Результат: \n" + str);
 
             break;
 
         //endregion
+
+        case EnumMessageCodes.security_AuthenticationSuccess:
+
+            var login = chatMessage.data.login;
+            fbJson = facebookView.getSimpleTextMessage(recipientId, "(fb): Вы успешно аутентифиуировались под пользователем: \n" + login);
+            break;
+       
 
         default:
             fbJson = facebookView.getSimpleTextMessage(recipientId, "(fb): Нет фразы для заданного кода сообщения. Example:" + chatMessage.messageExample);

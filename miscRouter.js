@@ -15,6 +15,7 @@ const session = require('express-session');
 const dataRetreiver = config.get('javaServiceUrl') ? require('./dataJava') : require('./dataStub');
 const chatLogic = require('./chat/ChatLogic');
 const facebookSend = require('./facebook/facebookSend');
+const facebookView = require('./facebook/facebookView');
 
 
 router.get('/loginToAlbo', function(req, res) {
@@ -25,14 +26,39 @@ router.get('/loginToAlbo', function(req, res) {
     // console.log(req.query.password);
     // console.log(req.query.dialogUserId);
 
+    var chatUserHash = req.query.chatUserHash;
+    var userId = chatUserHash;//getUserIdFromUserHash(chatUserHash);
+
     var cus="XABJVZ"
 
     if(req.query.password=="1111") //успешный логин
     {
-        chatLogic.SetUserAuthenticated(req.query.dialogUserId, cus, req.query.login);
+        chatLogic.SetUserAuthenticated(userId, cus);
 
         //послать весточку в FB
-        facebookSend.sendTextMessage(req.query.dialogUserId, "Вы успешно аутентифицировались под логином " + req.query.login)
+        var data = {login: req.query.login}
+        var chatAnswer = new Object();
+        chatAnswer.chatMessages = new Array();
+        chatAnswer.chatMessages.push({recepientId: userId, messageCode: EnumMessageCodes.security_AuthenticationSuccess, data: data, messageExample: "Вы успешно атунтифицировались под логином " + data.login  });
+        chatAnswer.chatMessages.push({ recepientId: userId, messageCode: EnumMessageCodes.balance_ProvideInn,   messageExample: "[Получение баланса] Введите ИНН"  });
+
+        facebookSend.sendAnswer(chatAnswer);
+
+        // for (var i = 0; i < messages.length; i++) {
+        //     var msg = messages[i];
+        //     try {
+        //         facebookJsonMessage = facebookView.Convert(msg);
+        //         facebookSend.callSendAPI(facebookJsonMessage);
+        //     }
+        //     catch (ex) {
+        //         console.log("Опс, ошибочка вышла в miscRouter!! Ошибка при вызове facebookView.Convert: " + JSON.stringify(ex));
+        //         facebookSend.sendTextMessage(msg.recepientId, "Опс, ошибочка вышла! ))")
+        //         return;
+        //     }
+        // }
+
+       // var facebookJsonMessage = facebookView.Convert(chatMessage)
+       // facebookSend.sendTextMessage(req.query.dialogUserId, "Вы успешно аутентифицировались под логином " + req.query.login)
     }
 
     

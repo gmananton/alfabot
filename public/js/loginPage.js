@@ -6,12 +6,12 @@
 
 
 
- submitLogin = function(login, password, dialogUserId) {
+ submitLogin = function(login, password, chatUserHash) {
 
         $.ajax({
             url: "/misc/loginToAlbo", //переделать путь в правильный
             dataType: 'json',
-            data: {login: login, password: password, dialogUserId: dialogUserId},
+            data: {login: login, password: password, chatUserHash: chatUserHash},
 
             type: 'GET',
             success: function (data, textStatus, jqXHR) {
