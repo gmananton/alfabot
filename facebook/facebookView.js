@@ -71,7 +71,7 @@ facebookView.Convert = function(chatMessage)
             for(var i=0; i<chatMessage.messageData.data.customerRequestedCardInfos.length; i++)
             {
                 var item = chatMessage.messageData.data.customerRequestedCardInfos[i];
-                str+=item.name + " - " + item.status + "\n";
+                str+=item.firstName + " " + item.middleName + " - " + item.enCardStatus + "\n";
             }
             // chatMessage.messageData.data.cards.forEach(function(item, i, arr) {
             //     str+=item.name + " - " + item.status + "\n";
