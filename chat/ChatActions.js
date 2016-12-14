@@ -46,6 +46,42 @@ chatActions.main.getMenu = function(clientDialogState, callback)
 }
 
 /**
+ * Выполнить спец-команду #abc*** не меняя ход диалога
+ *
+ * @param clientDialogState
+ * @param callback
+ * @param messageText
+ */
+chatActions.main.processCommand = function(clientDialogState, callback, messageText)
+{
+    var chatAnswer = new ChatAnswer();
+    if(messageText.startsWith("#abcps:"))
+    {
+        var values = messageText.replace("#abcps:","").split(":");
+        var crf = values[0];
+        var docId = values[1];
+
+        //получаем данные
+        dataRetreiver.getPayDocStatus(crf, docId,
+            function(result)
+            {
+
+                chatAnswer.addMessage(clientDialogState.userId, EnumMessageCodes.payDocStatus_Result, result, "[Получение статуса платежки]: " + JSON.stringify(result));
+                callback(chatAnswer);
+                return;
+
+            });
+
+        return;
+    }
+
+
+    chatAnswer.addMessage(clientDialogState.userId, EnumMessageCodes.misc_IncorrectCommand, null, "Введена некорректная команда");
+    callback(chatAnswer);
+}
+
+
+/**
  * Первичное приветствие.
  *
  * @param clientDialogState

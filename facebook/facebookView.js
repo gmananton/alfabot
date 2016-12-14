@@ -163,24 +163,16 @@ facebookView.Convert = function(chatMessage)
                 var strStatus = "";
 
                 switch (payDocInfo.enPayDocStatus) {
-                    case "InProgress":
-                        strStatus = "в процессе";
-                        break;
-                    case "Done":
-                        strStatus = "выполнен";
-                        break;
-                    case "Cancelled":
-                        strStatus = "отменен";
-                        break;
-                    case "Refused":
-                        strStatus = "отклонен";
-                        break;
-                    default:
-                        strStatus = "статус не распознан";
-                        break;
+                    case "InProgress":  strStatus = "в процессе";  break;
+                    case "Done":        strStatus = "выполнен";  break;
+                    case "Cancelled":   strStatus = "отменен";  break;
+                    case "Refused":     strStatus = "отклонен";   break;
+                    default:            strStatus = "статус не распознан";  break;
                 }
 
                 str = "Статус платежного документа " + payDocInfo.docid + ": " + strStatus;
+
+                str+= "\n\nДля быстрого просмотра статуса используйте команду #abcps:"+payDocInfo.crf+":"+payDocInfo.docid;
 
 
             }
@@ -197,6 +189,15 @@ facebookView.Convert = function(chatMessage)
             var login = chatMessage.data.login;
             fbJson = facebookView.getSimpleTextMessage(recipientId, "(fb): Вы успешно аутентифиуировались под пользователем: \n" + login);
             break;
+
+        case EnumMessageCodes.misc_IncorrectCommand:
+
+            
+            fbJson = facebookView.getSimpleTextMessage(recipientId, "(fb): Введена некорректная команда");
+            break;
+
+
+        
        
 
         default:

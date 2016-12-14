@@ -101,6 +101,13 @@ chatLogic.getAnswer = function(clientDialogState, messageText, callback)
     //в данной системе понятие "Thread" означает некую линию разговора (диалога), состоящего из нескольких этапах, на каждом из
     //которых собирается и верифицируется информация, чтобы в итоге привести к финальному ответу.
 
+    
+    //0.0. Вызов спец команд не нарушает ветку диалога
+    if(messageText.startsWith("#abc")) //abc = alfa-bot-command
+    {
+        chatActions.main.processCommand(clientDialogState, callback, messageText);
+        return;
+    }
 
     //0. Вызов "меню" из любого места сбрасывает текущие Тред
     if (messageText == EnumDialogCommands.ab2510cmdMainMenu) {

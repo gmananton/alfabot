@@ -29,6 +29,7 @@ EnumMessageCodes = {
 
 
     security_AuthenticationSuccess : "security_AuthenticationSuccess",
+    misc_IncorrectCommand: "misc_IncorrectCommand"
     
     
     
