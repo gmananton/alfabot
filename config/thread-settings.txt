@@ -20,7 +20,7 @@ curl -X DELETE -H "Content-Type: application/json" -d '{
 /*-----------------------------------------------------------------------------------------------------------------*/
 
 
-/* Постоянное меню - добавить */
+/* Постоянное меню - добавить (количество меню не более 5) */
 curl -X POST -H "Content-Type: application/json" -d '{
   "setting_type" : "call_to_actions",
   "thread_state" : "existing_thread",
@@ -41,10 +41,10 @@ curl -X POST -H "Content-Type: application/json" -d '{
       "title":"Баланс по счетам",
       "payload":"ab2510cmdBalanceStart"
     },
-{
-      "type":"postback",
-      "title":"Банкоматы",
-      "payload":"atmPayload"
+    {
+          "type":"postback",
+          "title":"Статус платежного документа",
+          "payload":"ab2510cmdPayDocStatusStart"
     },
     {
       "type":"postback",

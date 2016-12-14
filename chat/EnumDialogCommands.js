@@ -11,6 +11,8 @@ EnumDialogCommands = {
     ab2510cmdCardListStart : "ab2510cmdCardListStart",
 
     ab2510cmdBalanceStart : "ab2510cmdBalanceStart",
+
+    ab2510cmdPayDocStatusStart : "ab2510cmdPayDocStatusStart",
     
     
 }

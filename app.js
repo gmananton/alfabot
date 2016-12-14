@@ -21,6 +21,7 @@ const facebookSend = require('./facebook/facebookSend');
 const facebookReceive = require('./facebook/facebookReceive');
 
 
+var miscRouter = require('./miscRouter');
 var debugRouter = require('./debugRouter');
 var facebookRouter = require('./facebookRouter');
 
@@ -140,8 +141,11 @@ else
  // });
 
 
+
+app.use('/misc', miscRouter);
 app.use('/debug', debugRouter);
 app.use('/', facebookRouter);
+
 
 
 

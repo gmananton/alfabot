@@ -16,10 +16,12 @@ chatActions.main = new Object();
 chatActions.common = new Object();
 chatActions.customerRequestedCardInfo = new Object();
 chatActions.balance = new Object();
+chatActions.payDocStatus = new Object();
 
 var standartMenuCaption =  "Пожалуйста, нажмите "
-    + EnumDialogCommands.ab2510cmdCardListStart + " для Списка карт и "
-    + EnumDialogCommands.ab2510cmdBalanceStart + " для Баланса";
+    + EnumDialogCommands.ab2510cmdCardListStart + " для Списка карт, "
+    + EnumDialogCommands.ab2510cmdBalanceStart + " для Баланса, "
+    + EnumDialogCommands.ab2510cmdPayDocStatusStart + " для Статуса платежного документа ";
 
 //region start
 
@@ -98,12 +100,12 @@ chatActions.customerRequestedCardInfo.getRequestedCardInfo = function(clientDial
     chatActions.customerRequestedCardInfo.getCustomerRequestedCardInfo(messageText,
         function(res){
 
-            var answer = format_getCustomerRequestedCardInfo(res);
+            var answer = res;
 
             clientDialogState.currentThread = EnumThreadNames.isNoSubject;
             clientDialogState.waitChooseMenu=true;
 
-            chatAnswer.addMessage(clientDialogState.userId, EnumMessageCodes.cardList_Result, res, "[Получение списка карт]: " + answer);
+            chatAnswer.addMessage(clientDialogState.userId, EnumMessageCodes.cardList_Result, res, "[Получение списка карт]: " + JSON.stringify(answer));
             //chatAnswer.addMessage(clientDialogState.userId, EnumMessageCodes.main_whatCanIHelp, null, "Чем я еще могу помочь? " + standartMenuCaption);
             callback(chatAnswer);
             return;
@@ -126,11 +128,20 @@ chatActions.balance.startThread = function(clientDialogState, callback)
     clientDialogState.currentThread = EnumThreadNames.getBalance;
 
     clientDialogState.waitInputCrf = true;
-    clientDialogState.waitInputLast4PhoneDigits = false;
-    clientDialogState.waitSmsAnswer = false;
 
-    chatAnswer.addMessage(clientDialogState.userId, EnumMessageCodes.balance_ProvideInn, null, "[Получение баланса]: Введите ИНН юр. лица");
-    callback(chatAnswer);
+    if(!chatActions.common.checkUserIsAuthenticated(clientDialogState))
+    {
+        chatActions.balance.promptForAuthentication(clientDialogState, callback);
+        return;
+    }
+    else
+    {
+        chatAnswer.addMessage(clientDialogState.userId, EnumMessageCodes.balance_ProvideInn, null, "[Получение баланса]: Введите ИНН юр. лица");
+        callback(chatAnswer);
+    }
+
+
+
 }
 
 //для получения баланса - шаг 1. Вводим и проверяем ИНН
@@ -148,73 +159,144 @@ chatActions.balance.сheckCrf = function(clientDialogState, callback, messageTex
 
     //Сходить - проверить ИНН и в случае успеха - сохранить введенный ИНН и продолжить
 
-    clientDialogState.data.crf = messageText;
+    var crf = messageText;
+    var cus = clientDialogState.authenticatedCus;
 
-    clientDialogState.waitInputCrf = false;
-    clientDialogState.waitInputLast4PhoneDigits = true;
 
-    chatAnswer.addMessage(clientDialogState.userId, EnumMessageCodes.balance_ProvideLast4Digits, null,"[Получение баланса]: Введите последние 4 цифры номера телефона");
-    callback(chatAnswer);
+    //Сходить - получить данные
+    //получаем данные
+    dataRetreiver.getBalance(crf, cus,
+        function(result)
+        {
+            var answer = result;
+
+
+            clientDialogState.currentThread = EnumThreadNames.isNoSubject;
+            clientDialogState.waitChooseMenu=true;
+            clientDialogState.waitInputCrf = false;
+
+            chatAnswer.addMessage(clientDialogState.userId, EnumMessageCodes.payDocStatus_Result, result, "[Получение баланса]: " + JSON.stringify(answer));
+            callback(chatAnswer);
+            return;
+
+        });
+
+
+
 }
 
-//для получения баланса - шаг 2. Вводим и проверяем посление 4 цифры
-chatActions.balance.checkLast4PhoneDigits = function(clientDialogState, callback, messageText)
+//для неаутентифицированного пользователя - попровить аутентифицироваться
+chatActions.balance.promptForAuthentication = function(clientDialogState, callback)
     {
 
         var chatAnswer = new ChatAnswer();
+        
+        //Сгенерить и запомнить chatUserHash-сопоставление
+        var chatUserHash = clientDialogState.userId;
 
-        //проверка валидности ввода
-        if(!chatActions.common.checkIsLast4Digits(messageText)) {
-            chatAnswer.addMessage(clientDialogState.userId, EnumMessageCodes.balance_IncorrectLast4Digits, null,"[Получение баланса]: 4 цифры введены некорректно. Попробуйте еще раз (\"ab2510cmdMainMenu\" для выхода из диалога)");
-            callback(chatAnswer);
-            return;
-        }
+        chatAnswer.addMessage(clientDialogState.userId, EnumMessageCodes.balance_PromptForAuthentication, {chatUserHash: clientDialogState.userId},"[Получение баланса]: Войдите в ALBO по ссылке http://localhost:5000/loginPage.html?chatUserHash=" + chatUserHash);
+       // chatAnswer.addMessage(clientDialogState.userId, EnumMessageCodes.balance_AuthenticationSuccess, {login: "alboUser166"},"[Получение баланса]: Вы вошли в систему под учетной записью alboUser166");
 
-        //Сходить - проверить телефонный номер (ИНН уже известен) и в случае успеха - сохранить введенный номер,
-        // выслать SMS и продолжить. + нужно сохранить id пользователя, которому выслали SMS
-
-        clientDialogState.data.last4PhoneDigits = messageText;
-
-        clientDialogState.waitInputLast4PhoneDigits = false;
-        clientDialogState.waitSmsAnswer = true;
-
-        chatAnswer.addMessage(clientDialogState.userId, EnumMessageCodes.balance_ProvideSmsCode, null,"[Получение баланса]: Введите последние код, направленный вам по SMS");
         callback(chatAnswer);
     }
 
 
-//для получения баланса - шаг 3. Вводим и проверяем SMS код. При успехе - выдаем баланс
-chatActions.balance.checkSmsAnswer = function(clientDialogState, callback, messageText)
-    {
-
-        var chatAnswer = new ChatAnswer();
-
-        //проверка Sms-кода
-        if(messageText!="1111") {
-            chatAnswer.addMessage(clientDialogState.userId,EnumMessageCodes.balance_IncorrectSmsCode, null, "[Получение баланса]: Введен неверный SMS код. Попробуйте еще раз (\"ab2510cmdMainMenu\" для выхода из диалога)");
-            callback(chatAnswer);
-            return;
-        }
-
-        //Сходить - получить данные
-        var answer = "Счет 3435 - сумма 200 000 RUR";
-
-        clientDialogState.currentThread = EnumThreadNames.isNoSubject;
-        clientDialogState.waitChooseMenu=true;
-        clientDialogState.waitSmsAnswer = false;
-
-        chatAnswer.addMessage(clientDialogState.userId,EnumMessageCodes.balance_Result, answer,"[Получение баланса]: " + answer);
-        //chatAnswer.addMessage(clientDialogState.userId,EnumMessageCodes.main_whatCanIHelp, null, "Чем я еще могу помочь? (Нажмите 1 для Списка карт и 2 для Баланса)");
-
-
-        callback(chatAnswer);
-    }
 
 
 
 //endregion
 
+//region payDocStatus
 
+//стартуем тред получения списка карт
+chatActions.payDocStatus.startThread = function(clientDialogState, callback)
+{
+
+    var chatAnswer = new ChatAnswer();
+
+    clientDialogState.data = new Object(); //обнулить контекстные данные предыдущего треда
+
+    clientDialogState.waitChooseMenu = false;
+    clientDialogState.currentThread = EnumThreadNames.getPayDocStatus;
+
+
+    clientDialogState.waitInputCrf = true;
+    clientDialogState.waitInputPayDocNumber = false;
+
+    chatAnswer.addMessage(clientDialogState.userId, EnumMessageCodes.payDocStatus_ProvideInn, null, "[Получение статуса платежки]: Введите ИНН юр. лица");
+    callback(chatAnswer);
+}
+
+
+
+//получаем ИНН организации
+chatActions.payDocStatus.checkCrf = function(clientDialogState, callback, messageText)
+{
+
+
+    var chatAnswer = new ChatAnswer();
+
+    //проверка валидности ИНН
+    if(!chatActions.common.checkIsCrf(messageText)) {
+        chatAnswer.addMessage(clientDialogState.userId, EnumMessageCodes.payDocStatus_ProvideInn, null, "[Получение статуса платежки]: ИНН введен некорректно. Попробуйте еще раз (\"ab2510cmdMainMenu\" для выхода из диалога)");
+        callback(chatAnswer);
+        return;
+    }
+
+    //Сходить - проверить ИНН и в случае успеха - сохранить введенный ИНН и продолжить
+
+    clientDialogState.data.crf = messageText;
+
+    clientDialogState.waitInputCrf = false;
+    clientDialogState.waitInputPayDocNumber = true;
+
+    chatAnswer.addMessage(clientDialogState.userId, EnumMessageCodes.payDocStatus_ProvidePayDocNumber, null,"[Получение статуса платежки]: Введите номер платежного документа");
+    callback(chatAnswer);
+}
+
+
+
+//для получения инфо по платежки - шаг 2. Вводим номер платежки - показываем результат
+chatActions.payDocStatus.checkPayDocNumber = function(clientDialogState, callback, messageText)
+{
+
+    var chatAnswer = new ChatAnswer();
+
+    //проверка номера платежки (если есть какие-то правила, то можно проверить тут. Пока - просто на заполненность)
+    if(messageText=="") {
+        chatAnswer.addMessage(clientDialogState.userId,EnumMessageCodes.payDocStatus_IncorrectPayDocNumber, null, "[Получение статуса платежки]: Введен неверный номер платежки. Попробуйте еще раз (\"ab2510cmdMainMenu\" для выхода из диалога)");
+        callback(chatAnswer);
+        return;
+    }
+
+    var crf = clientDialogState.data.crf;
+    var docId = messageText;
+
+    //получаем данные
+    dataRetreiver.getPayDocStatus(crf, docId,
+        function(result)
+        {
+            var answer = result;
+
+
+            clientDialogState.currentThread = EnumThreadNames.isNoSubject;
+            clientDialogState.waitChooseMenu=true;
+            clientDialogState.waitInputPayDocNumber = false;
+
+            chatAnswer.addMessage(clientDialogState.userId, EnumMessageCodes.payDocStatus_Result, result, "[Получение статуса платежки]: " + JSON.stringify(answer));
+            //chatAnswer.addMessage(clientDialogState.userId, EnumMessageCodes.main_whatCanIHelp, null, "Чем я еще могу помочь? " + standartMenuCaption);
+            callback(chatAnswer);
+            return;
+
+            callback(result);
+        });
+
+
+
+
+}
+
+//endregion
 
 
 //region private methods
@@ -233,17 +315,23 @@ chatActions.common.checkIsCrf = function(messageText){
 }
 
 
-/**
- * Проверка, что введенная строка - 4 цифры
- * @param messageText
- * @returns {boolean}
- */
-chatActions.common.checkIsLast4Digits = function(messageText){
 
-    if((messageText.length == 4) && (Number(messageText,10)>=0))
-        return true;
+chatActions.common.checkUserIsAuthenticated = function(clientDialogState){
 
-    return false;
+    if(clientDialogState.authenticatedDate)
+    {
+        var loginDate = new Date(clientDialogState.authenticatedDate);
+        var currentDate = new Date();
+        var timeSpanSeconds = (currentDate - loginDate)/1000;
+
+        if(timeSpanSeconds > 3*60) {
+
+            clientDialogState.authenticatedDate = null;
+            clientDialogState.authenticatedCus = null;
+        }
+    }
+
+    return clientDialogState.authenticatedCus!=null;
 }
 
 

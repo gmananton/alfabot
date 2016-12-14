@@ -1,0 +1,39 @@
+
+
+
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8" />
+  <title>Login Page</title>
+
+
+  <script src="/js/react/react.js" language="JavaScript"></script>
+  <script src="/js/react/react-dom.js" language="JavaScript"></script>
+  <script src="/js/react/babel.min.js" language="JavaScript"></script>
+
+  <script src="/js/jquery-3.1.1.min.js"></script>
+
+  <script src="/js/loginPage.js" type="text/javascript"></script>
+
+
+  <link rel="stylesheet" type="text/css" href="/css/app.css">
+
+
+
+</head>
+<body>
+
+
+Login: <input type="text" id="tbLogin"/>
+<br/>
+Password: <input type="password" id="tbPassword"/>
+
+<br/>
+<input type="button" value="Submit" onclick="submitLogin($('#tbLogin').val(),$('#tbPassword').val(),QueryString().chatUserHash)">
+
+
+
+
+</body>
+</html>

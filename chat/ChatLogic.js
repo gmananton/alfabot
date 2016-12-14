@@ -30,10 +30,25 @@ var clients = new hashes.HashTable();
 var chatLogic = new Object();
 
 var standartMenuCaption =  "Пожалуйста, нажмите "
-    + EnumDialogCommands.ab2510cmdCardListStart + " для Списка карт и "
-    + EnumDialogCommands.ab2510cmdBalanceStart + " для Баланса";
+    + EnumDialogCommands.ab2510cmdCardListStart + " для Списка карт, "
+    + EnumDialogCommands.ab2510cmdBalanceStart + " для Баланса, "
+    + EnumDialogCommands.ab2510cmdPayDocStatusStart + " для Статуса платежного документа ";
 
 
+
+//вызывается НЕ из чата, поэтому сохраняем состояние диалога отдельно.
+chatLogic.SetUserAuthenticated = function (userId, cus, login)
+{
+    //забрать инфо по состоянию диалога
+    var clientDialogState = clients.contains(userId) ? clients.get(userId).value : createNewUserDialogState(userId);
+
+    clientDialogState.authenticatedCus = cus;
+    clientDialogState.authenticatedDate = Date.now();
+
+    //сохранить состояние
+    //Запомнить состояние диалога
+    clients.add(userId, clientDialogState, true);
+}
 
 chatLogic.processUserMessage = function(userMessage, callback)
 {
@@ -119,6 +134,12 @@ chatLogic.getAnswer = function(clientDialogState, messageText, callback)
                 return;
             }
 
+            if (messageText == EnumDialogCommands.ab2510cmdPayDocStatusStart) {
+
+                chatActions.payDocStatus.startThread(clientDialogState, callback);
+                return;
+            }
+
             //Не распознали выбор
             var chatAnswer = new СhatAnswer();
             chatAnswer.addMessage(clientDialogState.userId, EnumMessageCodes.main_iCantUnderstand, null, "Извинте, я вас не понимаю, воспользуйтесь меню");
@@ -144,10 +165,38 @@ chatLogic.getAnswer = function(clientDialogState, messageText, callback)
 
     //endregion
 
+    //region -------------------------------Тред получения статуса платежки
+
+
+    if(clientDialogState.currentThread == EnumThreadNames.getPayDocStatus) {
+
+        //шаг 1. при ожидании ввода ИНН
+        if(clientDialogState.waitInputCrf)
+        {
+            chatActions.payDocStatus.checkCrf(clientDialogState, callback, messageText);
+            return;
+        }
+
+        //шаг 2. при ожидании ввода Номера платежки
+        if(clientDialogState.waitInputPayDocNumber)
+        {
+            chatActions.payDocStatus.checkPayDocNumber(clientDialogState, callback, messageText);
+            return;
+        }
+    }
+
+    //endregion
+
     //region -------------------------------Тред получения баланса
 
 
     if(clientDialogState.currentThread == EnumThreadNames.getBalance) {
+
+        if(!chatActions.common.checkUserIsAuthenticated(clientDialogState))
+        {
+            chatActions.balance.promptForAuthentication(clientDialogState, callback);
+            return;
+        }
 
         //шаг 1. при ожидании ввода ИНН
         if(clientDialogState.waitInputCrf)
@@ -156,19 +205,7 @@ chatLogic.getAnswer = function(clientDialogState, messageText, callback)
             return;
         }
 
-        //шаг 2. при ожидании ввода последних 4 цифр телефона
-        if(clientDialogState.waitInputLast4PhoneDigits)
-        {
-            chatActions.balance.checkLast4PhoneDigits(clientDialogState, callback, messageText);
-            return;
-        }
 
-        //шаг 3. при ожидании ввода SMS-кода - при успехе - выдать баланс
-        if(clientDialogState.waitSmsAnswer)
-        {
-            chatActions.balance.checkSmsAnswer(clientDialogState, callback, messageText);
-            return;
-        }
 
 
 
@@ -179,6 +216,7 @@ chatLogic.getAnswer = function(clientDialogState, messageText, callback)
 
 
 }
+
 
 
 
@@ -197,17 +235,19 @@ chatLogic.getAnswer = function(clientDialogState, messageText, callback)
     o.numOfMessagesDuringLastSession=0;
 
 
-    //состояние авторизации
-    o.isAuthorazedForBalance = false; //пользователь авторизован для получения баланса
 
-    //текущий тред
+
+    //текущий тред диалога
     o.currentThread = EnumThreadNames.isNoSubject;
 
     //текущее состояние пользователя в рамках Треда
     o.waitChooseMenu = false; //Ожидается выбор меню действий
     o.waitInputCrf = false;   //Ожидается ввод ИНН
-    o.waitInputLast4PhoneDigits = false;   //Ожидается ввод последних 4 цифр телефона
-    o.waitSmsAnswer = false;  //Ожидается ввод СМС-кода
+    o.waitInputPayDocNumber = false;   //Ожидается ввод номера платежки
+
+    //аутентификация
+    o.authenticatedCus = null;  //cus пользователя, когда аутентифицировался
+    o.authenticatedDate = null; //дата аутентификации (считаем, что пользователь активен 20 мин, дальше будет сброс)
 
 
     //текущие данные, сохраняемые в рамках треда. При смене треда, данные обнуляются
@@ -217,11 +257,13 @@ chatLogic.getAnswer = function(clientDialogState, messageText, callback)
     o.resetDialog = function () {
         o.currentThread = EnumThreadNames.isNoSubject;
 
+        o.data = new Object();
+
         //текущее состояние пользователя в рамках Треда
         o.waitChooseMenu = true; //Ожидается выбор меню действий
         o.waitInputCrf = false;   //Ожидается ввод ИНН
-        o.waitInputLast4PhoneDigits = false;   //Ожидается ввод последних 4 цифр телефона
-        o.waitSmsAnswer = false;  //Ожидается ввод СМС-кода
+        o.waitInputPayDocNumber = false;
+
     }
 
     return o;
@@ -232,14 +274,7 @@ chatLogic.getAnswer = function(clientDialogState, messageText, callback)
 
 //endregion
 
-/**
- * Форматирование полученных из getCustomerRequestedCardInfo() данных
- * @param res
- */
-format_getCustomerRequestedCardInfo = function(res) //Форматы разные для Дебаг-Чата и для Facebook-а (там json)
-{
-    return JSON.stringify(res);
-}
+
 
 
 module.exports = chatLogic;

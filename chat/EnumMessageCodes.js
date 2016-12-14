@@ -17,11 +17,15 @@ EnumMessageCodes = {
     
     balance_ProvideInn : "balance_ProvideInn",
     balance_IncorrectInn: "balance_IncorrectInn",
-    balance_ProvideLast4Digits: "balance_ProvideLast4Digits",
-    balance_IncorrectLast4Digits: "balance_IncorrectLast4Digits",
-    balance_ProvideSmsCode: "balance_ProvideSmsCode",
-    balance_IncorrectSmsCode: "balance_IncorrectSmsCode",
-    balance_Result: "balance_Result"
+    balance_PromptForAuthentication: "balance_PromptForAuthentication",
+    balance_AuthenticationSuccess: "balance_AuthenticationSuccess",
+    balance_Result: "balance_Result",
+
+    payDocStatus_ProvideInn : "payDocStatus_ProvideInn",
+    payDocStatus_IncorrectInn : "payDocStatus_IncorrectInn",
+    payDocStatus_ProvidePayDocNumber : "payDocStatus_ProvidePayDocNumber",
+    payDocStatus_IncorrectPayDocNumber : "payDocStatus_IncorrectPayDocNumber",
+    payDocStatus_Result : "payDocStatus_Result",
     
     
     

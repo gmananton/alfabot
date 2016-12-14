@@ -97,13 +97,45 @@ router.get('/getCustomerRequestedCardInfo', function(req, res) {
 
 router.get('/getBalance', function(req, res) {
 
-    dataRetreiver.getBalance("req.querystring",
+    dataRetreiver.getBalance(req.query.crf, req.query.cus,
         function(result)
         {
             res.send(result);
         });
 
 });
+
+
+router.get('/getPayDocStatus', function(req, res) {
+    dataRetreiver.getPayDocStatus(req.query.crf, req.query.docid,
+        function(result)
+        {
+            res.send(result);
+        });
+});
+
+// router.get('/loginToAlbo', function(req, res) {
+//
+//     //вынести в app
+//    
+//    
+//    
+//     // console.log(req.query.login);
+//     // console.log(req.query.password);
+//     // console.log(req.query.dialogUserId);
+//
+//     var cus="XABJVZ"
+//
+//     if(req.query.password=="1111") //успешный логин
+//     {
+//         chatLogic.SetUserAuthenticated(req.query.dialogUserId, cus, req.query.login);
+//         facebookSend.sendTextMessage(req.query.dialogUserId, "Вы успешно аутентифицировались под логином " + req.query.login)
+//     }
+//
+//     //послать весточку в FB
+//
+// });
+
 
 //endregion
 

@@ -8,9 +8,14 @@ var clone = require('clone');
 
 var dataRetreiver = new Object();
 
-dataRetreiver.getBalance = function(representativeToken, callback)
+dataRetreiver.getBalance = function(crf, cus, callback)
 {
-    var res={"data":[{"accountLastDigits":"test" + representativeToken,"amount":200050,"enCurrency":"EUR"}]}
+    var res={data:
+    {accountsList:
+        [
+            {accountNumber:"40702840702410000002",amount:0,enCurrency:"USD"}
+        ]
+        ,message:null,success:false},itemsCount:0,success:true,errorMsg:null,errorCode:0}
     callback(res);
 }
 
@@ -18,11 +23,6 @@ dataRetreiver.getCustomerRequestedCardInfo = function(crf, callback)
 {
 
 
-    //var res={"data":[{"cards": 145}]}
-    // var res={"data":{"cards": [
-    //     {name: "Александр Бут", status: "ready"},
-    //     {name: "Андрей Вас", status: "ready"},
-    //     {name: "Вячеслва Олв", status: "not ready"}]}}
 
     var res={data:{customerRequestedCardInfos:
         [
@@ -31,6 +31,20 @@ dataRetreiver.getCustomerRequestedCardInfo = function(crf, callback)
             {firstName:"Екатерина",middleName:"Миладовна",enCardStatus:"Ready",officeAddress:"123022,Москва, ул. Пресненский Вал,д.3, стр.1"}
         ],message:null,success:false},
         itemsCount:0,success:true,errorMsg:null,errorCode:0};
+
+    console.log("Stub onResult: " + JSON.stringify(res));
+    callback(res);
+}
+
+
+dataRetreiver.getPayDocStatus = function(crf, docId, callback)
+{
+
+    var res={data:{payDocInfo:
+        {
+            docid:"Z562D00000000326 (STUB)",crf:7654545455,enPayDocStatus:"InProgress (STUB)"
+        },
+        message:null,success:false},itemsCount:0,success:true,errorMsg:null,errorCode:0}
 
     console.log("Stub onResult: " + JSON.stringify(res));
     callback(res);

@@ -18,12 +18,12 @@ const JAVA_SERVICE_BASE_REQUEST = {
 
 var dataRetreiver = new Object();
 
-dataRetreiver.getBalance = function(representativeToken, callback)
+dataRetreiver.getBalance = function(crf, cus, callback)
 {
     var options = clone(JAVA_SERVICE_BASE_REQUEST);
-    options.path+="getBalance?representativeToken=" + representativeToken;
-    
-    rest.getJSON(options,
+    options.path+="getBalance?crf="+crf+"&cus="+cus;
+
+    getJSONFromJavaMiddle(options,
         function(statusCode, result)
         {
             // I could work with the result html/json here.  I could also just return it
@@ -45,14 +45,18 @@ dataRetreiver.getCustomerRequestedCardInfo = function(crf, callback)
     var options = clone(JAVA_SERVICE_BASE_REQUEST);
     options.path+="getCustomerRequestedCardInfo?crf=" + crf;
 
-    //Стандартную callback функцию вытащить отдельдно
+    getJSONFromJavaMiddle(options,
+        function(statusCode, result)
+        {
+            console.log("Java onResult: (" + statusCode + ")" + JSON.stringify(result));
+            callback(result);
+        });
+}
 
-    // rest.getJSON(options,
-    //     function(statusCode, result)
-    //     {
-    //         console.log("Java onResult: (" + statusCode + ")" + JSON.stringify(result));
-    //         callback(result);
-    //     });
+dataRetreiver.getPayDocStatus = function(crf, docId, callback)
+{
+    var options = clone(JAVA_SERVICE_BASE_REQUEST);
+    options.path+="getPayDocInfo?crf=" + crf + "&docid=" + docId;
 
     getJSONFromJavaMiddle(options,
         function(statusCode, result)
@@ -63,11 +67,11 @@ dataRetreiver.getCustomerRequestedCardInfo = function(crf, callback)
 }
 
 
+
 getJSONFromJavaMiddle = function(options, callback)
 {
     //каждый раз в headers добавляем наш токен
-    options.headers = { Authorization: config.get("javaServiceToken") }
-;
+    options.headers = { Authorization: config.get("javaServiceToken") };
 
     rest.getJSON(options, callback);
 }

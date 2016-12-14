@@ -121,37 +121,7 @@ facebookReceive.receivedPostback = function (event) {
 
         chatLogic.processUserMessage(userMessage, facebookSend.sendAnswer);
         
-        
-        // switch (payload) {
-        //     case 'startConversationPayload':
-        //         facebookSend.sendQuickReplyTutorialChoice(senderID);
-        //         break;
-        //     //case 'mainMenuPayload':
-        //     case EnumDialogCommands.ab2510cmdMainMenu:
-        //         facebookSend.sendStartOptionsMessage(senderID);
-        //         break;
-        //     case 'tutorialPayload':
-        //         facebookSend.sendQuickReplyTutorialChoice(senderID);
-        //         break;
-        //     //case 'cardStatusPayload':
-        //     case EnumDialogCommands.ab2510cmdCardListStart:
-        //         facebookSend.sendCardStatusMessage(senderID);
-        //         break;
-        //     case 'atmPayload':
-        //         facebookSend.sendATMLocationMessage(senderID);
-        //         break;
-        //     case 'accountsPayload':
-        //         facebookSend.sendAccountsInfoMessage(senderID);
-        //         break;
-        //     case 'cardLocationPayload':
-        //         facebookSend.sendCardLocationMessage(senderID);
-        //         break;
-        //     default:
-        //
-        //
-        //         facebookSend.sendTextMessage(senderID, "Прошу прощения, я Вас не совсем понял...");
-        //         break;
-        // }
+
     }
 }
 

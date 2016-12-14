@@ -65,17 +65,13 @@ facebookView.Convert = function(chatMessage)
         case EnumMessageCodes.cardList_Result:
 
             console.log("Список карт: " + JSON.stringify(chatMessage.messageData))
-            console.log("length: " + chatMessage.messageData.data.customerRequestedCardInfos.length);
+            console.log("length: " + chatMessage.messageData.data.cards.length);
 
             var str="";
-            for(var i=0; i<chatMessage.messageData.data.customerRequestedCardInfos.length; i++)
+            for(var i=0; i<chatMessage.messageData.data.cards.length; i++)
             {
-                var item = chatMessage.messageData.data.customerRequestedCardInfos[i];
-                var strStatus = item.enCardStatus=="Ready" ? "готово" : "не готово";
-                var strOfficeAddress = item.officeAddress ? "\n\n(" + item.officeAddress + ")" : "";
-
-                str+=item.firstName + " " + item.middleName + ":   " + strStatus + strOfficeAddress + "\n\n"
-                ;
+                var item = chatMessage.messageData.data.cards[i];
+                str+=item.name + " - " + item.status + "\n";
             }
             // chatMessage.messageData.data.cards.forEach(function(item, i, arr) {
             //     str+=item.name + " - " + item.status + "\n";
@@ -97,21 +93,16 @@ facebookView.Convert = function(chatMessage)
             fbJson = facebookView.getSimpleTextMessage(recipientId, "(fb): Введен некорректный ИНН");
             break;
 
-        case EnumMessageCodes.balance_ProvideLast4Digits:
-            fbJson = facebookView.getSimpleTextMessage(recipientId, "(fb): Введите последине 4 цифры вашего телефона");
+
+
+        case EnumMessageCodes.balance_PromptForAuthentication:
+            fbJson = facebookView.getSimpleTextMessage(recipientId, "(fb): Для получения защищенных данных, пожалуйста, войдите в систему http://albo.ru/loginPage.html?chatUserHash=" + chatMessage.messageData.chatUserHash);
             break;
 
-        case EnumMessageCodes.balance_IncorrectLast4Digits:
-            fbJson = facebookView.getSimpleTextMessage(recipientId, "(fb): Введен некорректные 4 цифры");
+        case EnumMessageCodes.balance_AuthenticationSuccess:
+            fbJson = facebookView.getSimpleTextMessage(recipientId, "(fb): Вы вошли под учетной записью:" + JSON.stringify(chatMessage.messageData));
             break;
 
-        case EnumMessageCodes.balance_ProvideSmsCode:
-            fbJson = facebookView.getSimpleTextMessage(recipientId, "(fb): Введите SMS код");
-            break;
-
-        case EnumMessageCodes.balance_IncorrectSmsCode:
-            fbJson = facebookView.getSimpleTextMessage(recipientId, "(fb): Введен некорректный SMS код");
-            break;
 
         case EnumMessageCodes.balance_Result:
             fbJson = facebookView.getSimpleTextMessage(recipientId, "(fb): Результат: " + JSON.stringify(chatMessage.messageData));
@@ -174,6 +165,16 @@ facebookView.getMainMenu = function (recipientId) {
                                 type: "postback",
                                 title: "Посмотреть состояние счетов",
                                 payload: "ab2510cmdBalanceStart"
+                            }]
+                        },
+                        {
+                            title: "Платежные документы",
+                            subtitle: "Узнать статус выполнения платежного документа",
+                            image_url: SERVER_URL + LOCATION_ICON_PATH,
+                            buttons: [{
+                                type: "postback",
+                                title: "Посмотреть состояние счетов",
+                                payload: "ab2510cmdPayDocStatusStart"
                             }]
                         },
                         // {

@@ -4,10 +4,11 @@
 
 EnumThreadNames = {
 
-    isNoSubject: 0,                     //нет текущих разговорных линий (сделать методом от isAuthorazedForBalance и waitSmsAnswer)
+    isNoSubject: 0,                     //нет текущих разговорных линий
 
     getCustomerRequestedCardInfo : 1,   //процесс получения списка выпущенных карт
-    getBalance : 2                      //процесс получения баланса
+    getBalance : 2,                      //процесс получения баланса
+    getPayDocStatus : 3                 //процесс получения статуса платежки
 }
 
 module.exports =  EnumThreadNames;
