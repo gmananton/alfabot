@@ -36,7 +36,8 @@ router.get('/loginToAlbo', function(req, res) {
 
     if(userId==null)
     {
-        return; //нет такого хэша = пользователь не собирался аутентифицироваться для важных операций
+        res.send(JSON.stringify({res: "chatUserHash not found"}));
+       // return; //нет такого хэша = пользователь не собирался аутентифицироваться для важных операций
     }
 
     var cus="XABJVZ"
@@ -44,6 +45,8 @@ router.get('/loginToAlbo', function(req, res) {
     if(req.query.password=="1111") //успешный логин
     {
         chatLogic.SetUserAuthenticated(userId, cus);
+
+        res.send(JSON.stringify({res: "Login success"}));
 
         //послать весточку в FB
         var data = {login: req.query.login}
@@ -54,22 +57,12 @@ router.get('/loginToAlbo', function(req, res) {
 
         facebookSend.sendAnswer(chatAnswer);
 
-        // for (var i = 0; i < messages.length; i++) {
-        //     var msg = messages[i];
-        //     try {
-        //         facebookJsonMessage = facebookView.Convert(msg);
-        //         facebookSend.callSendAPI(facebookJsonMessage);
-        //     }
-        //     catch (ex) {
-        //         console.log("Опс, ошибочка вышла в miscRouter!! Ошибка при вызове facebookView.Convert: " + JSON.stringify(ex));
-        //         facebookSend.sendTextMessage(msg.recepientId, "Опс, ошибочка вышла! ))")
-        //         return;
-        //     }
-        // }
+        return;
 
-       // var facebookJsonMessage = facebookView.Convert(chatMessage)
-       // facebookSend.sendTextMessage(req.query.dialogUserId, "Вы успешно аутентифицировались под логином " + req.query.login)
+
     }
+
+    res.send(JSON.stringify({res: "Login failure"}));
 
     
 

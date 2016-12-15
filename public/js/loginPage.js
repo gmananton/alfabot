@@ -15,15 +15,7 @@
 
             type: 'GET',
             success: function (data, textStatus, jqXHR) {
-
-                if(data.success)
-                    console.log("ajax success Login");
-                else
-                    console.log("ajax failure Login");
-
-
-
-
+                    alert(data.res);
             },
             error: function (xhr, status, err) {
                 console.error("ajax error");
