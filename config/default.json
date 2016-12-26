@@ -17,7 +17,9 @@
 
 {
   "appSecret": "962f7154bb3a29b0e59509b9a22ca888",
-  "pageAccessToken": "EAAJFmPS0dxsBAMhCM3ZBGqE6SOgBh8SLHrVxIMj29ZCtRYPpD7oBZCvSFvshbZAitAtdZAbutjjnNcBwGYYAHi09XYQtpZCZB91tRS780uBteWZCQ4EIvk79qNFmlluTOW0FQQAGYFqWGfS8licgljskJxkKVIZCRb8l6CSz1eoSNzgZDZD",
+  //"pageAccessToken": "EAAJFmPS0dxsBAMhCM3ZBGqE6SOgBh8SLHrVxIMj29ZCtRYPpD7oBZCvSFvshbZAitAtdZAbutjjnNcBwGYYAHi09XYQtpZCZB91tRS780uBteWZCQ4EIvk79qNFmlluTOW0FQQAGYFqWGfS8licgljskJxkKVIZCRb8l6CSz1eoSNzgZDZD",
+  "pageAccessToken": "EAAJFmPS0dxsBAJ3s0TLa6DsRFJJeaoOV5SVDLK4lThUwslmSptabwZB4REOmyLW2CAAjmPaIL0q3kF8KLSXUO9LQ5rUsP3AMmtBOZCVv3HfHZAVsKlDLrhjlZAYO4QGZBd2ZCV0PsE4UQbfA6DEZCzlySdgKFxmOYBuLPjk9vKmGwZDZD",
+
   "validationToken": "testAppValidationToken",
   "serverURL": "https://alfa-bot.herokuapp.com",
 
