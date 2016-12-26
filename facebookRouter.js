@@ -6,8 +6,11 @@
 const express    = require('express');
 const router = express.Router();
 const facebookReceive = require('./facebook/facebookReceive');
+const config     = require('config');
 
-
+const VALIDATION_TOKEN = (process.env.MESSENGER_VALIDATION_TOKEN) ?
+    (process.env.MESSENGER_VALIDATION_TOKEN) :
+    config.get('validationToken');
 
 
 //Главная страница для удобного тестирования (все запросы сведены в html-странице)
